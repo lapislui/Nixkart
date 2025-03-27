@@ -587,7 +587,7 @@
                         window.NeoAnimations.flyToCart(productImage, cartIcon);
                     }
                     
-                    // Send AJAX request with modern handling
+                    // Send AJAX request with modern handling and proper CSRF handling
                     fetch(`/add-to-cart/${productSlug}/`, {
                         method: 'POST',
                         headers: {
@@ -595,6 +595,7 @@
                             'X-CSRFToken': getCsrfToken(),
                             'Content-Type': 'application/json'
                         },
+                        credentials: 'same-origin', // Important for CSRF protection
                         body: JSON.stringify({ quantity: quantity })
                     })
                     .then(response => {

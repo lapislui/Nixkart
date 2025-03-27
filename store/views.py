@@ -226,15 +226,30 @@ def add_to_cart(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
     cart = get_or_create_cart(request)
     
+    # Get quantity from form data or JSON body
+    quantity = 1
+    
+    # Handle JSON request body
+    if request.headers.get('Content-Type') == 'application/json':
+        try:
+            data = json.loads(request.body)
+            quantity = int(data.get('quantity', 1))
+        except (ValueError, json.JSONDecodeError):
+            quantity = 1
+    else:
+        # Handle regular form submission
+        quantity = int(request.POST.get('quantity', 1))
+    
     # Check if the product is already in the cart
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart,
         product=product,
-        defaults={'quantity': 1}
+        defaults={'quantity': quantity}
     )
     
+    # If it already exists, update the quantity instead
     if not created:
-        cart_item.quantity += 1
+        cart_item.quantity += quantity
         cart_item.save()
     
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':

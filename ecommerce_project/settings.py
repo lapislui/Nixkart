@@ -29,6 +29,19 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']  # For development, in production set to specific domain
 
+# CSRF Configuration
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.replit.app',  # Allow all Replit domains
+    'https://*.replit.dev', 
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:5000',
+    'http://0.0.0.0:5000',
+]
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # In development mode, allow all origins
+
 # Application definition
 
 INSTALLED_APPS = [
