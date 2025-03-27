@@ -1,21 +1,27 @@
-/* Modern Neomorphism-Inspired CSS for NeoStore */
+/* Railway-Inspired Dark Theme for E-Commerce Store */
 
 :root {
     /* Primary Colors */
-    --primary-color: #6c63ff;
-    --primary-dark: #5851db;
-    --primary-light: #8d85ff;
+    --primary-color: #9d5cff; /* Purple accent from Railway */
+    --primary-dark: #8344e0;
+    --primary-light: #b77dff;
     
     /* Accent Colors */
-    --accent-color: #ff6b6b;
-    --accent-dark: #ff5252;
-    --accent-light: #ff8a8a;
+    --accent-color: #00cfc8; /* Teal accent for contrast */
+    --accent-dark: #00a8a2;
+    --accent-light: #33e4de;
+    
+    /* Dark Theme Base Colors */
+    --bg-darkest: #000000; /* Darkest background color */
+    --bg-dark: #0F0F17; /* Main dark background */
+    --bg-dark-secondary: #1A1A27; /* Slightly lighter for panels and cards */
+    --bg-dark-tertiary: #252538; /* Even lighter for elements on cards */
     
     /* Neutrals */
-    --dark-color: #2d2d42;
-    --medium-color: #6e7191;
-    --light-color: #f7f7fc;
-    --ultralight-color: #fafafe;
+    --dark-color: #13131f;
+    --medium-color: #8E8EA0;
+    --light-color: #c2c2d2;
+    --ultralight-color: #eeeeff;
     
     /* Status Colors */
     --success-color: #00d68f;
@@ -23,11 +29,15 @@
     --danger-color: #ff3d71;
     --info-color: #0095ff;
     
+    /* Shadow Colors */
+    --shadow-dark: rgba(0, 0, 0, 0.3);
+    --shadow-light: rgba(103, 71, 150, 0.06);
+    
     /* UI Elements */
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
-    --border-radius-lg: 24px;
-    --border-radius-xl: 32px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 24px;
     --border-radius-round: 50%;
     
     /* Shadows & Effects */
@@ -69,18 +79,31 @@
 /* General Styles */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    color: var(--dark-color);
+    color: var(--light-color);
     line-height: 1.6;
-    background-color: var(--neo-bg);
+    background-color: var(--bg-darkest);
     overflow-x: hidden;
     min-height: 100vh;
 }
 
-.neo-theme {
-    --text-color: var(--dark-color);
+/* Dark Theme Override */
+.dark-theme {
+    --text-color: var(--light-color);
     --text-muted: var(--medium-color);
-    --background: var(--neo-bg);
-    --card-bg: var(--ultralight-color);
+    --background: var(--bg-dark);
+    --card-bg: var(--bg-dark-secondary);
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    --neo-bg: var(--bg-dark);
+}
+
+/* Apply dark theme by default */
+body {
+    --text-color: var(--light-color);
+    --text-muted: var(--medium-color);
+    --background: var(--bg-dark);
+    --card-bg: var(--bg-dark-secondary);
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    --neo-bg: var(--bg-dark);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -294,14 +317,14 @@ body:hover .cursor-follower {
     opacity: 0.6;
 }
 
-/* Glass Morphism Styling */
+/* Glass Morphism Styling - Dark Theme Version */
 .glass-morphism {
-    background: var(--glass-bg);
+    background: rgba(22, 22, 36, 0.6);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--border-radius-md);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    border: 1px solid rgba(61, 61, 90, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* Modern Navbar Styling */
@@ -398,7 +421,7 @@ body:hover .cursor-follower {
     font-weight: 500;
     position: relative;
     padding: 0.5rem 1rem;
-    color: var(--dark-color);
+    color: var(--light-color);
     border-radius: var(--border-radius-sm);
     transition: all var(--transition-medium);
     perspective: 1000px;
@@ -630,22 +653,24 @@ body:hover .cursor-follower {
 
 .username {
     font-weight: 500;
-    color: var(--dark-color);
+    color: var(--light-color);
 }
 
-/* Product Cards */
+/* Product Cards - Dark Theme */
 .product-card {
-    border-radius: 8px;
+    border-radius: var(--border-radius-md);
     overflow: hidden;
     box-shadow: var(--box-shadow);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     height: 100%;
-    background-color: white;
+    background-color: var(--bg-dark-secondary);
+    border: 1px solid rgba(61, 61, 90, 0.2);
 }
 
 .product-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-color);
 }
 
 .product-img-wrapper {
@@ -704,19 +729,21 @@ body:hover .cursor-follower {
     font-size: 1.2rem;
 }
 
-/* Product Detail */
+/* Product Detail - Dark Theme */
 .product-detail-image {
-    border-radius: 8px;
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     width: 100%;
     height: auto;
+    border: 1px solid rgba(61, 61, 90, 0.2);
 }
 
 .product-detail-info {
-    padding: 1rem;
-    background-color: white;
-    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
+    border: 1px solid rgba(61, 61, 90, 0.2);
 }
 
 .quantity-control {
@@ -780,23 +807,31 @@ body:hover .cursor-follower {
     gap: 10px;
 }
 
-/* Cart */
+/* Cart - Dark Theme */
 .cart-item {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     margin-bottom: 1rem;
-    padding: 1rem;
+    padding: 1.25rem;
     display: flex;
     align-items: center;
+    border: 1px solid rgba(61, 61, 90, 0.2);
+    transition: all var(--transition-medium);
+}
+
+.cart-item:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
 }
 
 .cart-item-image {
     width: 80px;
     height: 80px;
     object-fit: cover;
-    border-radius: 4px;
-    margin-right: 1rem;
+    border-radius: var(--border-radius-sm);
+    margin-right: 1.25rem;
+    border: 1px solid rgba(61, 61, 90, 0.2);
 }
 
 .cart-remove-btn {
@@ -804,18 +839,38 @@ body:hover .cursor-follower {
     background: none;
     border: none;
     cursor: pointer;
-    transition: transform var(--transition-fast);
+    transition: all var(--transition-fast);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .cart-remove-btn:hover {
-    transform: scale(1.2);
+    background-color: rgba(255, 107, 107, 0.1);
+    transform: scale(1.1);
 }
 
 .cart-summary {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
+    border: 1px solid rgba(61, 61, 90, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.cart-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-accent);
 }
 
 .cart-total {
@@ -891,28 +946,55 @@ body:hover .cursor-follower {
 }
 
 .checkout-form {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     padding: 2rem;
+    border: 1px solid rgba(61, 61, 90, 0.2);
 }
 
 .order-summary {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
+    border: 1px solid rgba(61, 61, 90, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Profile */
+.order-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-accent);
+}
+
+/* Profile - Dark Theme */
 .profile-header {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     padding: 2rem;
     display: flex;
     align-items: center;
     margin-bottom: 2rem;
+    border: 1px solid rgba(61, 61, 90, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
 }
 
 .profile-avatar {
@@ -921,6 +1003,8 @@ body:hover .cursor-follower {
     border-radius: 50%;
     object-fit: cover;
     margin-right: 2rem;
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
 }
 
 .profile-info {
@@ -934,11 +1018,12 @@ body:hover .cursor-follower {
 }
 
 .profile-section {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    border: 1px solid rgba(61, 61, 90, 0.2);
 }
 
 .order-history-item {
@@ -1030,13 +1115,26 @@ body:hover .cursor-follower {
     border-radius: 4px;
 }
 
-/* Dashboard */
+/* Dashboard - Dark Theme */
 .dashboard-card {
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
     height: 100%;
+    border: 1px solid rgba(61, 61, 90, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
 }
 
 .stats-number {
@@ -1060,12 +1158,14 @@ body:hover .cursor-follower {
     opacity: 0.5;
 }
 
-/* Toast Notifications */
+/* Toast Notifications - Dark Theme */
 .toast {
-    background-color: white;
+    background-color: var(--bg-dark-secondary);
     box-shadow: var(--box-shadow);
     border: none;
     border-left: 4px solid var(--primary-color);
+    color: var(--light-color);
+    border-radius: var(--border-radius-sm);
 }
 
 .toast-success {
