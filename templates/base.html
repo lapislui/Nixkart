@@ -66,43 +66,36 @@
                                 <span class="hover-3d-inner"><i class="fas fa-home"></i> Home</span>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle hover-3d" href="#" id="shopDropdown" role="button" data-bs-toggle="dropdown">
-                                <span class="hover-3d-inner"><i class="fas fa-shopping-bag"></i> Shop</span>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'product_list' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-box-open"></i> Products</span>
                             </a>
-                            <ul class="dropdown-menu neo-dropdown">
-                                <li><a class="dropdown-item" href="{% url 'product_list' %}"><i class="fas fa-box-open"></i> All Products</a></li>
-                                <li><a class="dropdown-item" href="{% url 'categories' %}"><i class="fas fa-tags"></i> Categories</a></li>
-                                <li><a class="dropdown-item" href="{% url 'featured' %}"><i class="fas fa-star"></i> Featured Products</a></li>
-                                <li><a class="dropdown-item" href="{% url 'new_arrivals' %}"><i class="fas fa-fire"></i> New Arrivals</a></li>
-                                <li><a class="dropdown-item" href="{% url 'on_sale_products' %}"><i class="fas fa-percent"></i> On Sale</a></li>
-                            </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle hover-3d" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'categories' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-tags"></i> Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'featured' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-star"></i> Featured</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'support' %}">
                                 <span class="hover-3d-inner"><i class="fas fa-headset"></i> Support</span>
                             </a>
-                            <ul class="dropdown-menu neo-dropdown">
-                                <li><a class="dropdown-item" href="{% url 'track_order' %}"><i class="fas fa-truck"></i> Track Order</a></li>
-                                <li><a class="dropdown-item" href="{% url 'support' %}"><i class="fas fa-question-circle"></i> Help Center</a></li>
-                                <li><a class="dropdown-item" href="{% url 'submit_ticket' %}"><i class="fas fa-ticket-alt"></i> Submit Ticket</a></li>
-                                <li><a class="dropdown-item" href="{% url 'faq' %}"><i class="fas fa-info-circle"></i> FAQs</a></li>
-                                <li><a class="dropdown-item" href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact Us</a></li>
-                            </ul>
                         </li>
                         {% if user.is_staff %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle hover-3d" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
-                                <span class="hover-3d-inner"><i class="fas fa-user-shield"></i> Admin</span>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'add_product' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-plus-circle"></i> Add Product</span>
                             </a>
-                            <ul class="dropdown-menu neo-dropdown">
-                                <li><a class="dropdown-item" href="{% url 'add_product' %}"><i class="fas fa-plus-circle"></i> Add Product</a></li>
-                                <li><a class="dropdown-item" href="{% url 'add_category' %}"><i class="fas fa-folder-plus"></i> Add Category</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'report_page' %}"><i class="fas fa-chart-bar"></i> Reports</a></li>
-                                <li><a class="dropdown-item" href="{% url 'orders' %}"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
-                                <li><a class="dropdown-item" href="{% url 'fake_products_page' %}"><i class="fas fa-magic"></i> Generate Products</a></li>
-                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'orders' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-clipboard-list"></i> Orders</span>
+                            </a>
                         </li>
                         {% endif %}
                     </ul>
@@ -130,8 +123,8 @@
                         </li>
                         
                         {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-avatar" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleUserDropdown(event)">
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'profile' %}">
                                 <div class="avatar-container">
                                     <div class="avatar-inner">
                                         <i class="fas fa-user"></i>
@@ -139,16 +132,16 @@
                                 </div>
                                 <span class="username">{{ user.username }}</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end neo-dropdown" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-id-card"></i> My Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'user_orders' %}"><i class="fas fa-box"></i> My Orders</a></li>
-                                <li><a class="dropdown-item" href="{% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
-                                <li><a class="dropdown-item" href="{% url 'notifications' %}"><i class="fas fa-bell"></i> Notifications</a></li>
-                                <li><a class="dropdown-item" href="{% url 'coupons' %}"><i class="fas fa-ticket-alt"></i> Coupons</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fas fa-key"></i> Change Password</a></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'user_orders' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-box"></i> Orders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hover-3d" href="{% url 'logout' %}">
+                                <span class="hover-3d-inner"><i class="fas fa-sign-out-alt"></i> Logout</span>
+                            </a>
                         </li>
                         {% else %}
                         <li class="nav-item">
@@ -279,51 +272,16 @@
             once: true
         });
         
-        // Initialize Bootstrap dropdowns
+        // Initialize main functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all dropdowns
+            // Initialize any remaining dropdowns (if there are any)
             var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
-            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-                return new bootstrap.Dropdown(dropdownToggleEl);
-            });
-            
-            // Add manual click handler for user dropdown
-            const userDropdown = document.getElementById('userDropdown');
-            if (userDropdown) {
-                userDropdown.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const dropdown = bootstrap.Dropdown.getInstance(userDropdown) || new bootstrap.Dropdown(userDropdown);
-                    dropdown.toggle();
+            if (dropdownElementList.length > 0) {
+                var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                    return new bootstrap.Dropdown(dropdownToggleEl);
                 });
             }
-            
-            // Close the dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                const dropdownMenus = document.querySelectorAll('.dropdown-menu.show');
-                if (dropdownMenus.length && !e.target.closest('.dropdown')) {
-                    dropdownMenus.forEach(menu => {
-                        menu.classList.remove('show');
-                        const toggle = document.querySelector(`[aria-expanded="true"]`);
-                        if (toggle) toggle.setAttribute('aria-expanded', 'false');
-                    });
-                }
-            });
         });
-        
-        // Function to toggle user dropdown
-        function toggleUserDropdown(event) {
-            event.preventDefault();
-            const userDropdown = document.getElementById('userDropdown');
-            const dropdownMenu = userDropdown.nextElementSibling;
-            
-            if (dropdownMenu.classList.contains('show')) {
-                dropdownMenu.classList.remove('show');
-                userDropdown.setAttribute('aria-expanded', 'false');
-            } else {
-                dropdownMenu.classList.add('show');
-                userDropdown.setAttribute('aria-expanded', 'true');
-            }
-        }
         
         // Initialize particles.js
         document.addEventListener('DOMContentLoaded', function() {
