@@ -220,6 +220,85 @@
     </div>
     {% endif %}
     
+    <!-- Quick Access Cards -->
+    <div class="row mt-4 mb-4">
+        <div class="col-12 mb-3">
+            <h3 class="text-center">Quick Access</h3>
+        </div>
+        
+        <!-- Shop Quick Links -->
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card h-100">
+                <h4 class="dashboard-card-title"><i class="fas fa-shopping-bag"></i> Shop</h4>
+                <div class="quick-links">
+                    <a href="{% url 'product_list' %}" class="quick-link-item">
+                        <i class="fas fa-box-open"></i> All Products
+                    </a>
+                    <a href="{% url 'featured' %}" class="quick-link-item">
+                        <i class="fas fa-star"></i> Featured Products
+                    </a>
+                    <a href="{% url 'new_arrivals' %}" class="quick-link-item">
+                        <i class="fas fa-fire"></i> New Arrivals
+                    </a>
+                    <a href="{% url 'on_sale_products' %}" class="quick-link-item">
+                        <i class="fas fa-percent"></i> On Sale
+                    </a>
+                    <a href="{% url 'categories' %}" class="quick-link-item">
+                        <i class="fas fa-tags"></i> Categories
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Account Quick Links -->
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card h-100">
+                <h4 class="dashboard-card-title"><i class="fas fa-user-circle"></i> My Account</h4>
+                <div class="quick-links">
+                    <a href="{% url 'profile' %}" class="quick-link-item">
+                        <i class="fas fa-id-card"></i> My Profile
+                    </a>
+                    <a href="{% url 'user_orders' %}" class="quick-link-item">
+                        <i class="fas fa-box"></i> My Orders
+                    </a>
+                    <a href="{% url 'wishlist' %}" class="quick-link-item">
+                        <i class="fas fa-heart"></i> Wishlist
+                    </a>
+                    <a href="{% url 'notifications' %}" class="quick-link-item">
+                        <i class="fas fa-bell"></i> Notifications
+                    </a>
+                    <a href="{% url 'coupons' %}" class="quick-link-item">
+                        <i class="fas fa-ticket-alt"></i> My Coupons
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Support Quick Links -->
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card h-100">
+                <h4 class="dashboard-card-title"><i class="fas fa-headset"></i> Support & Help</h4>
+                <div class="quick-links">
+                    <a href="{% url 'track_order' %}" class="quick-link-item">
+                        <i class="fas fa-truck"></i> Track Order
+                    </a>
+                    <a href="{% url 'support' %}" class="quick-link-item">
+                        <i class="fas fa-question-circle"></i> Help Center
+                    </a>
+                    <a href="{% url 'submit_ticket' %}" class="quick-link-item">
+                        <i class="fas fa-ticket-alt"></i> Submit Ticket
+                    </a>
+                    <a href="{% url 'faq' %}" class="quick-link-item">
+                        <i class="fas fa-info-circle"></i> FAQs
+                    </a>
+                    <a href="{% url 'contact' %}" class="quick-link-item">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Get Started Section -->
     <div class="row mt-4 mb-5">
         <div class="col-12">
@@ -365,6 +444,18 @@
                 item.style.opacity = '1';
                 item.style.transform = 'translateY(0)';
             }, 100 + (index * 50));
+        });
+        
+        // Animate quick link items with staggered delay
+        const quickLinkItems = document.querySelectorAll('.quick-link-item');
+        quickLinkItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-15px)';
+            setTimeout(() => {
+                item.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, 300 + (index * 80));
         });
         
         // Animate table rows

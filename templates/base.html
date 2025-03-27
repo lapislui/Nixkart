@@ -66,15 +66,29 @@
                                 <span class="hover-3d-inner"><i class="fas fa-home"></i> Home</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link hover-3d" href="{% url 'product_list' %}">
-                                <span class="hover-3d-inner"><i class="fas fa-box-open"></i> Products</span>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle hover-3d" href="#" id="shopDropdown" role="button" data-bs-toggle="dropdown">
+                                <span class="hover-3d-inner"><i class="fas fa-shopping-bag"></i> Shop</span>
                             </a>
+                            <ul class="dropdown-menu neo-dropdown">
+                                <li><a class="dropdown-item" href="{% url 'product_list' %}"><i class="fas fa-box-open"></i> All Products</a></li>
+                                <li><a class="dropdown-item" href="{% url 'categories' %}"><i class="fas fa-tags"></i> Categories</a></li>
+                                <li><a class="dropdown-item" href="{% url 'featured' %}"><i class="fas fa-star"></i> Featured Products</a></li>
+                                <li><a class="dropdown-item" href="{% url 'new_arrivals' %}"><i class="fas fa-fire"></i> New Arrivals</a></li>
+                                <li><a class="dropdown-item" href="{% url 'on_sale_products' %}"><i class="fas fa-percent"></i> On Sale</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link hover-3d" href="{% url 'categories' %}">
-                                <span class="hover-3d-inner"><i class="fas fa-tags"></i> Categories</span>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle hover-3d" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown">
+                                <span class="hover-3d-inner"><i class="fas fa-headset"></i> Support</span>
                             </a>
+                            <ul class="dropdown-menu neo-dropdown">
+                                <li><a class="dropdown-item" href="{% url 'track_order' %}"><i class="fas fa-truck"></i> Track Order</a></li>
+                                <li><a class="dropdown-item" href="{% url 'support' %}"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                                <li><a class="dropdown-item" href="{% url 'submit_ticket' %}"><i class="fas fa-ticket-alt"></i> Submit Ticket</a></li>
+                                <li><a class="dropdown-item" href="{% url 'faq' %}"><i class="fas fa-info-circle"></i> FAQs</a></li>
+                                <li><a class="dropdown-item" href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact Us</a></li>
+                            </ul>
                         </li>
                         {% if user.is_staff %}
                         <li class="nav-item dropdown">
@@ -86,6 +100,8 @@
                                 <li><a class="dropdown-item" href="{% url 'add_category' %}"><i class="fas fa-folder-plus"></i> Add Category</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'report_page' %}"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                                <li><a class="dropdown-item" href="{% url 'orders' %}"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
+                                <li><a class="dropdown-item" href="{% url 'fake_products_page' %}"><i class="fas fa-magic"></i> Generate Products</a></li>
                             </ul>
                         </li>
                         {% endif %}
@@ -125,8 +141,12 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end neo-dropdown" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-id-card"></i> My Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fas fa-key"></i> Change Password</a></li>
+                                <li><a class="dropdown-item" href="{% url 'user_orders' %}"><i class="fas fa-box"></i> My Orders</a></li>
+                                <li><a class="dropdown-item" href="{% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+                                <li><a class="dropdown-item" href="{% url 'notifications' %}"><i class="fas fa-bell"></i> Notifications</a></li>
+                                <li><a class="dropdown-item" href="{% url 'coupons' %}"><i class="fas fa-ticket-alt"></i> Coupons</a></li>
                                 <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fas fa-key"></i> Change Password</a></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                             </ul>
                         </li>
@@ -177,8 +197,12 @@
                         <ul class="neo-links">
                             <li><a href="{% url 'product_list' %}"><i class="fas fa-angle-right"></i> Products</a></li>
                             <li><a href="{% url 'categories' %}"><i class="fas fa-angle-right"></i> Categories</a></li>
-                            <li><a href="#"><i class="fas fa-angle-right"></i> Privacy Policy</a></li>
-                            <li><a href="#"><i class="fas fa-angle-right"></i> Terms & Conditions</a></li>
+                            <li><a href="{% url 'on_sale_products' %}"><i class="fas fa-angle-right"></i> On Sale</a></li>
+                            <li><a href="{% url 'faq' %}"><i class="fas fa-angle-right"></i> FAQs</a></li>
+                            <li><a href="{% url 'privacy' %}"><i class="fas fa-angle-right"></i> Privacy Policy</a></li>
+                            <li><a href="{% url 'terms' %}"><i class="fas fa-angle-right"></i> Terms & Conditions</a></li>
+                            <li><a href="{% url 'about' %}"><i class="fas fa-angle-right"></i> About Us</a></li>
+                            <li><a href="{% url 'contact' %}"><i class="fas fa-angle-right"></i> Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
