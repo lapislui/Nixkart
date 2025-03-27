@@ -40,10 +40,203 @@ def dashboard(request):
         recent_orders = Order.objects.order_by('-created_at')[:5]
         total_users = User.objects.count()
         
+        # Get real data for charts if available
+        # Sales by month (for the sales trend chart)
+        sales_by_month = {}
+        
+        # All orders from the last 12 months
+        twelve_months_ago = timezone.now() - timezone.timedelta(days=365)
+        orders = Order.objects.filter(created_at__gte=twelve_months_ago)
+        
+        # Group by month and calculate total sales
+        for order in orders:
+            month = order.created_at.strftime('%b')  # Abbreviated month name
+            if month in sales_by_month:
+                sales_by_month[month] += float(order.total)
+            else:
+                sales_by_month[month] = float(order.total)
+        
+        # Order by month using month numbers
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        ordered_sales = [sales_by_month.get(month, 0) for month in months]
+        
+        # Get category distribution data
+        category_data = []
+        category_labels = []
+        for category in categories:
+            category_labels.append(category.name)
+            # Count total sales in this category
+            category_sales = sum(
+                float(order_item.subtotal)
+                for order in orders
+                for order_item in order.items.all()
+                if order_item.product_name in [p.name for p in category.products.all()]
+            )
+            category_data.append(category_sales if category_sales > 0 else 0)
+        
+        # Order status data
+        status_counts = {}
+        for status, _ in Order.STATUS_CHOICES:
+            status_counts[status] = Order.objects.filter(status=status).count()
+        
+        status_labels = [status.capitalize() for status, _ in Order.STATUS_CHOICES]
+        status_data = [status_counts.get(status.lower(), 0) for status, _ in Order.STATUS_CHOICES]
+        
+        # Top products data
+        top_products = []
+        product_sales = {}
+        
+        # Calculate sales for each product
+        for order in orders:
+            for item in order.items.all():
+                if item.product_name in product_sales:
+                    product_sales[item.product_name] += float(item.subtotal)
+                else:
+                    product_sales[item.product_name] = float(item.subtotal)
+        
+        # Sort by sales amount and get top 5
+        sorted_products = sorted(product_sales.items(), key=lambda x: x[1], reverse=True)[:5]
+        top_product_labels = [p[0] for p in sorted_products]
+        top_product_data = [p[1] for p in sorted_products]
+        
+        # New users registration trend
+        user_registration = {}
+        
+        # All users from the last 6 months
+        six_months_ago = timezone.now() - timezone.timedelta(days=180)
+        users = User.objects.filter(date_joined__gte=six_months_ago)
+        
+        # Group by month and count
+        for user in users:
+            month = user.date_joined.strftime('%b')  # Abbreviated month name
+            if month in user_registration:
+                user_registration[month] += 1
+            else:
+                user_registration[month] = 1
+        
+        # Get last 6 months in order
+        current_month = timezone.now().month
+        last_6_months = []
+        for i in range(6):
+            month_number = ((current_month - i - 1) % 12) + 1
+            last_6_months.insert(0, months[month_number - 1])
+        
+        user_reg_data = [user_registration.get(month, 0) for month in last_6_months]
+        
+        # Sales comparison data (current month vs previous month)
+        current_month_start = timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        prev_month_start = (current_month_start - timezone.timedelta(days=1)).replace(day=1)
+        
+        current_month_orders = Order.objects.filter(created_at__gte=current_month_start)
+        prev_month_orders = Order.objects.filter(created_at__gte=prev_month_start, created_at__lt=current_month_start)
+        
+        # Group into weeks
+        current_month_weeks = [0.0, 0.0, 0.0, 0.0]
+        prev_month_weeks = [0.0, 0.0, 0.0, 0.0]
+        
+        for order in current_month_orders:
+            # Determine which week of the month (0-3)
+            week = min(3, (order.created_at.day - 1) // 7)
+            current_month_weeks[week] += float(order.total)
+        
+        for order in prev_month_orders:
+            # Determine which week of the month (0-3)
+            week = min(3, (order.created_at.day - 1) // 7)
+            prev_month_weeks[week] += float(order.total)
+        
+        # Prepare chart data in JSON format for the template
+        chart_data = {
+            'salesTrendData': {
+                'labels': months,
+                'datasets': [{
+                    'label': 'Sales',
+                    'data': ordered_sales,
+                    'borderColor': '#6c63ff',
+                    'backgroundColor': 'rgba(108, 99, 255, 0.2)',
+                    'borderWidth': 3,
+                    'pointRadius': 4,
+                    'fill': True,
+                    'tension': 0.4
+                }]
+            },
+            'categoryData': {
+                'labels': category_labels,
+                'datasets': [{
+                    'data': category_data,
+                    'backgroundColor': [
+                        '#6c63ff', '#ff6b6b', '#36e2a8', '#ffcf5c', '#4dc9ff',
+                        '#b266ff', '#05dfd7', '#fb8c34', '#ff66c4'
+                    ],
+                    'borderColor': '#1a1b3c',
+                    'borderWidth': 2,
+                    'hoverOffset': 15
+                }]
+            },
+            'orderStatusData': {
+                'labels': status_labels,
+                'datasets': [{
+                    'data': status_data,
+                    'backgroundColor': [
+                        '#ffcf5c', '#6c63ff', '#4dc9ff', '#36e2a8', '#ff6b6b'
+                    ],
+                    'borderWidth': 0,
+                    'borderRadius': 4,
+                    'barThickness': 16
+                }]
+            },
+            'topProductsData': {
+                'labels': top_product_labels,
+                'datasets': [{
+                    'axis': 'y',
+                    'label': 'Sales',
+                    'data': top_product_data,
+                    'backgroundColor': [
+                        '#6c63ff', '#36e2a8', '#4dc9ff', '#b266ff', '#ffcf5c'
+                    ],
+                    'borderWidth': 1,
+                    'borderRadius': 4
+                }]
+            },
+            'userRegistrationData': {
+                'labels': last_6_months,
+                'datasets': [{
+                    'label': 'New Users',
+                    'data': user_reg_data,
+                    'backgroundColor': 'rgba(77, 201, 255, 0.2)',
+                    'borderColor': '#4dc9ff',
+                    'borderWidth': 2,
+                    'fill': True,
+                    'tension': 0.4
+                }]
+            },
+            'comparisonData': {
+                'labels': ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                'datasets': [
+                    {
+                        'label': 'Current Month',
+                        'data': current_month_weeks,
+                        'backgroundColor': 'rgba(108, 99, 255, 0.2)',
+                        'borderColor': '#6c63ff',
+                        'borderWidth': 2,
+                        'pointRadius': 4
+                    },
+                    {
+                        'label': 'Previous Month',
+                        'data': prev_month_weeks,
+                        'backgroundColor': 'rgba(255, 107, 107, 0.2)',
+                        'borderColor': '#ff6b6b',
+                        'borderWidth': 2,
+                        'pointRadius': 4
+                    }
+                ]
+            }
+        }
+        
         context.update({
             'total_orders': total_orders,
             'recent_orders': recent_orders,
             'total_users': total_users,
+            'chart_data': chart_data
         })
     
     return render(request, 'store/dashboard.html', context)
