@@ -1,0 +1,709 @@
+{% extends 'base.html' %}
+
+{% block title %}FAQ - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="page-header mb-5">
+        <h1 class="display-4">Frequently Asked Questions</h1>
+        <p class="lead">Find answers to common questions about our products, services, and policies.</p>
+    </div>
+    
+    <!-- FAQ Categories -->
+    <div class="row mb-5">
+        <div class="col-12" data-aos="fade-up">
+            <div class="faq-categories">
+                <div class="faq-category active" data-category="all">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-border-all"></i>
+                    </div>
+                    <span>All</span>
+                </div>
+                
+                <div class="faq-category" data-category="products">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span>Products</span>
+                </div>
+                
+                <div class="faq-category" data-category="orders">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <span>Orders</span>
+                </div>
+                
+                <div class="faq-category" data-category="shipping">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <span>Shipping</span>
+                </div>
+                
+                <div class="faq-category" data-category="returns">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-undo-alt"></i>
+                    </div>
+                    <span>Returns</span>
+                </div>
+                
+                <div class="faq-category" data-category="account">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>Account</span>
+                </div>
+                
+                <div class="faq-category" data-category="tech">
+                    <div class="faq-category-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <span>Technical</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Box -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto" data-aos="fade-up">
+            <div class="faq-search">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control" id="faqSearch" placeholder="Search for questions...">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Accordion -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="accordion faq-accordion" id="faqAccordion">
+                
+                <!-- Products Section -->
+                <h2 class="faq-section-title" data-aos="fade-up">Products Information</h2>
+                
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="products">
+                    <h3 class="accordion-header" id="heading1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            How accurate are the 3D models of products?
+                        </button>
+                    </h3>
+                    <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Our 3D models are created with precision and attention to detail to provide the most accurate representation of our products. We use advanced scanning techniques and professional 3D modeling to ensure that dimensions, colors, and textures match the actual product as closely as possible.</p>
+                            <p>However, please note that there might be slight variations in color between the 3D model and the actual product due to different screen calibrations and lighting conditions. For critical color-matching requirements, we recommend ordering product samples.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="products">
+                    <h3 class="accordion-header" id="heading2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            Can I view products in augmented reality (AR)?
+                        </button>
+                    </h3>
+                    <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Yes, many of our products support augmented reality viewing on compatible devices. Look for the "View in AR" button on product pages. This feature is currently supported on:</p>
+                            <ul>
+                                <li>iOS devices running iOS 12 or later using Safari</li>
+                                <li>Android devices that support ARCore using Chrome browser</li>
+                            </ul>
+                            <p>The AR feature allows you to visualize products in your own space, giving you a better sense of size, scale, and how they might fit in your environment.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="products">
+                    <h3 class="accordion-header" id="heading3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            Are product specifications accurate and up to date?
+                        </button>
+                    </h3>
+                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>We strive to keep all product specifications accurate and current. Our product information is regularly reviewed and updated to reflect the most recent specifications provided by manufacturers.</p>
+                            <p>If you notice any discrepancies or have questions about specific product details, please contact our customer service team for clarification. We're committed to providing the most accurate information possible to help you make informed purchasing decisions.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Orders Section -->
+                <h2 class="faq-section-title" data-aos="fade-up">Orders & Payment</h2>
+                
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="orders">
+                    <h3 class="accordion-header" id="heading4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            How can I check the status of my order?
+                        </button>
+                    </h3>
+                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>There are several ways to check the status of your order:</p>
+                            <ol>
+                                <li><strong>Account Dashboard:</strong> Log in to your account and go to the "Order History" section to view all your orders and their current status.</li>
+                                <li><strong>Order Confirmation Email:</strong> Use the tracking link provided in your order confirmation email.</li>
+                                <li><strong>Order Tracking Page:</strong> Visit our "Track Order" page and enter your order number and email address.</li>
+                                <li><strong>Customer Support:</strong> Contact our customer service team with your order number for assistance.</li>
+                            </ol>
+                            <p>We provide regular updates on your order status, from processing to shipping and delivery.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="orders">
+                    <h3 class="accordion-header" id="heading5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                            What payment methods do you accept?
+                        </button>
+                    </h3>
+                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>We accept a variety of payment methods to accommodate our customers' preferences:</p>
+                            <ul>
+                                <li>Credit/Debit Cards (Visa, Mastercard, American Express, Discover)</li>
+                                <li>PayPal</li>
+                                <li>Apple Pay</li>
+                                <li>Google Pay</li>
+                                <li>Shop Pay</li>
+                                <li>Bank transfers (for select countries)</li>
+                            </ul>
+                            <p>All payment information is securely processed and encrypted to ensure your data remains safe. We do not store your full credit card details on our servers.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 6 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="orders">
+                    <h3 class="accordion-header" id="heading6">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                            Can I modify or cancel my order after it's been placed?
+                        </button>
+                    </h3>
+                    <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Order modifications and cancellations are possible, but time-sensitive:</p>
+                            <ul>
+                                <li>Orders can be modified or canceled within 1 hour of placement.</li>
+                                <li>Once an order enters the processing stage, modifications are limited and cancellations may not be possible.</li>
+                                <li>If your order has been processed but not yet shipped, we may be able to accommodate changes on a case-by-case basis.</li>
+                                <li>Once shipped, orders cannot be canceled, but you can return the item after delivery according to our return policy.</li>
+                            </ul>
+                            <p>To request modifications or cancellation, contact our customer service team immediately with your order number.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shipping Section -->
+                <h2 class="faq-section-title" data-aos="fade-up">Shipping & Delivery</h2>
+                
+                <!-- FAQ Item 7 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="shipping">
+                    <h3 class="accordion-header" id="heading7">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                            How long will it take to receive my order?
+                        </button>
+                    </h3>
+                    <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Delivery times depend on your location and the shipping method selected at checkout:</p>
+                            <ul>
+                                <li><strong>Standard Shipping:</strong> 3-5 business days (domestic)</li>
+                                <li><strong>Expedited Shipping:</strong> 2-3 business days (domestic)</li>
+                                <li><strong>Express Shipping:</strong> 1-2 business days (domestic)</li>
+                                <li><strong>International Shipping:</strong> 7-14 business days (varies by destination)</li>
+                            </ul>
+                            <p>Please note that these are estimated delivery times after order processing, which typically takes 1-2 business days. During peak seasons or promotional periods, processing times may be slightly longer.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 8 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="shipping">
+                    <h3 class="accordion-header" id="heading8">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                            Do you offer free shipping?
+                        </button>
+                    </h3>
+                    <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="heading8" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Yes, we offer free standard shipping on all domestic orders over $100. For orders under $100, a flat shipping rate of $8.99 applies.</p>
+                            <p>International orders and expedited shipping options are available at additional costs, calculated at checkout based on destination and selected shipping method. We occasionally run special promotions that may include free international shipping or discounted expedited shipping—subscribe to our newsletter to stay informed about these offers.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Returns Section -->
+                <h2 class="faq-section-title" data-aos="fade-up">Returns & Refunds</h2>
+                
+                <!-- FAQ Item 9 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="returns">
+                    <h3 class="accordion-header" id="heading9">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                            What is your return policy?
+                        </button>
+                    </h3>
+                    <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="heading9" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>We offer a hassle-free 30-day return policy for most items. To be eligible for a return, your item must be:</p>
+                            <ul>
+                                <li>In the same condition that you received it</li>
+                                <li>Unused and unwashed</li>
+                                <li>In the original packaging with all tags attached</li>
+                                <li>Returned within 30 days of the delivery date</li>
+                            </ul>
+                            <p>Please note that certain products are non-returnable for hygiene reasons, including earphones, underwear, and personalized items. Digital products and gift cards are also non-returnable.</p>
+                            <p>To initiate a return, log into your account, locate your order, and select "Return Items." Follow the instructions to print a return label and choose your preferred refund method.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 10 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="returns">
+                    <h3 class="accordion-header" id="heading10">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                            How long does it take to process a refund?
+                        </button>
+                    </h3>
+                    <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="heading10" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Our refund process typically follows this timeline:</p>
+                            <ol>
+                                <li>Once we receive your return, we'll inspect the item(s) within 1-2 business days.</li>
+                                <li>Upon approval, we'll process your refund to the original payment method within 3 business days.</li>
+                                <li>The time it takes for the refund to appear in your account depends on your payment provider:</li>
+                                <ul>
+                                    <li>Credit/debit cards: 5-10 business days</li>
+                                    <li>PayPal, Apple Pay, Google Pay: 3-5 business days</li>
+                                    <li>Store credit: Immediate</li>
+                                </ul>
+                            </ol>
+                            <p>You'll receive email notifications at each step of the refund process. If you haven't received your refund after the expected timeframe, please contact our customer service team.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Account Section -->
+                <h2 class="faq-section-title" data-aos="fade-up">Account & Privacy</h2>
+                
+                <!-- FAQ Item 11 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="account">
+                    <h3 class="accordion-header" id="heading11">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+                            How do I create an account?
+                        </button>
+                    </h3>
+                    <div id="collapse11" class="accordion-collapse collapse" aria-labelledby="heading11" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Creating an account is simple and provides many benefits like order tracking, faster checkout, and personalized recommendations. To create an account:</p>
+                            <ol>
+                                <li>Click on the "Account" icon in the top right corner of our website</li>
+                                <li>Select "Sign Up" or "Create Account"</li>
+                                <li>Enter your email address and create a password</li>
+                                <li>Fill in your name and other optional details</li>
+                                <li>Click "Create Account" to complete the process</li>
+                            </ol>
+                            <p>You can also create an account during the checkout process. If you prefer not to create an account, we do offer guest checkout options.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 12 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="account">
+                    <h3 class="accordion-header" id="heading12">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false" aria-controls="collapse12">
+                            How is my personal information protected?
+                        </button>
+                    </h3>
+                    <div id="collapse12" class="accordion-collapse collapse" aria-labelledby="heading12" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>We take data privacy and security very seriously. Here's how we protect your information:</p>
+                            <ul>
+                                <li>All data transmission is secured with SSL/TLS encryption</li>
+                                <li>Payment information is processed through PCI-DSS compliant partners</li>
+                                <li>We maintain strict internal access controls to customer data</li>
+                                <li>We never sell your personal information to third parties</li>
+                                <li>Our systems are regularly audited and updated to maintain security</li>
+                            </ul>
+                            <p>You can review our complete Privacy Policy for detailed information about how we collect, use, and protect your data. If you have specific privacy concerns, please contact our privacy team at privacy@example-store.com.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technical Section -->
+                <h2 class="faq-section-title" data-aos="fade-up">Technical Questions</h2>
+                
+                <!-- FAQ Item 13 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="tech">
+                    <h3 class="accordion-header" id="heading13">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                            What browsers and devices are supported for 3D viewing?
+                        </button>
+                    </h3>
+                    <div id="collapse13" class="accordion-collapse collapse" aria-labelledby="heading13" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Our 3D product viewer is designed to work on modern browsers and devices. For the best experience, we recommend:</p>
+                            <p><strong>Desktop Browsers:</strong></p>
+                            <ul>
+                                <li>Chrome (version 75+)</li>
+                                <li>Firefox (version 67+)</li>
+                                <li>Safari (version 12.1+)</li>
+                                <li>Edge (Chromium-based, version 79+)</li>
+                            </ul>
+                            <p><strong>Mobile Browsers:</strong></p>
+                            <ul>
+                                <li>iOS Safari (iOS 12+)</li>
+                                <li>Android Chrome (version 75+)</li>
+                            </ul>
+                            <p>Your device should have WebGL enabled and sufficient graphics capabilities. Most modern smartphones and computers from the last 4-5 years should work well. If you experience performance issues, try reducing the quality setting in the 3D viewer options menu.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 14 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-category="tech">
+                    <h3 class="accordion-header" id="heading14">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                            The 3D product viewer isn't working. What should I do?
+                        </button>
+                    </h3>
+                    <div id="collapse14" class="accordion-collapse collapse" aria-labelledby="heading14" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>If you're experiencing issues with our 3D product viewer, try these troubleshooting steps:</p>
+                            <ol>
+                                <li><strong>Check your browser:</strong> Make sure you're using a supported browser (see above) and it's updated to the latest version.</li>
+                                <li><strong>Enable WebGL:</strong> Ensure WebGL is enabled in your browser settings.</li>
+                                <li><strong>Clear cache:</strong> Try clearing your browser cache and cookies, then reload the page.</li>
+                                <li><strong>Disable extensions:</strong> Some browser extensions might interfere with the 3D viewer. Try disabling them temporarily.</li>
+                                <li><strong>Check internet connection:</strong> A stable internet connection is needed for the 3D models to load properly.</li>
+                                <li><strong>Try a different device:</strong> If possible, try accessing the 3D viewer from another device or computer.</li>
+                            </ol>
+                            <p>If you've tried these steps and still experience issues, please contact our technical support team with details about your device, browser, and the specific product you're trying to view.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Still Have Questions Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center" data-aos="fade-up">
+            <div class="still-questions-card p-5 rounded">
+                <h2 class="mb-4">Still Have Questions?</h2>
+                <p class="lead mb-4">Our customer support team is ready to help you with any questions or concerns not covered above.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'contact' %}" class="btn btn-lg btn-primary animated-btn">
+                        <span class="btn-text">Contact Us</span>
+                        <span class="btn-icon"><i class="fas fa-envelope"></i></span>
+                    </a>
+                    <a href="#" class="btn btn-lg btn-outline-light animated-btn">
+                        <span class="btn-text">Live Chat</span>
+                        <span class="btn-icon"><i class="fas fa-comments"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .faq-categories {
+        display: flex;
+        overflow-x: auto;
+        padding: 0.5rem;
+        margin: -0.5rem;
+        gap: 1rem;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .faq-category {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        min-width: 100px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    
+    .faq-category.active, .faq-category:hover {
+        background-color: var(--bg-dark-primary);
+        transform: translateY(-5px);
+        border-color: var(--primary-color);
+    }
+    
+    .faq-category-icon {
+        font-size: 1.5rem;
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .faq-category.active .faq-category-icon, .faq-category:hover .faq-category-icon {
+        color: var(--primary-color);
+        transform: scale(1.1);
+    }
+    
+    .faq-category span {
+        color: var(--text-color);
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .faq-category.active span, .faq-category:hover span {
+        color: var(--light-color);
+    }
+    
+    .faq-search {
+        padding: 1rem 1.5rem;
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .faq-search .input-group-text {
+        background-color: transparent;
+        border-color: rgba(61, 61, 90, 0.2);
+        color: var(--primary-color);
+    }
+    
+    .faq-search .form-control {
+        background-color: var(--bg-dark-primary);
+        border-color: rgba(61, 61, 90, 0.2);
+        color: var(--light-color);
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+    
+    .faq-search .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+    }
+    
+    .faq-section-title {
+        color: var(--light-color);
+        margin: 2.5rem 0 1.5rem;
+        padding-bottom: 0.75rem;
+        position: relative;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .faq-section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .faq-accordion {
+        margin-bottom: 1rem;
+    }
+    
+    .faq-item {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .faq-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-color: rgba(108, 99, 255, 0.3);
+    }
+    
+    .faq-item .accordion-button {
+        background-color: var(--bg-dark-secondary);
+        color: var(--light-color);
+        font-weight: 500;
+        padding: 1.25rem;
+        border: none;
+        font-size: 1.1rem;
+    }
+    
+    .faq-item .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background-color: var(--bg-dark-primary);
+        box-shadow: none;
+    }
+    
+    .faq-item .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(108, 99, 255, 0.2);
+    }
+    
+    .faq-item .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c63ff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    
+    .faq-item .accordion-body {
+        background-color: var(--bg-dark-primary);
+        color: var(--text-color);
+        padding: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    .faq-item .accordion-body p:last-child,
+    .faq-item .accordion-body ul:last-child,
+    .faq-item .accordion-body ol:last-child {
+        margin-bottom: 0;
+    }
+    
+    .still-questions-card {
+        background: linear-gradient(135deg, rgba(61, 61, 90, 0.7) 0%, rgba(28, 27, 51, 0.7) 100%);
+        border: 1px solid rgba(108, 99, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .still-questions-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, rgba(108, 99, 255, 0.2), transparent 50%);
+        z-index: 0;
+    }
+    
+    .still-questions-card h2, .still-questions-card p, .still-questions-card .d-flex {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .still-questions-card h2 {
+        color: var(--light-color);
+    }
+    
+    .still-questions-card p {
+        color: var(--text-color);
+    }
+    
+    @media (max-width: 768px) {
+        .faq-category {
+            min-width: 80px;
+            padding: 0.75rem;
+        }
+        
+        .faq-category-icon {
+            font-size: 1.25rem;
+        }
+        
+        .faq-category span {
+            font-size: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // FAQ filtering functionality
+        const categories = document.querySelectorAll('.faq-category');
+        const faqItems = document.querySelectorAll('.faq-item');
+        const faqSearch = document.getElementById('faqSearch');
+        
+        // Category filter
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                // Update active category
+                categories.forEach(c => c.classList.remove('active'));
+                category.classList.add('active');
+                
+                const filterValue = category.getAttribute('data-category');
+                
+                // Filter FAQ items
+                faqItems.forEach(item => {
+                    if (filterValue === 'all') {
+                        item.style.display = '';
+                    } else {
+                        if (item.getAttribute('data-category') === filterValue) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+                
+                // Clear search input when changing categories
+                if (faqSearch) {
+                    faqSearch.value = '';
+                }
+            });
+        });
+        
+        // Search functionality
+        if (faqSearch) {
+            faqSearch.addEventListener('keyup', () => {
+                const searchTerm = faqSearch.value.toLowerCase();
+                
+                // Reset category filter
+                categories.forEach(c => c.classList.remove('active'));
+                document.querySelector('[data-category="all"]').classList.add('active');
+                
+                faqItems.forEach(item => {
+                    const questionText = item.querySelector('.accordion-button').textContent.toLowerCase();
+                    const answerText = item.querySelector('.accordion-body').textContent.toLowerCase();
+                    
+                    if (searchTerm === '') {
+                        item.style.display = '';
+                    } else {
+                        if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                            item.style.display = '';
+                            // Highlight the search term (optional)
+                            // This could be enhanced with a more sophisticated highlighting solution
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Optional: Auto-expand FAQ item if linked directly via URL hash
+        if (window.location.hash) {
+            const faqId = window.location.hash.substring(1);
+            const targetFaq = document.getElementById(faqId);
+            if (targetFaq) {
+                const collapseElement = new bootstrap.Collapse(targetFaq);
+                collapseElement.show();
+                targetFaq.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+</script>
+{% endblock %}

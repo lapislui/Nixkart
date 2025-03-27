@@ -1,0 +1,467 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="page-header mb-5">
+        <h1 class="display-4">Contact Us</h1>
+        <p class="lead">Get in touch with our team. We're here to help.</p>
+    </div>
+    
+    <!-- Main Contact Section -->
+    <div class="row mb-5">
+        <div class="col-lg-7 mb-4" data-aos="fade-right">
+            <div class="contact-form-card">
+                <h2 class="section-title">Send Us a Message</h2>
+                <p class="mb-4">Have questions about our products, services, or need assistance? Fill out the form below and our team will get back to you shortly.</p>
+                
+                <form action="{% url 'contact' %}" method="post" class="contact-form">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                                <label for="name">Your Name</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                                <label for="email">Your Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
+                            <label for="subject">Subject</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-floating">
+                            <textarea class="form-control" id="message" name="message" placeholder="Your Message" style="height: 150px" required></textarea>
+                            <label for="message">Your Message</label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg animated-btn">
+                            <span class="btn-text">Send Message</span>
+                            <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-5 mb-4" data-aos="fade-left">
+            <div class="contact-info-card h-100">
+                <h2 class="section-title">Contact Information</h2>
+                <p class="mb-4">We're always eager to hear from you. Here's how you can reach us.</p>
+                
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-info-content">
+                        <h3>Our Location</h3>
+                        <p>123 Innovation Drive<br>Tech District, Suite 789<br>San Francisco, CA 94103</p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-info-content">
+                        <h3>Phone Number</h3>
+                        <p>+1 (555) 123-4567</p>
+                        <p>Mon-Fri, 9:00 AM - 6:00 PM PST</p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info-content">
+                        <h3>Email Us</h3>
+                        <p>support@example-store.com</p>
+                        <p>We aim to respond within 24 hours</p>
+                    </div>
+                </div>
+                
+                <div class="contact-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4" data-aos="fade-up">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Get quick answers to common questions</p>
+        </div>
+        
+        <div class="col-lg-10 mx-auto">
+            <div class="accordion faq-accordion" id="contactFaqAccordion">
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item faq-item" data-aos="fade-up">
+                    <h2 class="accordion-header" id="heading1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            What are your shipping rates and policies?
+                        </button>
+                    </h2>
+                    <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#contactFaqAccordion">
+                        <div class="accordion-body">
+                            <p>We offer free standard shipping on all orders over $100. For orders under $100, a flat shipping rate of $8.99 applies. Expedited shipping options are available at checkout. International shipping rates vary by destination. We typically process and ship orders within 1-2 business days.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <h2 class="accordion-header" id="heading2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            How can I track my order?
+                        </button>
+                    </h2>
+                    <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#contactFaqAccordion">
+                        <div class="accordion-body">
+                            <p>Once your order ships, you'll receive a shipping confirmation email with a tracking number. You can also log into your account and view the status of your order in the "Order History" section. Alternatively, you can use our "Track Order" page by entering your order number and email address.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <h2 class="accordion-header" id="heading3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            What is your return policy?
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#contactFaqAccordion">
+                        <div class="accordion-body">
+                            <p>We offer a 30-day return policy for most items. Products must be in their original condition with all packaging and tags. To initiate a return, please go to your account page and select the order you wish to return. Once we receive and inspect the returned item, we'll process your refund to the original payment method, which can take 5-7 business days to appear on your statement.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <h2 class="accordion-header" id="heading4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            Do you offer international shipping?
+                        </button>
+                    </h2>
+                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#contactFaqAccordion">
+                        <div class="accordion-body">
+                            <p>Yes, we ship to most countries worldwide. International shipping rates and delivery times vary by location. Please note that international orders may be subject to import duties and taxes, which are the responsibility of the recipient. These charges are not included in the purchase price and will need to be paid upon delivery.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item faq-item" data-aos="fade-up" data-aos-delay="400">
+                    <h2 class="accordion-header" id="heading5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                            How can I view products in 3D?
+                        </button>
+                    </h2>
+                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#contactFaqAccordion">
+                        <div class="accordion-body">
+                            <p>Products that support 3D viewing will display a "3D" badge on their product cards. When viewing these products, simply click on the "View in 3D" button on the product detail page. You can rotate, zoom, and explore the product from all angles. For the best experience, we recommend using an updated browser like Chrome, Firefox, or Safari.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map Section -->
+    <div class="mb-5" data-aos="fade-up">
+        <div class="map-container">
+            <div class="map-overlay"></div>
+            <div class="ratio ratio-21x9">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50470.03212518107!2d-122.43400232040506!3d37.77253415521631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2s!4v1638249475209!5m2!1sen!2s" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Newsletter Section -->
+    <div class="newsletter-section p-5 mb-5 rounded" data-aos="fade-up">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="mb-3">Stay in Touch</h2>
+                <p class="mb-0">Subscribe to our newsletter for the latest product updates, promotions, and tech news.</p>
+            </div>
+            <div class="col-md-6">
+                <form action="{% url 'newsletter_signup' %}" method="post" class="newsletter-form">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+        position: relative;
+        color: var(--light-color);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .section-subtitle {
+        color: var(--text-color);
+        margin-bottom: 2rem;
+    }
+    
+    .contact-form-card {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        height: 100%;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .contact-form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--gradient-primary);
+    }
+    
+    .contact-form .form-control {
+        background-color: var(--bg-dark-primary);
+        border-color: rgba(108, 99, 255, 0.2);
+        color: var(--light-color);
+    }
+    
+    .contact-form .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+    }
+    
+    .contact-form .form-floating label {
+        color: var(--text-color);
+    }
+    
+    .contact-form .form-floating > .form-control:focus ~ label,
+    .contact-form .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        color: rgba(108, 99, 255, 0.8);
+    }
+    
+    .contact-info-card {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .contact-info-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(108, 99, 255, 0.2), transparent 70%);
+        border-radius: 50%;
+    }
+    
+    .contact-info-item {
+        display: flex;
+        margin-bottom: 2rem;
+    }
+    
+    .contact-info-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .contact-info-content h3 {
+        font-size: 1.1rem;
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .contact-info-content p {
+        color: var(--text-color);
+        margin-bottom: 0.25rem;
+    }
+    
+    .contact-social {
+        margin-top: 2rem;
+    }
+    
+    .contact-social h3 {
+        font-size: 1.1rem;
+        color: var(--light-color);
+        margin-bottom: 1rem;
+    }
+    
+    .social-icons {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--bg-dark-primary);
+        color: var(--light-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+    }
+    
+    .faq-accordion {
+        margin-top: 1rem;
+    }
+    
+    .faq-item {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+    
+    .faq-item .accordion-button {
+        background-color: var(--bg-dark-secondary);
+        color: var(--light-color);
+        font-weight: 600;
+        padding: 1.25rem;
+        border: none;
+    }
+    
+    .faq-item .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background-color: var(--bg-dark-primary);
+        box-shadow: none;
+    }
+    
+    .faq-item .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(108, 99, 255, 0.2);
+    }
+    
+    .faq-item .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c63ff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    
+    .faq-item .accordion-body {
+        background-color: var(--bg-dark-primary);
+        color: var(--text-color);
+        padding: 1.5rem;
+    }
+    
+    .map-container {
+        position: relative;
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+    }
+    
+    .map-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(26, 27, 54, 0.3), rgba(26, 27, 54, 0));
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .map-container iframe {
+        border: none;
+        filter: grayscale(100%) invert(92%) hue-rotate(180deg);
+    }
+    
+    @media (max-width: 768px) {
+        .contact-form-card, .contact-info-card {
+            padding: 1.5rem;
+        }
+        
+        .contact-info-item {
+            flex-direction: column;
+        }
+        
+        .contact-info-icon {
+            margin-bottom: 1rem;
+            margin-right: 0;
+        }
+    }
+</style>
+{% endblock %}
