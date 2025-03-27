@@ -449,18 +449,20 @@ body:hover .cursor-follower {
     border: 1px solid var(--glass-border);
     border-radius: var(--border-radius-md);
     box-shadow: var(--glass-shadow);
-    padding: 0.5rem;
-    min-width: 200px;
-    animation: dropdown-fade 0.3s ease;
+    padding: 0.25rem;
+    min-width: 180px;
+    max-width: 220px;
+    animation: dropdown-fade 0.2s ease;
     z-index: 1030; /* Higher z-index to ensure visibility */
     display: block; /* Force display if class is applied */
+    font-size: 0.9rem;
 }
 
 /* Specific styling for user dropdown */
 .dropdown-menu-end.neo-dropdown {
     right: 0;
     left: auto;
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
 }
 
 @keyframes dropdown-fade {
@@ -469,24 +471,27 @@ body:hover .cursor-follower {
 }
 
 .dropdown-item {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
     color: var(--dark-color);
     border-radius: var(--border-radius-sm);
     transition: all var(--transition-fast);
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 0.9rem;
+    margin: 0.1rem 0;
 }
 
 .dropdown-item:hover {
     background: rgba(108, 99, 255, 0.1);
     color: var(--primary-color);
-    transform: translateX(5px);
+    transform: translateX(3px);
 }
 
 .dropdown-divider {
     border-color: rgba(0, 0, 0, 0.1);
-    margin: 0.25rem 0;
+    margin: 0.15rem 0;
+    opacity: 0.2;
 }
 
 /* Modern Search Box */
@@ -677,21 +682,21 @@ body:hover .cursor-follower {
     position: relative;
 }
 
-#userDropdown {
-    position: relative;
-}
-
-#userDropdown::after {
+.dropdown-toggle::after {
     content: '\f078';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
-    margin-left: 5px;
-    font-size: 0.7rem;
-    transition: transform 0.3s ease;
+    margin-left: 3px;
+    font-size: 0.6rem;
+    transition: transform 0.2s ease;
 }
 
-#userDropdown[aria-expanded="true"]::after {
+.dropdown-toggle[aria-expanded="true"]::after {
     transform: rotate(180deg);
+}
+
+#userDropdown {
+    position: relative;
 }
 
 /* Product Cards - Dark Theme */
