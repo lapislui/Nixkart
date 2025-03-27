@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Available Coupons - NeoStore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .coupons-header {
+        background: linear-gradient(135deg, var(--bg-dark-secondary), #1e1e2f);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(108, 99, 255, 0.2);
+    }
+    
+    .coupons-header h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .coupons-header p {
+        color: var(--light-color);
+        max-width: 700px;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .coupons-header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .coupons-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, var(--primary-light), var(--primary-color));
+        border-radius: 50%;
+        opacity: 0.05;
+        z-index: 0;
+    }
+    
+    .coupon-card {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        border: 2px dashed rgba(108, 99, 255, 0.3);
+    }
+    
+    .coupon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+    }
+    
+    .coupon-left {
+        width: 30%;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        position: relative;
+    }
+    
+    .coupon-discount {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        line-height: 1;
+    }
+    
+    .coupon-type {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 0.25rem;
+    }
+    
+    .coupon-right {
+        flex: 1;
+        padding: 1.5rem;
+        position: relative;
+    }
+    
+    .coupon-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--light-color);
+    }
+    
+    .coupon-desc {
+        color: var(--medium-color);
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .coupon-expiry {
+        font-size: 0.85rem;
+        color: var(--medium-color);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .coupon-code {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(108, 99, 255, 0.2);
+        border-radius: var(--border-radius-sm);
+        padding: 0.5rem 1rem;
+        font-family: monospace;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--primary-color);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .coupon-code:hover {
+        background-color: rgba(108, 99, 255, 0.1);
+        border-color: var(--primary-color);
+    }
+    
+    .coupon-code::before {
+        content: 'Click to Copy';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .coupon-code:hover::before {
+        transform: translateY(0);
+    }
+    
+    .coupon-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 214, 143, 0.1);
+        color: var(--success-color);
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--border-radius-sm);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .coupon-badge.new {
+        background-color: rgba(108, 99, 255, 0.1);
+        color: var(--primary-color);
+    }
+    
+    .coupon-badge.hot {
+        background-color: rgba(255, 61, 113, 0.1);
+        color: var(--danger-color);
+    }
+    
+    .coupon-badge.limited {
+        background-color: rgba(255, 186, 0, 0.1);
+        color: var(--warning-color);
+    }
+    
+    .coupon-left::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -15px;
+        height: 100%;
+        width: 30px;
+        background-image: radial-gradient(circle at center, transparent 10px, var(--bg-dark-secondary) 10px);
+        background-size: 30px 30px;
+        background-position: top center;
+        background-repeat: repeat-y;
+        z-index: 1;
+    }
+    
+    .empty-coupons {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 3rem 1rem;
+        text-align: center;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .empty-coupons-icon {
+        font-size: 4rem;
+        color: var(--medium-color);
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="coupons-header" data-aos="fade-up">
+        <h2>Available Coupons</h2>
+        <p>Use these exclusive coupon codes to get discounts on your purchases. Just copy the code and apply it during checkout.</p>
+    </div>
+    
+    <!-- Sample coupons data for demonstration purposes -->
+    <div class="row">
+        <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="coupon-card">
+                <div class="coupon-left">
+                    <div class="coupon-discount">25%</div>
+                    <div class="coupon-type">OFF</div>
+                </div>
+                <div class="coupon-right">
+                    <div class="coupon-badge new">New</div>
+                    <h5 class="coupon-title">Welcome Discount</h5>
+                    <p class="coupon-desc">Get 25% off on your first order. Minimum purchase of $50 required.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="coupon-expiry">
+                            <i class="far fa-clock"></i> Expires in 7 days
+                        </div>
+                        <div class="coupon-code">WELCOME25</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="coupon-card">
+                <div class="coupon-left">
+                    <div class="coupon-discount">$15</div>
+                    <div class="coupon-type">OFF</div>
+                </div>
+                <div class="coupon-right">
+                    <div class="coupon-badge hot">Hot</div>
+                    <h5 class="coupon-title">Summer Sale</h5>
+                    <p class="coupon-desc">Get $15 off on any purchase above $75. Valid on all summer collection.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="coupon-expiry">
+                            <i class="far fa-clock"></i> Expires in 14 days
+                        </div>
+                        <div class="coupon-code">SUMMER15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="coupon-card">
+                <div class="coupon-left">
+                    <div class="coupon-discount">30%</div>
+                    <div class="coupon-type">OFF</div>
+                </div>
+                <div class="coupon-right">
+                    <div class="coupon-badge limited">Limited</div>
+                    <h5 class="coupon-title">Flash Sale</h5>
+                    <p class="coupon-desc">Flash sale! 30% off on selected electronic items. Limited time offer.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="coupon-expiry">
+                            <i class="far fa-clock"></i> Expires in 2 days
+                        </div>
+                        <div class="coupon-code">FLASH30</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="coupon-card">
+                <div class="coupon-left">
+                    <div class="coupon-discount">10%</div>
+                    <div class="coupon-type">OFF</div>
+                </div>
+                <div class="coupon-right">
+                    <h5 class="coupon-title">Newsletter Subscription</h5>
+                    <p class="coupon-desc">10% off on your next purchase when you subscribe to our newsletter.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="coupon-expiry">
+                            <i class="far fa-clock"></i> No expiry
+                        </div>
+                        <div class="coupon-code">NEWS10</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Copy coupon code functionality
+        const couponCodes = document.querySelectorAll('.coupon-code');
+        
+        couponCodes.forEach(code => {
+            code.addEventListener('click', function() {
+                const codeText = this.textContent;
+                navigator.clipboard.writeText(codeText)
+                    .then(() => {
+                        // Create toast notification
+                        showToast('Coupon code copied to clipboard!', 'success');
+                        
+                        // Add temporary visual feedback
+                        this.style.backgroundColor = 'var(--primary-color)';
+                        this.style.color = 'white';
+                        
+                        setTimeout(() => {
+                            this.style.backgroundColor = '';
+                            this.style.color = '';
+                        }, 1000);
+                    })
+                    .catch(err => {
+                        console.error('Could not copy text: ', err);
+                        showToast('Failed to copy code. Please try again.', 'error');
+                    });
+            });
+        });
+        
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast show ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : ''}`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <strong class="me-auto">${type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Notification'}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 500);
+            }, 3000);
+        }
+    });
+</script>
+{% endblock %}

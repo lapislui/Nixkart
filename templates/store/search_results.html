@@ -1,0 +1,507 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results - NeoStore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-header {
+        background: linear-gradient(135deg, var(--bg-dark-secondary), #1e1e2f);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .search-header h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .search-header .search-form {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+    }
+    
+    .search-header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .search-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, var(--primary-light), var(--primary-color));
+        border-radius: 50%;
+        opacity: 0.05;
+        z-index: 0;
+    }
+    
+    .search-input {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(108, 99, 255, 0.2);
+        color: var(--light-color);
+        padding: 1rem;
+        padding-left: 3rem;
+        border-radius: 50px;
+        width: 100%;
+    }
+    
+    .search-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+    }
+    
+    .search-icon {
+        position: absolute;
+        left: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--medium-color);
+    }
+    
+    .search-button {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+        border: none;
+        color: white;
+        padding: 0.65rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .search-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+    }
+    
+    .search-filters {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .search-filters h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1.25rem;
+        color: var(--light-color);
+    }
+    
+    .filter-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .filter-section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .filter-title {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--light-color);
+        font-size: 1rem;
+    }
+    
+    .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .filter-option {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--medium-color);
+    }
+    
+    .filter-option:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+    
+    .filter-option.active {
+        background-color: rgba(108, 99, 255, 0.1);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .price-range {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .price-input {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        color: var(--light-color);
+        border-radius: var(--border-radius-sm);
+        padding: 0.5rem;
+        width: 100px;
+    }
+    
+    .apply-filter-btn {
+        background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+        border: none;
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+    
+    .apply-filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+    }
+    
+    .search-result-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .result-count {
+        font-size: 1.1rem;
+        color: var(--light-color);
+    }
+    
+    .search-highlight {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .sort-dropdown {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        color: var(--light-color);
+        border-radius: var(--border-radius-sm);
+        padding: 0.5rem 1rem;
+    }
+    
+    .sort-dropdown:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.35em 0.65em;
+        margin-left: 0.5rem;
+    }
+    
+    .empty-search {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 3rem 1rem;
+        text-align: center;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        margin-top: 2rem;
+    }
+    
+    .empty-search-icon {
+        font-size: 4rem;
+        color: var(--medium-color);
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .search-suggestions {
+        margin-top: 1.5rem;
+        text-align: left;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .search-suggestion {
+        padding: 0.75rem 1rem;
+        background-color: var(--bg-dark-tertiary);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .search-suggestion:hover {
+        background-color: rgba(108, 99, 255, 0.1);
+    }
+    
+    .search-suggestion i {
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="search-header" data-aos="fade-up">
+        <h2>Search Results</h2>
+        <form action="{% url 'search_results' %}" method="get" class="search-form">
+            <div class="position-relative">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="q" class="form-control search-input" placeholder="Search for products, categories..." value="{{ query }}" required>
+                <button type="submit" class="search-button">Search</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="search-filters" data-aos="fade-up">
+                <h3>Filters</h3>
+                
+                <form action="{% url 'search_results' %}" method="get" id="filter-form">
+                    <input type="hidden" name="q" value="{{ query }}">
+                    
+                    <div class="filter-section">
+                        <div class="filter-title">Categories</div>
+                        <div class="filter-options">
+                            {% for category in categories %}
+                            <div class="filter-option {% if selected_category == category.slug %}active{% endif %}" data-value="{{ category.slug }}">
+                                {{ category.name }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="category" id="category-input" value="{{ selected_category }}">
+                    </div>
+                    
+                    <div class="filter-section">
+                        <div class="filter-title">Price Range</div>
+                        <div class="price-range">
+                            <input type="number" name="min_price" class="price-input" placeholder="Min" value="{{ min_price|default:'' }}">
+                            <span>to</span>
+                            <input type="number" name="max_price" class="price-input" placeholder="Max" value="{{ max_price|default:'' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <div class="filter-title">Availability</div>
+                        <div class="filter-options">
+                            <div class="filter-option {% if in_stock == 'true' %}active{% endif %}" data-field="in_stock" data-value="true">
+                                In Stock
+                            </div>
+                            <div class="filter-option {% if featured == 'true' %}active{% endif %}" data-field="featured" data-value="true">
+                                Featured
+                            </div>
+                        </div>
+                        <input type="hidden" name="in_stock" id="in-stock-input" value="{{ in_stock|default:'' }}">
+                        <input type="hidden" name="featured" id="featured-input" value="{{ featured|default:'' }}">
+                    </div>
+                    
+                    <button type="submit" class="btn apply-filter-btn">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <div class="search-result-info" data-aos="fade-up">
+                <div class="result-count">
+                    {% if products %}
+                        Found <span class="search-highlight">{{ products|length }}</span> results for "<span class="search-highlight">{{ query }}</span>"
+                    {% else %}
+                        No results found for "<span class="search-highlight">{{ query }}</span>"
+                    {% endif %}
+                </div>
+                
+                <div class="sort-by">
+                    <select class="sort-dropdown" id="sort-select">
+                        <option value="relevance" {% if sort_by == 'relevance' %}selected{% endif %}>Sort by: Relevance</option>
+                        <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="popularity" {% if sort_by == 'popularity' %}selected{% endif %}>Popularity</option>
+                    </select>
+                    <input type="hidden" name="sort" id="sort-input" form="filter-form" value="{{ sort_by|default:'relevance' }}">
+                </div>
+            </div>
+            
+            {% if products %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for product in products %}
+                    <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1}}00">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                                {% else %}
+                                <img src="{% static 'img/placeholder.jpg' %}" alt="{{ product.name }}" class="product-image">
+                                {% endif %}
+                                
+                                {% if product.is_featured %}
+                                <div class="featured-badge">Featured</div>
+                                {% endif %}
+                                
+                                {% if not product.is_in_stock %}
+                                <div class="out-of-stock-overlay">
+                                    Out of Stock
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-secondary me-2">{{ product.category.name }}</span>
+                                    {% if product.is_in_stock %}
+                                    <span class="badge bg-success">In Stock</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Out of Stock</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <h5 class="card-title mb-2">{{ product.name }}</h5>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="product-price">${{ product.price }}</div>
+                                </div>
+                                
+                                <div class="product-actions">
+                                    <a href="{% url 'product_detail' product.slug %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    {% if product.is_in_stock %}
+                                    <form method="post" action="{% url 'add_to_cart' product.slug %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-search" data-aos="fade-up">
+                    <div class="empty-search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="mb-3">No Results Found</h3>
+                    <p class="text-muted mb-4">We couldn't find any products matching your search. Try different keywords or browse our categories.</p>
+                    
+                    <div class="search-suggestions">
+                        <h5 class="mb-3">Popular Searches:</h5>
+                        <div class="search-suggestion">
+                            <i class="fas fa-search"></i> Electronics
+                        </div>
+                        <div class="search-suggestion">
+                            <i class="fas fa-search"></i> Smartphones
+                        </div>
+                        <div class="search-suggestion">
+                            <i class="fas fa-search"></i> Headphones
+                        </div>
+                        <div class="search-suggestion">
+                            <i class="fas fa-search"></i> Gaming
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'product_list' %}" class="btn btn-primary">Browse All Products</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle filter options
+        const filterOptions = document.querySelectorAll('.filter-option');
+        
+        filterOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const field = this.dataset.field;
+                const value = this.dataset.value;
+                
+                if (field) {
+                    // For in_stock and featured filters
+                    const input = document.getElementById(`${field.replace('_', '-')}-input`);
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        input.value = '';
+                    } else {
+                        this.classList.add('active');
+                        input.value = value;
+                    }
+                } else {
+                    // For category filter
+                    const categoryInput = document.getElementById('category-input');
+                    
+                    // Toggle active state
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        categoryInput.value = '';
+                    } else {
+                        // Remove active class from all category options
+                        document.querySelectorAll('.filter-option').forEach(opt => {
+                            if (!opt.dataset.field) {
+                                opt.classList.remove('active');
+                            }
+                        });
+                        
+                        this.classList.add('active');
+                        categoryInput.value = value;
+                    }
+                }
+            });
+        });
+        
+        // Handle sort dropdown
+        const sortSelect = document.getElementById('sort-select');
+        const sortInput = document.getElementById('sort-input');
+        
+        sortSelect.addEventListener('change', function() {
+            sortInput.value = this.value;
+            document.getElementById('filter-form').submit();
+        });
+        
+        // Handle search suggestions
+        const searchSuggestions = document.querySelectorAll('.search-suggestion');
+        const searchInput = document.querySelector('input[name="q"]');
+        
+        searchSuggestions.forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                searchInput.value = this.textContent.trim().replace('search', '').trim();
+                document.getElementById('filter-form').submit();
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -128,8 +128,8 @@ urlpatterns = [
     path('reset_order_sequence/', views.reset_order_sequence, name='reset_order_sequence'),
     
     # Testing API
-    path('get_fake_products/', views.get_fake_products, name='fake-products'),
-    path('fake-products-page/', views.fake_products_page, name='fake-products-page'),
+    path('get_fake_products/', views.get_fake_products, name='get_fake_products'),
+    path('fake-products-page/', views.fake_products_page, name='fake_products_page'),
 ]
 
 # Add media URLs in development

@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products on Sale - NeoStore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .sale-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(45deg, #ff3d71, #ff7b50);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(255, 61, 113, 0.4);
+        z-index: 2;
+        transform: rotate(5deg);
+        animation: pulseSale 2s infinite;
+    }
+    
+    @keyframes pulseSale {
+        0% { transform: rotate(5deg) scale(1); }
+        50% { transform: rotate(5deg) scale(1.05); }
+        100% { transform: rotate(5deg) scale(1); }
+    }
+    
+    .sale-price {
+        color: #ff3d71;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .original-price {
+        text-decoration: line-through;
+        color: var(--medium-color);
+        font-size: 0.9rem;
+    }
+    
+    .discount-percent {
+        background-color: rgba(255, 61, 113, 0.1);
+        color: #ff3d71;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    
+    .sale-banner {
+        background: linear-gradient(135deg, var(--bg-dark-secondary), #1e1e2f);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 61, 113, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sale-banner h2 {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .sale-banner p {
+        color: var(--light-color);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .sale-banner::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, #ff3d71, #ff7b50);
+        border-radius: 50%;
+        opacity: 0.2;
+        z-index: 0;
+    }
+    
+    .sale-banner::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, #ff7b50, #ff3d71);
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .sale-cta {
+        background: linear-gradient(45deg, #ff3d71, #ff7b50);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 4px 15px rgba(255, 61, 113, 0.4);
+    }
+    
+    .sale-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(255, 61, 113, 0.5);
+    }
+    
+    .sale-countdown {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .countdown-item {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .countdown-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        display: block;
+    }
+    
+    .countdown-label {
+        font-size: 0.8rem;
+        color: var(--light-color);
+        margin-top: 0.25rem;
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="sale-banner" data-aos="fade-up">
+        <h2>Limited Time Offers!</h2>
+        <p>Grab these incredible deals on our hottest products before they're gone. Up to 50% off on selected items.</p>
+        
+        <div class="sale-countdown">
+            <div class="countdown-item">
+                <span id="days" class="countdown-number">2</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span id="hours" class="countdown-number">11</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span id="minutes" class="countdown-number">45</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+                <span id="seconds" class="countdown-number">20</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+        
+        <a href="#products" class="btn sale-cta">Shop Now</a>
+    </div>
+
+    <h2 class="text-center mb-5" data-aos="fade-up">Products on Sale</h2>
+    
+    <div id="products" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for product in products %}
+        <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:3}}00">
+            <div class="product-card">
+                <div class="product-img-wrapper">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                    <img src="{% static 'img/placeholder.jpg' %}" alt="{{ product.name }}" class="product-image">
+                    {% endif %}
+                    
+                    <div class="sale-badge">
+                        SALE -25%
+                    </div>
+                    
+                    {% if not product.is_in_stock %}
+                    <div class="out-of-stock-overlay">
+                        Out of Stock
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-body p-3">
+                    <h5 class="card-title mb-2">{{ product.name }}</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="sale-price">
+                            ${{ product.price }}
+                            <span class="original-price">${{ product.price|floatformat:2|add:"8.00" }}</span>
+                            <span class="discount-percent">25% OFF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="{% url 'product_detail' product.slug %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                        {% if product.is_in_stock %}
+                        <form method="post" action="{% url 'add_to_cart' product.slug %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3>No products on sale at the moment.</h3>
+            <p class="text-muted">Please check back later for new deals.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Countdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set the date we're counting down to (48 hours from now)
+        const countDownDate = new Date();
+        countDownDate.setHours(countDownDate.getHours() + 48);
+        
+        // Update the countdown every 1 second
+        const countdownInterval = setInterval(function() {
+            // Get current date and time
+            const now = new Date().getTime();
+            
+            // Find the distance between now and the countdown date
+            const distance = countDownDate - now;
+            
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Display the result
+            document.getElementById("days").textContent = days;
+            document.getElementById("hours").textContent = hours;
+            document.getElementById("minutes").textContent = minutes;
+            document.getElementById("seconds").textContent = seconds;
+            
+            // If the countdown is finished, show expired message
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("days").textContent = "0";
+                document.getElementById("hours").textContent = "0";
+                document.getElementById("minutes").textContent = "0";
+                document.getElementById("seconds").textContent = "0";
+            }
+        }, 1000);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,398 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notifications - NeoStore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .notifications-header {
+        background: linear-gradient(135deg, var(--bg-dark-secondary), #1e1e2f);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .notifications-header h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .notifications-header p {
+        color: var(--light-color);
+        max-width: 700px;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .notifications-header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, #6363fa, #9897fe);
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .notification-card {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--box-shadow);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #6363fa;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .notification-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .notification-card.unread {
+        border-left-color: var(--primary-color);
+        background-color: rgba(108, 99, 255, 0.05);
+    }
+    
+    .notification-card.unread::before {
+        content: '';
+        position: absolute;
+        top: 1.5rem;
+        left: -2px;
+        width: 8px;
+        height: 8px;
+        background-color: var(--primary-color);
+        border-radius: 50%;
+    }
+    
+    .notification-type-order {
+        border-left-color: var(--info-color);
+    }
+    
+    .notification-type-order.unread::before {
+        background-color: var(--info-color);
+    }
+    
+    .notification-type-system {
+        border-left-color: var(--warning-color);
+    }
+    
+    .notification-type-system.unread::before {
+        background-color: var(--warning-color);
+    }
+    
+    .notification-type-promotion {
+        border-left-color: var(--success-color);
+    }
+    
+    .notification-type-promotion.unread::before {
+        background-color: var(--success-color);
+    }
+    
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+    }
+    
+    .notification-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--light-color);
+    }
+    
+    .notification-time {
+        color: var(--medium-color);
+        font-size: 0.8rem;
+    }
+    
+    .notification-content {
+        color: var(--medium-color);
+        margin-bottom: 1rem;
+    }
+    
+    .notification-actions {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .notification-icon-order {
+        background-color: rgba(0, 149, 255, 0.1);
+        color: var(--info-color);
+    }
+    
+    .notification-icon-system {
+        background-color: rgba(255, 186, 0, 0.1);
+        color: var(--warning-color);
+    }
+    
+    .notification-icon-promotion {
+        background-color: rgba(0, 214, 143, 0.1);
+        color: var(--success-color);
+    }
+    
+    .notification-body {
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .empty-notifications {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 3rem 1rem;
+        text-align: center;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .empty-notifications-icon {
+        font-size: 4rem;
+        color: var(--medium-color);
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .notification-mark-all {
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: auto;
+        transition: all 0.2s ease;
+    }
+    
+    .notification-mark-all:hover {
+        color: var(--primary-light);
+        text-decoration: underline;
+    }
+    
+    .notification-filters {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .notification-filter {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        border-radius: 50px;
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .notification-filter:hover {
+        border-color: var(--primary-color);
+    }
+    
+    .notification-filter.active {
+        background-color: rgba(108, 99, 255, 0.1);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .notification-card {
+        animation: fadeIn 0.5s ease forwards;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="notifications-header" data-aos="fade-up">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Notifications</h2>
+            <a href="#" class="notification-mark-all">
+                <i class="fas fa-check-double"></i> Mark all as read
+            </a>
+        </div>
+        <p>Stay updated with your order statuses, promotions, and important announcements.</p>
+    </div>
+    
+    <div class="notification-filters" data-aos="fade-up">
+        <div class="notification-filter active">All</div>
+        <div class="notification-filter">Unread</div>
+        <div class="notification-filter">Orders</div>
+        <div class="notification-filter">Promotions</div>
+        <div class="notification-filter">System</div>
+    </div>
+    
+    <div class="mb-4">
+        {% if notifications %}
+            {% for notification in notifications %}
+            <div class="notification-card notification-type-order unread" data-aos="fade-up" data-aos-delay="{{forloop.counter|add:1}}00">
+                <div class="notification-body">
+                    <div class="notification-icon notification-icon-order">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="notification-header">
+                            <div>
+                                <div class="notification-title">Your order has been shipped!</div>
+                                <div class="notification-time">2 hours ago</div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-check-circle me-2"></i> Mark as read</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-times-circle me-2"></i> Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notification-content">
+                            Your order #10234 has been shipped and is on its way. Expected delivery in 3-5 business days.
+                        </div>
+                        <div class="notification-actions">
+                            <a href="{% url 'track_order' %}?order_id=10234" class="btn btn-sm btn-primary">Track Order</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-card notification-type-promotion" data-aos="fade-up" data-aos-delay="200">
+                <div class="notification-body">
+                    <div class="notification-icon notification-icon-promotion">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="notification-header">
+                            <div>
+                                <div class="notification-title">Flash Sale: 30% OFF!</div>
+                                <div class="notification-time">1 day ago</div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-check-circle me-2"></i> Mark as read</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-times-circle me-2"></i> Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notification-content">
+                            Get 30% off on all electronic items for the next 48 hours! Use code FLASH30 at checkout.
+                        </div>
+                        <div class="notification-actions">
+                            <a href="{% url 'on_sale_products' %}" class="btn btn-sm btn-primary">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-card notification-type-system" data-aos="fade-up" data-aos-delay="300">
+                <div class="notification-body">
+                    <div class="notification-icon notification-icon-system">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="notification-header">
+                            <div>
+                                <div class="notification-title">Password Changed Successfully</div>
+                                <div class="notification-time">3 days ago</div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-check-circle me-2"></i> Mark as read</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-times-circle me-2"></i> Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notification-content">
+                            Your account password was successfully changed. If you didn't make this change, please contact us immediately.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-notifications" data-aos="fade-up">
+                <div class="empty-notifications-icon">
+                    <i class="fas fa-bell-slash"></i>
+                </div>
+                <h3 class="mb-3">No Notifications</h3>
+                <p class="text-muted mb-4">You don't have any notifications at the moment. We'll notify you when there's something important.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter notifications
+        const filters = document.querySelectorAll('.notification-filter');
+        
+        filters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                // Remove active class from all filters
+                filters.forEach(f => f.classList.remove('active'));
+                // Add active class to clicked filter
+                this.classList.add('active');
+                
+                // Animation for filtering (placeholder)
+                const notifications = document.querySelectorAll('.notification-card');
+                notifications.forEach(notification => {
+                    notification.style.animation = 'none';
+                    notification.offsetHeight; // Trigger reflow
+                    notification.style.animation = 'fadeIn 0.5s ease forwards';
+                });
+            });
+        });
+        
+        // Mark all as read functionality
+        const markAllBtn = document.querySelector('.notification-mark-all');
+        if (markAllBtn) {
+            markAllBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const unreadNotifications = document.querySelectorAll('.notification-card.unread');
+                unreadNotifications.forEach(notification => {
+                    notification.classList.remove('unread');
+                    notification.style.animation = 'none';
+                    notification.offsetHeight; // Trigger reflow
+                    notification.style.animation = 'fadeIn 0.5s ease forwards';
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}
