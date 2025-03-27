@@ -1,0 +1,462 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmation - ShopSmart{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        padding: var(--spacing-xl) 0;
+        text-align: center;
+    }
+    
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto var(--spacing-lg);
+        background-color: #e6f7ed;
+        color: var(--success-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        position: relative;
+    }
+    
+    .success-icon::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        border: 2px dashed var(--success-color);
+        animation: rotate 20s linear infinite;
+    }
+    
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .success-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: var(--spacing-md);
+        color: var(--success-color);
+    }
+    
+    .success-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: var(--spacing-lg);
+        color: var(--text-light);
+    }
+    
+    .order-number {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    
+    .order-summary {
+        background-color: var(--white);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--card-shadow);
+        max-width: 800px;
+        margin: 0 auto var(--spacing-xl);
+        padding: var(--spacing-lg);
+    }
+    
+    .summary-heading {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid #eee;
+        text-align: left;
+    }
+    
+    .order-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+        text-align: left;
+    }
+    
+    .detail-section h4 {
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-color);
+    }
+    
+    .detail-section p {
+        color: var(--text-light);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .order-items {
+        margin-top: var(--spacing-lg);
+        border-top: 1px solid #eee;
+        padding-top: var(--spacing-lg);
+    }
+    
+    .order-items-heading {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-md);
+        text-align: left;
+    }
+    
+    .order-item {
+        display: flex;
+        padding: var(--spacing-md) 0;
+        border-bottom: 1px solid #f5f5f5;
+        text-align: left;
+    }
+    
+    .order-item:last-child {
+        border-bottom: none;
+    }
+    
+    .order-item-img {
+        width: 80px;
+        height: 80px;
+        border-radius: var(--border-radius-sm);
+        object-fit: cover;
+        margin-right: var(--spacing-md);
+    }
+    
+    .order-item-info {
+        flex: 1;
+    }
+    
+    .order-item-name {
+        font-weight: 500;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .order-item-details {
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .order-totals {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-top: var(--spacing-lg);
+        text-align: right;
+    }
+    
+    .totals-row {
+        display: flex;
+        justify-content: space-between;
+        width: 300px;
+        max-width: 100%;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .totals-label {
+        color: var(--text-light);
+    }
+    
+    .order-total {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-top: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
+        border-top: 1px solid #eee;
+        width: 300px;
+        max-width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .print-button {
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        background-color: var(--white);
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius-sm);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        cursor: pointer;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .print-button:hover {
+        background-color: #f5f5f5;
+        border-color: #ccc;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: var(--spacing-md);
+        justify-content: center;
+        margin-top: var(--spacing-xl);
+    }
+    
+    .action-btn {
+        padding: var(--spacing-md) var(--spacing-xl);
+        border-radius: var(--border-radius-md);
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    .primary-btn {
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+    }
+    
+    .primary-btn:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+    
+    .secondary-btn {
+        background-color: var(--white);
+        color: var(--text-color);
+        border: 1px solid #ddd;
+    }
+    
+    .secondary-btn:hover {
+        background-color: #f5f5f5;
+        transform: translateY(-2px);
+    }
+    
+    .email-sent {
+        display: inline-block;
+        margin-top: var(--spacing-lg);
+        padding: var(--spacing-md) var(--spacing-lg);
+        background-color: #f0f9ff;
+        border-radius: var(--border-radius-md);
+        color: var(--primary-color);
+    }
+    
+    .email-sent i {
+        margin-right: var(--spacing-sm);
+        color: var(--primary-color);
+    }
+    
+    .confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1000;
+        overflow: hidden;
+    }
+    
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: var(--primary-color);
+        opacity: 0.8;
+        border-radius: 0;
+        animation: confetti-fall 5s ease-in-out forwards;
+    }
+    
+    @keyframes confetti-fall {
+        0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .action-buttons {
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        
+        .order-totals {
+            align-items: flex-start;
+            text-align: left;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confetti-container" id="confetti-container"></div>
+
+<div class="success-container">
+    <div class="success-icon slide-up">
+        <i class="fas fa-check"></i>
+    </div>
+    
+    <h1 class="success-title slide-up">Thank You For Your Order!</h1>
+    <p class="success-subtitle slide-up">Your order has been received and is being processed.</p>
+    <p class="slide-up">Order #: <span class="order-number">{{ order.order_number }}</span></p>
+    
+    <div class="email-sent slide-up">
+        <i class="fas fa-envelope"></i> We've sent a confirmation email to {{ order.email }}
+    </div>
+    
+    <div class="order-summary slide-up">
+        <h2 class="summary-heading">Order Summary</h2>
+        
+        <div class="order-details">
+            <div class="detail-section">
+                <h4>Order Information</h4>
+                <p>Order Date: {{ order.created_at|date:"F d, Y" }}</p>
+                <p>Order Number: {{ order.order_number }}</p>
+                <p>Payment Method: {{ order.payment_method }}</p>
+                <p>Order Status: <span class="status-badge {{ order.status|lower }}">{{ order.status }}</span></p>
+            </div>
+            
+            <div class="detail-section">
+                <h4>Shipping Information</h4>
+                <p>{{ order.shipping_name }}</p>
+                <p>{{ order.shipping_address }}, {{ order.shipping_address2|default:"" }}</p>
+                <p>{{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_zip }}</p>
+                <p>{{ order.shipping_country }}</p>
+            </div>
+            
+            <div class="detail-section">
+                <h4>Shipping Method</h4>
+                <p>{{ order.shipping_method_display }}</p>
+                <p>Estimated Delivery: {{ order.estimated_delivery|date:"F d, Y" }}</p>
+            </div>
+        </div>
+        
+        <div class="order-items">
+            <h3 class="order-items-heading">Items Ordered</h3>
+            
+            {% for item in order.items.all %}
+                <div class="order-item">
+                    <div class="order-item-img">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="order-item-img">
+                        {% else %}
+                            <div class="order-item-img placeholder-img">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">{{ item.product.name }}</div>
+                        <div class="order-item-details">
+                            <div>Qty: {{ item.quantity }}</div>
+                            <div>${{ item.unit_price }} each</div>
+                        </div>
+                    </div>
+                    <div class="order-item-total">${{ item.total_price }}</div>
+                </div>
+            {% endfor %}
+            
+            <div class="order-totals">
+                <div class="totals-row">
+                    <div class="totals-label">Subtotal:</div>
+                    <div class="totals-value">${{ order.subtotal }}</div>
+                </div>
+                <div class="totals-row">
+                    <div class="totals-label">Shipping:</div>
+                    <div class="totals-value">${{ order.shipping_cost }}</div>
+                </div>
+                {% if order.discount_amount %}
+                <div class="totals-row">
+                    <div class="totals-label">Discount:</div>
+                    <div class="totals-value">-${{ order.discount_amount }}</div>
+                </div>
+                {% endif %}
+                <div class="totals-row">
+                    <div class="totals-label">Tax:</div>
+                    <div class="totals-value">${{ order.tax_amount }}</div>
+                </div>
+                <div class="order-total">
+                    <div>Total:</div>
+                    <div>${{ order.total_amount }}</div>
+                </div>
+                
+                <button class="print-button" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Order
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="action-buttons slide-up">
+        <a href="{% url 'product_list' %}" class="action-btn primary-btn">
+            <i class="fas fa-shopping-bag"></i> Continue Shopping
+        </a>
+        <a href="{% url 'user_orders' %}" class="action-btn secondary-btn">
+            <i class="fas fa-history"></i> View Order History
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create confetti effect
+        createConfetti();
+        
+        // Animate elements appearing
+        const elements = document.querySelectorAll('.slide-up');
+        elements.forEach((element, index) => {
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+    });
+    
+    function createConfetti() {
+        const confettiContainer = document.getElementById('confetti-container');
+        const colors = [
+            'var(--primary-color)',
+            'var(--secondary-color)',
+            'var(--accent-color)',
+            'var(--success-color)',
+            '#FFD700',
+            '#FF6B6B'
+        ];
+        
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            // Random position, color, and shape
+            const left = Math.random() * 100;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const shape = Math.random() > 0.5 ? '50%' : '0';
+            const size = 5 + Math.random() * 10;
+            const delay = Math.random() * 2;
+            const duration = 3 + Math.random() * 4;
+            
+            confetti.style.left = `${left}%`;
+            confetti.style.backgroundColor = color;
+            confetti.style.borderRadius = shape;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            confetti.style.animationDelay = `${delay}s`;
+            confetti.style.animationDuration = `${duration}s`;
+            
+            confettiContainer.appendChild(confetti);
+        }
+        
+        // Clean up confetti after animation
+        setTimeout(() => {
+            confettiContainer.style.display = 'none';
+        }, 7000);
+    }
+</script>
+{% endblock %}

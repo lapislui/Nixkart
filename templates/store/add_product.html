@@ -1,0 +1,937 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Product - ShopSmart{% endblock %}
+
+{% block extra_css %}
+<style>
+    .add-product-container {
+        padding: var(--spacing-lg) 0;
+    }
+    
+    .add-product-header {
+        margin-bottom: var(--spacing-xl);
+        text-align: center;
+    }
+    
+    .add-product-title {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .add-product-subtitle {
+        color: var(--text-light);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .add-product-form {
+        background-color: var(--white);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--card-shadow);
+        padding: var(--spacing-xl);
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .form-section {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .form-section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid #eee;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .form-group {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        font-weight: 500;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: var(--spacing-md);
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius-sm);
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        outline: none;
+    }
+    
+    .form-control.is-invalid {
+        border-color: var(--error-color);
+    }
+    
+    .form-text {
+        margin-top: var(--spacing-xs);
+        font-size: 0.85rem;
+        color: var(--text-light);
+    }
+    
+    .form-error {
+        color: var(--error-color);
+        font-size: 0.85rem;
+        margin-top: var(--spacing-xs);
+    }
+    
+    .input-group {
+        display: flex;
+    }
+    
+    .input-group .form-control {
+        border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+    }
+    
+    .input-group-text {
+        padding: var(--spacing-md);
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-left: none;
+        border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+        color: var(--text-light);
+    }
+    
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+    
+    .image-preview-container {
+        margin-top: var(--spacing-md);
+        position: relative;
+    }
+    
+    .image-preview {
+        width: 200px;
+        height: 200px;
+        border: 1px dashed #ddd;
+        border-radius: var(--border-radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .image-preview-placeholder {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    
+    .image-preview-placeholder i {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-sm);
+        display: block;
+    }
+    
+    .upload-progress {
+        margin-top: var(--spacing-md);
+        height: 4px;
+        background-color: #f0f0f0;
+        border-radius: 2px;
+        overflow: hidden;
+        display: none;
+    }
+    
+    .upload-progress-bar {
+        height: 100%;
+        background-color: var(--primary-color);
+        width: 0;
+        transition: width 0.3s ease;
+    }
+    
+    .feature-list {
+        margin-top: var(--spacing-md);
+    }
+    
+    .feature-item {
+        display: flex;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .feature-input {
+        flex: 1;
+    }
+    
+    .remove-feature-btn {
+        margin-left: var(--spacing-sm);
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius-sm);
+        width: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .remove-feature-btn:hover {
+        background-color: #ffebee;
+        color: var(--error-color);
+    }
+    
+    .add-feature-btn {
+        margin-top: var(--spacing-sm);
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .add-feature-btn i {
+        margin-right: var(--spacing-xs);
+    }
+    
+    .add-feature-btn:hover {
+        color: var(--secondary-color);
+    }
+    
+    .spec-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 40px;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .spec-row .form-control {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .form-check {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .form-check-input {
+        margin-right: var(--spacing-sm);
+    }
+    
+    .variant-section {
+        background-color: #f9f9f9;
+        border-radius: var(--border-radius-sm);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .variant-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+    }
+    
+    .color-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .color-preview {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        margin-right: var(--spacing-sm);
+        border: 1px solid #ddd;
+    }
+    
+    .model-upload-container {
+        margin-top: var(--spacing-md);
+    }
+    
+    .model-preview {
+        width: 100%;
+        height: 300px;
+        background-color: #f9f9f9;
+        border-radius: var(--border-radius-sm);
+        border: 1px dashed #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: var(--spacing-md);
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-xl);
+    }
+    
+    .btn-cancel {
+        padding: var(--spacing-md) var(--spacing-xl);
+        background-color: var(--white);
+        color: var(--text-color);
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .btn-cancel:hover {
+        background-color: #f5f5f5;
+        border-color: #ccc;
+    }
+    
+    .btn-save {
+        padding: var(--spacing-md) var(--spacing-xl);
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+    
+    .btn-save-draft {
+        padding: var(--spacing-md) var(--spacing-xl);
+        background-color: var(--white);
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .btn-save-draft:hover {
+        background-color: #f0f4ff;
+    }
+    
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .spec-row {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .spec-row .remove-feature-btn {
+            grid-column: 1 / 3;
+            width: 100%;
+            margin-top: var(--spacing-xs);
+            margin-left: 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="add-product-container">
+    <div class="add-product-header slide-up">
+        <h1 class="add-product-title page-title">Add New Product</h1>
+        <p class="add-product-subtitle">Fill in the details below to add a new product to your store.</p>
+    </div>
+    
+    <div class="add-product-form slide-up">
+        <form id="product-form" method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>There were errors in your submission:</strong>
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ field }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <div class="form-section">
+                <h3 class="section-title">Basic Information</h3>
+                
+                <div class="form-group">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ form.name.value|default:'' }}" required>
+                    <small class="form-text">Choose a descriptive and unique name for your product.</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category" class="form-label">Category</label>
+                        <select id="category" name="category" class="form-control" required>
+                            <option value="">Select a category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if form.category.value == category.id %}selected{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sku" class="form-label">SKU</label>
+                        <input type="text" id="sku" name="sku" class="form-control" value="{{ form.sku.value|default:'' }}">
+                        <small class="form-text">Stock Keeping Unit, unique identifier for your product.</small>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description" class="form-label">Product Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="5" required>{{ form.description.value|default:'' }}</textarea>
+                    <small class="form-text">Provide a detailed description of your product including its features and benefits.</small>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Pricing and Inventory</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price" class="form-label">Price</label>
+                        <div class="input-group">
+                            <input type="number" id="price" name="price" class="form-control" step="0.01" min="0" value="{{ form.price.value|default:'' }}" required>
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <small class="form-text">Set the regular price of your product.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cost" class="form-label">Cost Price (Optional)</label>
+                        <div class="input-group">
+                            <input type="number" id="cost" name="cost" class="form-control" step="0.01" min="0" value="{{ form.cost.value|default:'' }}">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <small class="form-text">Your cost for this product. For internal use only, not shown to customers.</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="discount_price" class="form-label">Discounted Price (Optional)</label>
+                        <div class="input-group">
+                            <input type="number" id="discount_price" name="discount_price" class="form-control" step="0.01" min="0" value="{{ form.discount_price.value|default:'' }}">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <small class="form-text">If on sale, enter the discounted price here.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stock" class="form-label">Stock Quantity</label>
+                        <input type="number" id="stock" name="stock" class="form-control" min="0" value="{{ form.stock.value|default:'' }}" required>
+                        <small class="form-text">Number of units available for sale.</small>
+                    </div>
+                </div>
+                
+                <div class="form-check">
+                    <input type="checkbox" id="track_inventory" name="track_inventory" class="form-check-input" {% if form.track_inventory.value %}checked{% endif %}>
+                    <label for="track_inventory" class="form-check-label">Track inventory for this product</label>
+                </div>
+                
+                <div class="form-check">
+                    <input type="checkbox" id="is_available" name="is_available" class="form-check-input" {% if form.is_available.value %}checked{% endif %} checked>
+                    <label for="is_available" class="form-check-label">Product is available for purchase</label>
+                </div>
+                
+                <div class="form-check">
+                    <input type="checkbox" id="featured" name="featured" class="form-check-input" {% if form.featured.value %}checked{% endif %}>
+                    <label for="featured" class="form-check-label">Feature this product on the homepage</label>
+                </div>
+                
+                <div class="form-check">
+                    <input type="checkbox" id="is_new" name="is_new" class="form-check-input" {% if form.is_new.value %}checked{% endif %} checked>
+                    <label for="is_new" class="form-check-label">Mark as new product</label>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Images and Media</h3>
+                
+                <div class="form-group">
+                    <label for="image" class="form-label">Main Product Image</label>
+                    <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    <small class="form-text">The primary image that will be displayed for this product.</small>
+                    
+                    <div class="image-preview-container">
+                        <div class="image-preview" id="image-preview">
+                            <div class="image-preview-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p>Image preview will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additional_images" class="form-label">Additional Images (Optional)</label>
+                    <input type="file" id="additional_images" name="additional_images" class="form-control" accept="image/*" multiple>
+                    <small class="form-text">Upload additional images to show different angles or features of your product.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="model_3d" class="form-label">3D Model (Optional)</label>
+                    <input type="file" id="model_3d" name="model_3d" class="form-control" accept=".glb,.gltf,.obj,.stl">
+                    <small class="form-text">Upload a 3D model for interactive product visualization. Supported formats: GLB, GLTF, OBJ, STL.</small>
+                    
+                    <div class="model-upload-container" id="model-upload-container">
+                        <div class="model-preview" id="model-preview">
+                            <div class="image-preview-placeholder">
+                                <i class="fas fa-cube"></i>
+                                <p>3D model preview will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="upload-progress" id="upload-progress">
+                    <div class="upload-progress-bar" id="upload-progress-bar"></div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Product Details</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Product Features</label>
+                    <small class="form-text">List the key features of your product.</small>
+                    
+                    <div class="feature-list" id="feature-list">
+                        <div class="feature-item">
+                            <input type="text" name="features[]" class="form-control feature-input" placeholder="Enter a feature">
+                            <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-feature-btn" id="add-feature-btn">
+                        <i class="fas fa-plus"></i> Add Feature
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Specifications</label>
+                    <small class="form-text">Add technical specifications for your product.</small>
+                    
+                    <div id="spec-list">
+                        <div class="spec-row">
+                            <input type="text" name="spec_names[]" class="form-control" placeholder="Name (e.g., Weight)">
+                            <input type="text" name="spec_values[]" class="form-control" placeholder="Value (e.g., 2.5 kg)">
+                            <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-feature-btn" id="add-spec-btn">
+                        <i class="fas fa-plus"></i> Add Specification
+                    </button>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="weight" class="form-label">Weight (kg, Optional)</label>
+                        <input type="number" id="weight" name="weight" class="form-control" step="0.01" min="0" value="{{ form.weight.value|default:'' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dimensions" class="form-label">Dimensions (Optional)</label>
+                        <input type="text" id="dimensions" name="dimensions" class="form-control" placeholder="e.g., 10 x 5 x 3 cm" value="{{ form.dimensions.value|default:'' }}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Variants (Optional)</h3>
+                
+                <div class="form-check">
+                    <input type="checkbox" id="has_variants" name="has_variants" class="form-check-input" {% if form.has_variants.value %}checked{% endif %}>
+                    <label for="has_variants" class="form-check-label">This product has multiple variants</label>
+                </div>
+                
+                <div id="variants-container" style="display: none;">
+                    <div class="variant-section">
+                        <label class="form-label">Available Sizes</label>
+                        <small class="form-text">Select the sizes available for this product.</small>
+                        
+                        <div class="variant-options">
+                            <div class="form-check">
+                                <input type="checkbox" id="size_xs" name="sizes[]" value="XS" class="form-check-input">
+                                <label for="size_xs" class="form-check-label">XS</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="size_s" name="sizes[]" value="S" class="form-check-input">
+                                <label for="size_s" class="form-check-label">S</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="size_m" name="sizes[]" value="M" class="form-check-input">
+                                <label for="size_m" class="form-check-label">M</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="size_l" name="sizes[]" value="L" class="form-check-input">
+                                <label for="size_l" class="form-check-label">L</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="size_xl" name="sizes[]" value="XL" class="form-check-input">
+                                <label for="size_xl" class="form-check-label">XL</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="size_xxl" name="sizes[]" value="XXL" class="form-check-input">
+                                <label for="size_xxl" class="form-check-label">XXL</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="variant-section">
+                        <label class="form-label">Available Colors</label>
+                        <small class="form-text">Add the colors available for this product.</small>
+                        
+                        <div id="color-list">
+                            <div class="color-option">
+                                <div class="color-preview" style="background-color: #000000;"></div>
+                                <input type="text" name="color_names[]" class="form-control" placeholder="Color name" value="Black">
+                                <input type="hidden" name="color_hex[]" value="#000000">
+                                <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="add-feature-btn" id="add-color-btn">
+                            <i class="fas fa-plus"></i> Add Color
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">SEO and Metadata</h3>
+                
+                <div class="form-group">
+                    <label for="slug" class="form-label">URL Slug (Optional)</label>
+                    <input type="text" id="slug" name="slug" class="form-control" value="{{ form.slug.value|default:'' }}">
+                    <small class="form-text">Leave blank to auto-generate from product name.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="meta_title" class="form-label">Meta Title (Optional)</label>
+                    <input type="text" id="meta_title" name="meta_title" class="form-control" value="{{ form.meta_title.value|default:'' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="meta_description" class="form-label">Meta Description (Optional)</label>
+                    <textarea id="meta_description" name="meta_description" class="form-control" rows="3">{{ form.meta_description.value|default:'' }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags" class="form-label">Tags (Optional)</label>
+                    <input type="text" id="tags" name="tags" class="form-control" placeholder="Enter tags separated by commas" value="{{ tags|default:'' }}">
+                    <small class="form-text">Help customers find your product with relevant tags.</small>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'product_list' %}" class="btn-cancel">Cancel</a>
+                <button type="submit" name="save_draft" value="1" class="btn-save-draft">Save as Draft</button>
+                <button type="submit" class="btn-save">Publish Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Image preview
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('image-preview');
+        
+        if (imageInput && imagePreview) {
+            imageInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    };
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+        
+        // 3D model preview
+        const modelInput = document.getElementById('model_3d');
+        const modelPreview = document.getElementById('model-preview');
+        
+        if (modelInput && modelPreview) {
+            modelInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const fileName = file.name.toLowerCase();
+                    
+                    // Show file name
+                    modelPreview.innerHTML = `
+                        <div class="image-preview-placeholder">
+                            <i class="fas fa-cube"></i>
+                            <p>Selected: ${file.name}</p>
+                            <p>File will be processed for 3D viewing</p>
+                        </div>
+                    `;
+                    
+                    // You could implement actual 3D preview here with Three.js
+                    // but for simplicity, we'll just show the file name
+                }
+            });
+        }
+        
+        // Product features functionality
+        const featureList = document.getElementById('feature-list');
+        const addFeatureBtn = document.getElementById('add-feature-btn');
+        
+        if (featureList && addFeatureBtn) {
+            // Add feature
+            addFeatureBtn.addEventListener('click', function() {
+                const featureItem = document.createElement('div');
+                featureItem.className = 'feature-item';
+                featureItem.innerHTML = `
+                    <input type="text" name="features[]" class="form-control feature-input" placeholder="Enter a feature">
+                    <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                `;
+                
+                featureList.appendChild(featureItem);
+                
+                // Add event listener to the new remove button
+                const removeBtn = featureItem.querySelector('.remove-feature-btn');
+                removeBtn.addEventListener('click', function() {
+                    featureItem.remove();
+                });
+                
+                // Focus the new input
+                const input = featureItem.querySelector('input');
+                input.focus();
+            });
+            
+            // Remove feature (for initial feature item)
+            const initialRemoveBtn = featureList.querySelector('.remove-feature-btn');
+            if (initialRemoveBtn) {
+                initialRemoveBtn.addEventListener('click', function() {
+                    this.closest('.feature-item').remove();
+                });
+            }
+        }
+        
+        // Specifications functionality
+        const specList = document.getElementById('spec-list');
+        const addSpecBtn = document.getElementById('add-spec-btn');
+        
+        if (specList && addSpecBtn) {
+            // Add specification
+            addSpecBtn.addEventListener('click', function() {
+                const specRow = document.createElement('div');
+                specRow.className = 'spec-row';
+                specRow.innerHTML = `
+                    <input type="text" name="spec_names[]" class="form-control" placeholder="Name (e.g., Weight)">
+                    <input type="text" name="spec_values[]" class="form-control" placeholder="Value (e.g., 2.5 kg)">
+                    <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                `;
+                
+                specList.appendChild(specRow);
+                
+                // Add event listener to the new remove button
+                const removeBtn = specRow.querySelector('.remove-feature-btn');
+                removeBtn.addEventListener('click', function() {
+                    specRow.remove();
+                });
+                
+                // Focus the new name input
+                const input = specRow.querySelector('input');
+                input.focus();
+            });
+            
+            // Remove specification (for initial spec row)
+            const initialRemoveBtn = specList.querySelector('.remove-feature-btn');
+            if (initialRemoveBtn) {
+                initialRemoveBtn.addEventListener('click', function() {
+                    this.closest('.spec-row').remove();
+                });
+            }
+        }
+        
+        // Color options functionality
+        const colorList = document.getElementById('color-list');
+        const addColorBtn = document.getElementById('add-color-btn');
+        
+        if (colorList && addColorBtn) {
+            // Add color
+            addColorBtn.addEventListener('click', function() {
+                const colorOption = document.createElement('div');
+                colorOption.className = 'color-option';
+                
+                // Generate random color
+                const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                
+                colorOption.innerHTML = `
+                    <div class="color-preview" style="background-color: ${randomColor};"></div>
+                    <input type="text" name="color_names[]" class="form-control" placeholder="Color name">
+                    <input type="hidden" name="color_hex[]" value="${randomColor}">
+                    <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                `;
+                
+                colorList.appendChild(colorOption);
+                
+                // Add event listener to the new remove button
+                const removeBtn = colorOption.querySelector('.remove-feature-btn');
+                removeBtn.addEventListener('click', function() {
+                    colorOption.remove();
+                });
+                
+                // Focus the new input
+                const input = colorOption.querySelector('input[type="text"]');
+                input.focus();
+                
+                // Handle color picker (using browser's color input)
+                const colorPreview = colorOption.querySelector('.color-preview');
+                const colorHexInput = colorOption.querySelector('input[type="hidden"]');
+                
+                colorPreview.addEventListener('click', function() {
+                    // Create a color input dynamically
+                    const colorInput = document.createElement('input');
+                    colorInput.type = 'color';
+                    colorInput.value = colorHexInput.value;
+                    
+                    // When color is changed, update preview and hidden input
+                    colorInput.addEventListener('input', function() {
+                        colorPreview.style.backgroundColor = this.value;
+                        colorHexInput.value = this.value;
+                    });
+                    
+                    colorInput.click();
+                });
+            });
+            
+            // Remove color (for initial color option)
+            const initialRemoveBtn = colorList.querySelector('.remove-feature-btn');
+            if (initialRemoveBtn) {
+                initialRemoveBtn.addEventListener('click', function() {
+                    this.closest('.color-option').remove();
+                });
+            }
+            
+            // Handle color picker for the initial color preview
+            const initialColorPreview = colorList.querySelector('.color-preview');
+            const initialColorHexInput = colorList.querySelector('input[type="hidden"]');
+            
+            if (initialColorPreview && initialColorHexInput) {
+                initialColorPreview.addEventListener('click', function() {
+                    // Create a color input dynamically
+                    const colorInput = document.createElement('input');
+                    colorInput.type = 'color';
+                    colorInput.value = initialColorHexInput.value;
+                    
+                    // When color is changed, update preview and hidden input
+                    colorInput.addEventListener('input', function() {
+                        initialColorPreview.style.backgroundColor = this.value;
+                        initialColorHexInput.value = this.value;
+                    });
+                    
+                    colorInput.click();
+                });
+            }
+        }
+        
+        // Variants toggle
+        const hasVariantsCheckbox = document.getElementById('has_variants');
+        const variantsContainer = document.getElementById('variants-container');
+        
+        if (hasVariantsCheckbox && variantsContainer) {
+            hasVariantsCheckbox.addEventListener('change', function() {
+                variantsContainer.style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Initialize based on checkbox state
+            variantsContainer.style.display = hasVariantsCheckbox.checked ? 'block' : 'none';
+        }
+        
+        // Auto-generate slug from name
+        const nameInput = document.getElementById('name');
+        const slugInput = document.getElementById('slug');
+        
+        if (nameInput && slugInput) {
+            nameInput.addEventListener('input', function() {
+                // Only auto-generate if slug is empty
+                if (!slugInput.value) {
+                    slugInput.value = generateSlug(this.value);
+                }
+            });
+        }
+        
+        // Function to generate slug
+        function generateSlug(text) {
+            return text
+                .toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-');
+        }
+        
+        // Form submission handling
+        const productForm = document.getElementById('product-form');
+        
+        if (productForm) {
+            productForm.addEventListener('submit', function(e) {
+                // Basic validation
+                const name = document.getElementById('name').value;
+                const price = document.getElementById('price').value;
+                const category = document.getElementById('category').value;
+                
+                if (!name || !price || !category) {
+                    e.preventDefault();
+                    showToast('Please fill in all required fields.', 'error');
+                    return;
+                }
+                
+                // Disable submit button to prevent multiple submissions
+                const submitButtons = this.querySelectorAll('button[type="submit"]');
+                submitButtons.forEach(button => {
+                    button.disabled = true;
+                });
+                
+                // Show loading toast
+                showToast('Saving product...', 'info');
+                
+                // Continue with form submission (handled by form action)
+            });
+        }
+    });
+</script>
+{% endblock %}
