@@ -754,10 +754,12 @@ def fake_products_page(request):
 def home(request):
     """Home page view with featured products and promotions."""
     featured_products = Product.objects.filter(is_featured=True)[:8]
+    new_products = Product.objects.order_by('-created_at')[:8]
     categories = Category.objects.all()[:6]
     
     context = {
         'featured_products': featured_products,
+        'new_products': new_products,
         'categories': categories,
         'page_title': 'Home'
     }

@@ -1,0 +1,796 @@
+{% extends 'base.html' %}
+
+{% block title %}Shipping Policy - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="page-header mb-5">
+        <h1 class="display-4">Shipping Policy</h1>
+        <p class="lead">Information about our shipping methods, timeframes, and costs.</p>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="row mb-5">
+        <div class="col-lg-8" data-aos="fade-up">
+            <div class="policy-content">
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Processing Time</h2>
+                    <p>After your order is placed, it typically takes 1-2 business days to process before shipping. During peak seasons or promotional periods, processing times may be slightly longer.</p>
+                    <p>Once your order has been processed, you will receive a shipping confirmation email with tracking information when applicable.</p>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Shipping Methods & Timeframes</h2>
+                    <div class="shipping-methods">
+                        <div class="shipping-method">
+                            <div class="shipping-method-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="shipping-method-details">
+                                <h3>Standard Shipping</h3>
+                                <p class="shipping-timeframe">3-5 business days</p>
+                                <p class="shipping-cost">Free on orders over $100</p>
+                                <p class="shipping-cost">$8.99 for orders under $100</p>
+                            </div>
+                        </div>
+                        
+                        <div class="shipping-method">
+                            <div class="shipping-method-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="shipping-method-details">
+                                <h3>Expedited Shipping</h3>
+                                <p class="shipping-timeframe">2-3 business days</p>
+                                <p class="shipping-cost">$14.99 flat rate</p>
+                            </div>
+                        </div>
+                        
+                        <div class="shipping-method">
+                            <div class="shipping-method-icon">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <div class="shipping-method-details">
+                                <h3>Express Shipping</h3>
+                                <p class="shipping-timeframe">1-2 business days</p>
+                                <p class="shipping-cost">$24.99 flat rate</p>
+                            </div>
+                        </div>
+                        
+                        <div class="shipping-method">
+                            <div class="shipping-method-icon">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <div class="shipping-method-details">
+                                <h3>International Shipping</h3>
+                                <p class="shipping-timeframe">7-14 business days</p>
+                                <p class="shipping-cost">Varies by destination</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-note mt-4">
+                        <p><i class="fas fa-info-circle"></i> Please note that all timeframes are estimates and begin once your order has been processed. Delivery times may vary due to carrier delays, weather conditions, customs clearance for international orders, or other unforeseen circumstances.</p>
+                    </div>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Shipping Destinations</h2>
+                    <p>We currently ship to the following regions:</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="region-card">
+                                <div class="region-icon">
+                                    <i class="fas fa-flag-usa"></i>
+                                </div>
+                                <h3>United States</h3>
+                                <p>All 50 states and territories</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="region-card">
+                                <div class="region-icon">
+                                    <i class="fas fa-globe-americas"></i>
+                                </div>
+                                <h3>Canada</h3>
+                                <p>All provinces and territories</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="region-card">
+                                <div class="region-icon">
+                                    <i class="fas fa-globe-europe"></i>
+                                </div>
+                                <h3>Europe</h3>
+                                <p>EU countries, UK, Switzerland, Norway</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="region-card">
+                                <div class="region-icon">
+                                    <i class="fas fa-globe-asia"></i>
+                                </div>
+                                <h3>Asia-Pacific</h3>
+                                <p>Australia, New Zealand, Japan, Singapore, South Korea</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="mt-4">If your country is not listed and you wish to place an order, please <a href="{% url 'contact' %}" class="link-highlight">contact our customer service team</a> to inquire about shipping options.</p>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">International Shipping Information</h2>
+                    
+                    <h3 class="subsection-title">Customs Duties & Taxes</h3>
+                    <p>For international orders, customs duties, taxes, and import fees are not included in the purchase price or shipping cost. These charges are the responsibility of the recipient and will be collected by the delivery carrier or local customs office. The amount varies by country and we have no control over these charges.</p>
+                    
+                    <h3 class="subsection-title">Delivery Timeframes</h3>
+                    <p>International delivery times can range from 7-14 business days, depending on the destination country. However, orders may be delayed due to customs processing, which can vary significantly by country.</p>
+                    
+                    <h3 class="subsection-title">Tracking</h3>
+                    <p>International shipments include tracking, although tracking information may be limited once the package leaves the originating country. If you experience extended delays beyond the estimated delivery time, please contact our customer service team.</p>
+                    
+                    <div class="info-note mt-4">
+                        <p><i class="fas fa-exclamation-triangle"></i> Please ensure that your shipping address is complete and accurate, including postal code and phone number, to avoid delays in international shipping.</p>
+                    </div>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Order Tracking</h2>
+                    <p>After your order has shipped, you'll receive a shipping confirmation email with tracking information. You can track your order in several ways:</p>
+                    <ul class="tracking-methods">
+                        <li>
+                            <span class="tracking-icon"><i class="fas fa-user"></i></span>
+                            <span class="tracking-text">Log into your account and visit the "Order History" section</span>
+                        </li>
+                        <li>
+                            <span class="tracking-icon"><i class="fas fa-envelope"></i></span>
+                            <span class="tracking-text">Click the tracking link in your shipping confirmation email</span>
+                        </li>
+                        <li>
+                            <span class="tracking-icon"><i class="fas fa-search"></i></span>
+                            <span class="tracking-text">Visit our <a href="{% url 'track_order' %}" class="link-highlight">Track Order</a> page and enter your order number and email</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Shipping Restrictions</h2>
+                    <p>Please be aware of the following shipping restrictions:</p>
+                    <ul class="restrictions-list">
+                        <li>We cannot ship to P.O. boxes for expedited or express shipping methods.</li>
+                        <li>Certain products may have shipping restrictions to specific countries due to local regulations.</li>
+                        <li>Orders with multiple items may be shipped separately if some items are temporarily out of stock.</li>
+                        <li>We reserve the right to cancel orders to addresses we suspect are fraudulent or invalid.</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Lost or Damaged Packages</h2>
+                    <p>In the rare event that your package is lost or damaged during shipping:</p>
+                    <ul class="policy-list">
+                        <li>For lost packages, please wait until after the estimated delivery date before reporting a lost package. Many packages arrive on or just after the estimated delivery date.</li>
+                        <li>If your package is lost or significantly delayed beyond the estimated delivery time, please contact our customer service team.</li>
+                        <li>For packages that arrive damaged, please take photos of the damaged packaging and contents before contacting our customer service team.</li>
+                        <li>All claims for lost or damaged packages must be reported within 14 days of the estimated delivery date.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4" data-aos="fade-left">
+            <div class="shipping-sidebar">
+                <div class="sidebar-card mb-4">
+                    <h3 class="sidebar-title">Quick Links</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#" class="sidebar-link"><i class="fas fa-search"></i> Track Your Order</a></li>
+                        <li><a href="{% url 'returns' %}" class="sidebar-link"><i class="fas fa-undo-alt"></i> Returns Policy</a></li>
+                        <li><a href="{% url 'contact' %}" class="sidebar-link"><i class="fas fa-envelope"></i> Contact Support</a></li>
+                        <li><a href="{% url 'faq' %}" class="sidebar-link"><i class="fas fa-question-circle"></i> Shipping FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card mb-4">
+                    <h3 class="sidebar-title">Shipping Partners</h3>
+                    <div class="carriers-list">
+                        <div class="carrier-item">
+                            <div class="carrier-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="carrier-name">USPS</div>
+                        </div>
+                        <div class="carrier-item">
+                            <div class="carrier-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="carrier-name">FedEx</div>
+                        </div>
+                        <div class="carrier-item">
+                            <div class="carrier-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="carrier-name">UPS</div>
+                        </div>
+                        <div class="carrier-item">
+                            <div class="carrier-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="carrier-name">DHL</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card mb-4">
+                    <h3 class="sidebar-title">Need Help?</h3>
+                    <p>Have questions about your shipment or need assistance with tracking?</p>
+                    <div class="contact-options">
+                        <a href="{% url 'contact' %}" class="btn btn-primary btn-sm w-100 mb-2">
+                            <i class="fas fa-envelope"></i> Email Support
+                        </a>
+                        <a href="tel:+15551234567" class="btn btn-outline-light btn-sm w-100">
+                            <i class="fas fa-phone"></i> Call Us: (555) 123-4567
+                        </a>
+                    </div>
+                    <p class="support-hours mt-3">
+                        <small>Support Hours: Mon-Fri, 9 AM - 6 PM PST</small>
+                    </p>
+                </div>
+                
+                <div class="sidebar-card promotion-card">
+                    <div class="promotion-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3>Free Shipping</h3>
+                    <p>On all orders over $100</p>
+                    <a href="{% url 'product_list' %}" class="btn btn-primary btn-sm w-100 mt-2">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4" data-aos="fade-up">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Frequently Asked Shipping Questions</h2>
+        </div>
+        
+        <div class="col-lg-10 mx-auto">
+            <div class="accordion faq-accordion" id="shippingFaqAccordion">
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item faq-item" data-aos="fade-up">
+                    <h2 class="accordion-header" id="heading1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            How long will it take to receive my order?
+                        </button>
+                    </h2>
+                    <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#shippingFaqAccordion">
+                        <div class="accordion-body">
+                            <p>After your order is placed, it typically takes 1-2 business days to process. Once shipped, delivery times depend on your location and chosen shipping method:</p>
+                            <ul>
+                                <li>Standard Shipping: 3-5 business days</li>
+                                <li>Expedited Shipping: 2-3 business days</li>
+                                <li>Express Shipping: 1-2 business days</li>
+                                <li>International Shipping: 7-14 business days (varies by destination)</li>
+                            </ul>
+                            <p>Please note these are estimated timeframes and may vary due to factors beyond our control.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item faq-item" data-aos="fade-up">
+                    <h2 class="accordion-header" id="heading2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            How can I track my order?
+                        </button>
+                    </h2>
+                    <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#shippingFaqAccordion">
+                        <div class="accordion-body">
+                            <p>You can track your order in several ways:</p>
+                            <ol>
+                                <li>Log into your account and go to "Order History" to see your order status and tracking information.</li>
+                                <li>Use the tracking link sent in your shipping confirmation email.</li>
+                                <li>Visit our "Track Order" page and enter your order number and email address.</li>
+                                <li>Contact our customer service team with your order number for assistance.</li>
+                            </ol>
+                            <p>Please note that tracking information may take 24-48 hours to update after your shipping confirmation is sent.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item faq-item" data-aos="fade-up">
+                    <h2 class="accordion-header" id="heading3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            Do you ship internationally?
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#shippingFaqAccordion">
+                        <div class="accordion-body">
+                            <p>Yes, we ship to many countries worldwide including all EU countries, UK, Canada, Australia, New Zealand, Japan, Singapore, and South Korea. International shipping rates vary by destination and will be calculated at checkout.</p>
+                            <p>Please note that international orders may be subject to import duties and taxes, which are the responsibility of the recipient. These charges are not included in your order total and will be collected by the delivery carrier or customs office.</p>
+                            <p>If your country is not listed at checkout, please contact our customer service team to inquire about shipping options.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item faq-item" data-aos="fade-up">
+                    <h2 class="accordion-header" id="heading4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            What if my package is lost or damaged?
+                        </button>
+                    </h2>
+                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#shippingFaqAccordion">
+                        <div class="accordion-body">
+                            <p>In the rare event that your package is lost or damaged during shipping, please follow these steps:</p>
+                            <ul>
+                                <li>For lost packages, wait until after the estimated delivery date before reporting it missing.</li>
+                                <li>For damaged packages, take photos of the damaged packaging and contents before opening it completely.</li>
+                                <li>Contact our customer service team within 14 days of the estimated delivery date with your order number and description of the issue.</li>
+                                <li>Our team will work with you to resolve the issue, which may include sending a replacement or issuing a refund.</li>
+                            </ul>
+                            <p>We take lost or damaged packages seriously and will do our best to make it right.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item faq-item" data-aos="fade-up">
+                    <h2 class="accordion-header" id="heading5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                            Can I change my shipping address after placing an order?
+                        </button>
+                    </h2>
+                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#shippingFaqAccordion">
+                        <div class="accordion-body">
+                            <p>Address changes can only be accommodated if the order has not yet been processed for shipping:</p>
+                            <ul>
+                                <li>If you need to change your shipping address, contact our customer service team immediately after placing your order.</li>
+                                <li>Include your order number and the correct shipping address in your message.</li>
+                                <li>Once an order has been processed and handed off to the carrier, we cannot change the delivery address.</li>
+                                <li>If your order has already been processed, we may be able to cancel the order (if it has not shipped) and have you place a new order with the correct address.</li>
+                            </ul>
+                            <p>To avoid delivery issues, please always double-check your shipping address during checkout.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+        position: relative;
+        color: var(--light-color);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .subsection-title {
+        color: var(--light-color);
+        margin: 1.5rem 0 1rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+    
+    .policy-content {
+        color: var(--text-color);
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+    
+    .policy-section {
+        padding: 1.5rem;
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        margin-bottom: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .shipping-methods {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .shipping-method {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(108, 99, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .shipping-method:hover {
+        border-color: rgba(108, 99, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .shipping-method-icon {
+        background: var(--gradient-primary);
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        color: white;
+        flex-shrink: 0;
+    }
+    
+    .shipping-method-details h3 {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .shipping-timeframe {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .shipping-cost {
+        color: var(--text-color);
+        margin-bottom: 0.25rem;
+    }
+    
+    .info-note {
+        background-color: rgba(108, 99, 255, 0.1);
+        border-left: 4px solid var(--primary-color);
+        padding: 1rem 1.5rem;
+        border-radius: var(--border-radius-sm);
+        color: var(--text-color);
+    }
+    
+    .info-note i {
+        color: var(--primary-color);
+        margin-right: 0.5rem;
+    }
+    
+    .region-card {
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem;
+        text-align: center;
+        height: 100%;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+    }
+    
+    .region-card:hover {
+        border-color: rgba(108, 99, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .region-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .region-card h3 {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .region-card p {
+        color: var(--text-color);
+        margin-bottom: 0;
+    }
+    
+    .tracking-methods {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 1.5rem;
+    }
+    
+    .tracking-methods li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .tracking-methods li:hover {
+        border-color: rgba(108, 99, 255, 0.3);
+        transform: translateX(5px);
+    }
+    
+    .tracking-icon {
+        background: var(--gradient-primary);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: white;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .tracking-text {
+        color: var(--text-color);
+    }
+    
+    .link-highlight {
+        color: var(--primary-color);
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .link-highlight:hover {
+        text-decoration: underline;
+    }
+    
+    .restrictions-list, .policy-list {
+        padding-left: 1.5rem;
+        color: var(--text-color);
+    }
+    
+    .restrictions-list li, .policy-list li {
+        margin-bottom: 0.75rem;
+    }
+    
+    .sidebar-card {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 1.5rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .sidebar-title {
+        color: var(--light-color);
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.25rem;
+        position: relative;
+    }
+    
+    .sidebar-title::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .sidebar-links {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0;
+        color: var(--text-color);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-link:hover {
+        color: var(--primary-color);
+        transform: translateX(5px);
+        text-decoration: none;
+    }
+    
+    .sidebar-link i {
+        margin-right: 0.75rem;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
+    }
+    
+    .sidebar-links li:last-child .sidebar-link {
+        border-bottom: none;
+    }
+    
+    .carriers-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .carrier-item {
+        text-align: center;
+        padding: 1rem;
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        transition: all 0.3s ease;
+    }
+    
+    .carrier-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .carrier-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .carrier-name {
+        color: var(--light-color);
+        font-weight: 500;
+    }
+    
+    .support-hours {
+        color: var(--text-color);
+        text-align: center;
+        opacity: 0.8;
+    }
+    
+    .promotion-card {
+        text-align: center;
+        background: linear-gradient(135deg, rgba(61, 61, 90, 0.7) 0%, rgba(28, 27, 51, 0.7) 100%);
+        border: 1px solid rgba(108, 99, 255, 0.2);
+        padding: 2rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .promotion-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, rgba(108, 99, 255, 0.2), transparent 50%);
+        z-index: 0;
+    }
+    
+    .promotion-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .promotion-card h3 {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .promotion-card p {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .faq-accordion {
+        margin-top: 1rem;
+    }
+    
+    .faq-item {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .faq-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-color: rgba(108, 99, 255, 0.3);
+    }
+    
+    .faq-item .accordion-button {
+        background-color: var(--bg-dark-secondary);
+        color: var(--light-color);
+        font-weight: 500;
+        padding: 1.25rem;
+        border: none;
+        font-size: 1.1rem;
+    }
+    
+    .faq-item .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background-color: var(--bg-dark-primary);
+        box-shadow: none;
+    }
+    
+    .faq-item .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(108, 99, 255, 0.2);
+    }
+    
+    .faq-item .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c63ff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    
+    .faq-item .accordion-body {
+        background-color: var(--bg-dark-primary);
+        color: var(--text-color);
+        padding: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 992px) {
+        .shipping-sidebar {
+            margin-top: 2rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .carrier-item {
+            padding: 0.75rem;
+        }
+        
+        .carrier-icon {
+            font-size: 1.25rem;
+        }
+        
+        .carrier-name {
+            font-size: 0.875rem;
+        }
+        
+        .shipping-method {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.25rem;
+        }
+        
+        .shipping-method-icon {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}

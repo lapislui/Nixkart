@@ -1,0 +1,824 @@
+{% extends 'base.html' %}
+
+{% block title %}Returns Policy - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="page-header mb-5">
+        <h1 class="display-4">Returns Policy</h1>
+        <p class="lead">Our guidelines for returns, exchanges, and refunds.</p>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="row mb-5">
+        <div class="col-lg-8" data-aos="fade-up">
+            <div class="policy-content">
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Return Policy Overview</h2>
+                    <p>We want you to be completely satisfied with your purchase. If for any reason you're not happy with your order, we offer a hassle-free return policy within 30 days of delivery.</p>
+                    
+                    <div class="return-process-steps mt-4">
+                        <div class="return-step">
+                            <div class="return-step-icon">
+                                <span>1</span>
+                            </div>
+                            <div class="return-step-content">
+                                <h3>Request a Return</h3>
+                                <p>Log into your account, find your order, and select "Return Items" or contact our customer service team.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="return-step">
+                            <div class="return-step-icon">
+                                <span>2</span>
+                            </div>
+                            <div class="return-step-content">
+                                <h3>Pack Your Items</h3>
+                                <p>Carefully pack the items in their original packaging with all tags and accessories.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="return-step">
+                            <div class="return-step-icon">
+                                <span>3</span>
+                            </div>
+                            <div class="return-step-content">
+                                <h3>Ship Your Return</h3>
+                                <p>Use the provided return label or send to our returns address with your order information.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="return-step">
+                            <div class="return-step-icon">
+                                <span>4</span>
+                            </div>
+                            <div class="return-step-content">
+                                <h3>Receive Your Refund</h3>
+                                <p>Once we receive and inspect your return, we'll process your refund within 3-5 business days.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Return Eligibility</h2>
+                    <p>To be eligible for a return, please ensure that:</p>
+                    
+                    <div class="eligibility-container">
+                        <div class="eligibility-item eligible">
+                            <div class="eligibility-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="eligibility-content">
+                                <h3>Eligible for Return</h3>
+                                <ul class="policy-list">
+                                    <li>Item is within 30 days of delivery date</li>
+                                    <li>Item is unused, unwashed, and in original condition</li>
+                                    <li>Item includes all original packaging, tags, and accessories</li>
+                                    <li>Item shows no signs of wear or damage caused after delivery</li>
+                                    <li>You have proof of purchase (order number, receipt, or account history)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="eligibility-item not-eligible">
+                            <div class="eligibility-icon">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="eligibility-content">
+                                <h3>Not Eligible for Return</h3>
+                                <ul class="policy-list">
+                                    <li>Item is beyond 30 days from delivery date</li>
+                                    <li>Item has been used, washed, altered, or damaged</li>
+                                    <li>Item is missing original packaging, tags, or accessories</li>
+                                    <li>Digital products or downloaded software</li>
+                                    <li>Gift cards or store credit</li>
+                                    <li>Personalized or custom-made items</li>
+                                    <li>Intimate apparel, undergarments, or swimwear</li>
+                                    <li>Earphones, headphones, or other hygiene-sensitive products</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Refunds</h2>
+                    <p>Once your return is received and inspected, we will process your refund. The way you receive your refund depends on your original payment method:</p>
+                    
+                    <div class="refund-methods">
+                        <div class="refund-method">
+                            <div class="refund-method-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="refund-method-content">
+                                <h3>Credit/Debit Cards</h3>
+                                <p>Refunded to the original card used for purchase. Typically takes 5-10 business days to appear on your statement after we process the refund.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="refund-method">
+                            <div class="refund-method-icon">
+                                <i class="fab fa-paypal"></i>
+                            </div>
+                            <div class="refund-method-content">
+                                <h3>PayPal/Digital Wallets</h3>
+                                <p>Refunded to your PayPal account or digital wallet. Typically appears within 3-5 business days after we process the refund.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="refund-method">
+                            <div class="refund-method-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="refund-method-content">
+                                <h3>Store Credit</h3>
+                                <p>Issued immediately upon processing and can be used for future purchases. Store credit does not expire.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="refund-method">
+                            <div class="refund-method-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="refund-method-content">
+                                <h3>Gift Returns</h3>
+                                <p>Returns of items received as gifts will be issued as store credit to the recipient, unless otherwise requested.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-note mt-4">
+                        <p><i class="fas fa-info-circle"></i> Shipping costs are non-refundable unless the return is due to our error (damaged, defective, or incorrect item). If you received free shipping on your order, the standard shipping cost will be deducted from your refund amount.</p>
+                    </div>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Exchanges</h2>
+                    <p>If you'd like to exchange an item for a different size, color, or product, please follow these steps:</p>
+                    
+                    <ol class="exchange-steps">
+                        <li>
+                            <span class="step-number">1</span>
+                            <div class="step-content">
+                                <h3>Request an Exchange</h3>
+                                <p>Log into your account, locate your order, and select "Exchange Items." Specify the item you wish to return and the new item you'd like to receive.</p>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <span class="step-number">2</span>
+                            <div class="step-content">
+                                <h3>Return Original Item</h3>
+                                <p>Package the original item with all tags and accessories, and use the provided return label to send it back to us.</p>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <span class="step-number">3</span>
+                            <div class="step-content">
+                                <h3>Processing Time</h3>
+                                <p>Once we receive your return, we'll process your exchange request within 1-2 business days.</p>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <span class="step-number">4</span>
+                            <div class="step-content">
+                                <h3>Receive Your Exchange</h3>
+                                <p>We'll ship your exchange item as soon as your return is processed. You'll receive a shipping confirmation with tracking information.</p>
+                            </div>
+                        </li>
+                    </ol>
+                    
+                    <div class="info-note mt-4">
+                        <p><i class="fas fa-info-circle"></i> If the exchange item is more expensive than your original purchase, you'll need to pay the difference. If it's less expensive, we'll refund the difference to your original payment method.</p>
+                    </div>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Damaged or Defective Items</h2>
+                    <p>If you receive an item that is damaged or defective, we sincerely apologize for the inconvenience. Please follow these steps:</p>
+                    
+                    <ul class="policy-list">
+                        <li>Contact our customer service team within 7 days of receiving the item.</li>
+                        <li>Provide your order number and details about the damage or defect.</li>
+                        <li>Include photos of the damaged or defective item, if possible.</li>
+                        <li>We'll arrange for a return, replacement, or refund at no cost to you.</li>
+                    </ul>
+                    
+                    <p>For damaged or defective items, we'll cover the return shipping costs and expedite the replacement or refund process.</p>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">International Returns</h2>
+                    <p>For international orders, our return policy is the same, but there are a few additional considerations:</p>
+                    
+                    <ul class="policy-list">
+                        <li>You are responsible for return shipping costs unless the return is due to our error.</li>
+                        <li>We recommend using a tracked shipping service as we cannot be responsible for returns lost in transit.</li>
+                        <li>Please mark the package as "Returned Merchandise" to avoid potential customs fees.</li>
+                        <li>International returns may take longer to process due to shipping and customs times.</li>
+                        <li>Import duties and taxes paid on the original shipment are generally non-refundable.</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Late or Missing Refunds</h2>
+                    <p>If you haven't received your refund within the expected timeframe:</p>
+                    
+                    <ol class="policy-list">
+                        <li>First, check your bank account or credit card statement again.</li>
+                        <li>Contact your credit card company or bank, as it may take some time for the refund to be officially posted.</li>
+                        <li>If you've done the above and still haven't received your refund, contact our customer service team with your order number and refund details.</li>
+                    </ol>
+                </div>
+                
+                <div class="policy-section mb-4">
+                    <h2 class="section-title">Return Shipping</h2>
+                    <p>To return your product, you should mail it to:</p>
+                    
+                    <div class="return-address">
+                        <p>Returns Department<br>
+                        NeoStore E-Commerce<br>
+                        123 Innovation Drive<br>
+                        Tech District, Suite 789<br>
+                        San Francisco, CA 94103</p>
+                    </div>
+                    
+                    <p class="mt-3">You will be responsible for paying your own shipping costs for returning your item. Shipping costs are non-refundable. If you receive a refund, the cost of return shipping will be deducted from your refund.</p>
+                    
+                    <p>Depending on where you live, the time it may take for your exchanged product to reach you may vary.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4" data-aos="fade-left">
+            <div class="returns-sidebar">
+                <div class="sidebar-card mb-4">
+                    <h3 class="sidebar-title">Quick Links</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#" class="sidebar-link"><i class="fas fa-undo-alt"></i> Start a Return</a></li>
+                        <li><a href="#" class="sidebar-link"><i class="fas fa-exchange-alt"></i> Request an Exchange</a></li>
+                        <li><a href="{% url 'shipping' %}" class="sidebar-link"><i class="fas fa-truck"></i> Shipping Policy</a></li>
+                        <li><a href="{% url 'contact' %}" class="sidebar-link"><i class="fas fa-envelope"></i> Contact Support</a></li>
+                        <li><a href="{% url 'faq' %}" class="sidebar-link"><i class="fas fa-question-circle"></i> Returns FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card mb-4">
+                    <h3 class="sidebar-title">Return Period Countdown</h3>
+                    <div class="return-timer">
+                        <div class="timer-graphic">
+                            <svg width="150" height="150" viewBox="0 0 150 150">
+                                <circle cx="75" cy="75" r="60" fill="none" stroke="#2c2c44" stroke-width="15" />
+                                <circle cx="75" cy="75" r="60" fill="none" stroke="#6c63ff" stroke-width="15" stroke-dasharray="377" stroke-dashoffset="94.25" />
+                                <text x="75" y="80" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="bold">75%</text>
+                            </svg>
+                        </div>
+                        <div class="timer-info">
+                            <p>Most orders are still within the return window.</p>
+                            <small>Return period begins on the delivery date and lasts for 30 days.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card mb-4">
+                    <h3 class="sidebar-title">Need Help?</h3>
+                    <p>Have questions about returns or need assistance with the process?</p>
+                    <div class="contact-options">
+                        <a href="{% url 'contact' %}" class="btn btn-primary btn-sm w-100 mb-2">
+                            <i class="fas fa-envelope"></i> Email Support
+                        </a>
+                        <a href="tel:+15551234567" class="btn btn-outline-light btn-sm w-100">
+                            <i class="fas fa-phone"></i> Call Us: (555) 123-4567
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card promotion-card">
+                    <div class="promotion-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Extended Returns</h3>
+                    <p>Get 60 days for returns with our Premium Membership</p>
+                    <a href="#" class="btn btn-primary btn-sm w-100 mt-2">Learn More</a>
+                </div>
+                
+                <div class="sidebar-card faq-preview">
+                    <h3 class="sidebar-title">Frequently Asked Questions</h3>
+                    <div class="accordion mini-accordion" id="sidebarFaqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="sidebarHeading1">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse1" aria-expanded="false" aria-controls="sidebarCollapse1">
+                                    How do I start a return?
+                                </button>
+                            </h2>
+                            <div id="sidebarCollapse1" class="accordion-collapse collapse" aria-labelledby="sidebarHeading1" data-bs-parent="#sidebarFaqAccordion">
+                                <div class="accordion-body">
+                                    To start a return, log into your account, find your order in the Order History section, and click "Return Items." Follow the prompts to complete your return request.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="sidebarHeading2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse2" aria-expanded="false" aria-controls="sidebarCollapse2">
+                                    How long do refunds take?
+                                </button>
+                            </h2>
+                            <div id="sidebarCollapse2" class="accordion-collapse collapse" aria-labelledby="sidebarHeading2" data-bs-parent="#sidebarFaqAccordion">
+                                <div class="accordion-body">
+                                    Once we receive your return, we'll process your refund within 3-5 business days. After processing, it may take 5-10 additional days for the funds to appear in your account, depending on your payment method.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'faq' %}" class="btn btn-outline-light btn-sm w-100 mt-3">View All FAQs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+        position: relative;
+        color: var(--light-color);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .policy-content {
+        color: var(--text-color);
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+    
+    .policy-section {
+        padding: 1.5rem;
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        margin-bottom: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .return-process-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .return-step {
+        display: flex;
+        align-items: flex-start;
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .return-step:hover {
+        border-color: rgba(108, 99, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .return-step-icon {
+        background: var(--gradient-primary);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-right: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .return-step-content h3 {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .return-step-content p {
+        color: var(--text-color);
+        margin-bottom: 0;
+    }
+    
+    .eligibility-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .eligibility-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1.5rem;
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .eligibility-item.eligible {
+        background-color: rgba(52, 199, 89, 0.1);
+        border-left: 4px solid #34c759;
+    }
+    
+    .eligibility-item.not-eligible {
+        background-color: rgba(255, 69, 58, 0.1);
+        border-left: 4px solid #ff453a;
+    }
+    
+    .eligibility-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        margin-right: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .eligibility-item.eligible .eligibility-icon {
+        background-color: #34c759;
+        color: white;
+    }
+    
+    .eligibility-item.not-eligible .eligibility-icon {
+        background-color: #ff453a;
+        color: white;
+    }
+    
+    .eligibility-content h3 {
+        color: var(--light-color);
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+    }
+    
+    .policy-list {
+        margin-bottom: 1rem;
+        padding-left: 1.25rem;
+    }
+    
+    .policy-list li {
+        margin-bottom: 0.75rem;
+    }
+    
+    .refund-methods {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .refund-method {
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .refund-method:hover {
+        border-color: rgba(108, 99, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .refund-method-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .refund-method-content h3 {
+        color: var(--light-color);
+        margin-bottom: 0.75rem;
+        font-size: 1.25rem;
+    }
+    
+    .refund-method-content p {
+        color: var(--text-color);
+        margin-bottom: 0;
+    }
+    
+    .info-note {
+        background-color: rgba(108, 99, 255, 0.1);
+        border-left: 4px solid var(--primary-color);
+        padding: 1rem 1.5rem;
+        border-radius: var(--border-radius-sm);
+        color: var(--text-color);
+    }
+    
+    .info-note i {
+        color: var(--primary-color);
+        margin-right: 0.5rem;
+    }
+    
+    .exchange-steps {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 1.5rem;
+        counter-reset: step-counter;
+    }
+    
+    .exchange-steps li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        background-color: var(--bg-dark-primary);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .exchange-steps li:hover {
+        border-color: rgba(108, 99, 255, 0.3);
+        transform: translateX(10px);
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        margin-right: 1.25rem;
+        flex-shrink: 0;
+    }
+    
+    .step-content h3 {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .step-content p {
+        color: var(--text-color);
+        margin-bottom: 0;
+    }
+    
+    .return-address {
+        background-color: var(--bg-dark-primary);
+        padding: 1.5rem;
+        border-radius: var(--border-radius-sm);
+        margin-top: 1rem;
+    }
+    
+    .return-address p {
+        margin-bottom: 0;
+    }
+    
+    .sidebar-card {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 1.5rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .sidebar-title {
+        color: var(--light-color);
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.25rem;
+        position: relative;
+    }
+    
+    .sidebar-title::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .sidebar-links {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0;
+        color: var(--text-color);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-link:hover {
+        color: var(--primary-color);
+        transform: translateX(5px);
+        text-decoration: none;
+    }
+    
+    .sidebar-link i {
+        margin-right: 0.75rem;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
+    }
+    
+    .sidebar-links li:last-child .sidebar-link {
+        border-bottom: none;
+    }
+    
+    .return-timer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .timer-graphic {
+        margin-bottom: 1rem;
+    }
+    
+    .timer-info p {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .timer-info small {
+        color: var(--text-color);
+    }
+    
+    .contact-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .promotion-card {
+        text-align: center;
+        background: linear-gradient(135deg, rgba(61, 61, 90, 0.7) 0%, rgba(28, 27, 51, 0.7) 100%);
+        border: 1px solid rgba(108, 99, 255, 0.2);
+        padding: 2rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .promotion-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, rgba(108, 99, 255, 0.2), transparent 50%);
+        z-index: 0;
+    }
+    
+    .promotion-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .promotion-card h3 {
+        color: var(--light-color);
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .promotion-card p {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .faq-preview .accordion-item {
+        background-color: var(--bg-dark-primary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: 0.75rem;
+        overflow: hidden;
+    }
+    
+    .faq-preview .accordion-button {
+        background-color: var(--bg-dark-primary);
+        color: var(--light-color);
+        font-weight: 500;
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .faq-preview .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background-color: var(--bg-dark-primary);
+    }
+    
+    .faq-preview .accordion-button:focus {
+        box-shadow: none;
+    }
+    
+    .faq-preview .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c63ff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        width: 16px;
+        height: 16px;
+    }
+    
+    .faq-preview .accordion-body {
+        padding: 1rem;
+        font-size: 0.9rem;
+        color: var(--text-color);
+    }
+    
+    @media (max-width: 992px) {
+        .returns-sidebar {
+            margin-top: 2rem;
+        }
+        
+        .refund-methods {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .return-step, .eligibility-item {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .return-step-icon, .eligibility-icon {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .refund-method {
+            padding: 1.25rem;
+            text-align: center;
+        }
+        
+        .refund-method-icon {
+            margin: 0 auto 1rem;
+        }
+        
+        .exchange-steps li {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .step-number {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}
