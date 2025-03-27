@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories | NeoStore{% endblock %}
+
+{% block content %}
+<div class="category-page">
+    <div class="neo-page-header">
+        <h1 class="page-title" data-aos="fade-up">Browse Categories</h1>
+        <div class="header-backdrop"></div>
+    </div>
+
+    <div class="container py-5">
+        {% if user.is_staff %}
+        <div class="admin-actions mb-4" data-aos="fade-up">
+            <a href="{% url 'add_category' %}" class="neo-btn neo-btn-primary">
+                <span class="btn-content"><i class="fas fa-folder-plus"></i> Add New Category</span>
+            </a>
+        </div>
+        {% endif %}
+
+        {% if categories %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for category in categories %}
+            <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+                <div class="category-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            {% if category.image %}
+                            <div class="category-image">
+                                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid">
+                                <div class="image-overlay"></div>
+                            </div>
+                            {% else %}
+                            <div class="category-image placeholder-image">
+                                <i class="fas fa-tags"></i>
+                                <div class="image-overlay"></div>
+                            </div>
+                            {% endif %}
+                            <div class="category-content">
+                                <h3 class="category-name">{{ category.name }}</h3>
+                                <div class="category-meta">
+                                    <span class="product-count"><i class="fas fa-box-open"></i> {{ category.product_count }} Products</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-content">
+                                <h3 class="category-name">{{ category.name }}</h3>
+                                <p class="category-description">
+                                    {% if category.description %}
+                                    {{ category.description|truncatewords:20 }}
+                                    {% else %}
+                                    Explore our collection of {{ category.name }} products.
+                                    {% endif %}
+                                </p>
+                                <div class="action-buttons">
+                                    <a href="{% url 'category_detail' category_slug=category.slug %}" class="neo-btn neo-btn-sm">
+                                        <span class="btn-content"><i class="fas fa-eye"></i> View</span>
+                                    </a>
+                                    {% if user.is_staff %}
+                                    <a href="{% url 'edit_category' category_slug=category.slug %}" class="neo-btn neo-btn-sm neo-btn-outline">
+                                        <span class="btn-content"><i class="fas fa-edit"></i> Edit</span>
+                                    </a>
+                                    <a href="{% url 'delete_category' category_slug=category.slug %}" class="neo-btn neo-btn-sm neo-btn-danger">
+                                        <span class="btn-content"><i class="fas fa-trash"></i> Delete</span>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state" data-aos="fade-up">
+            <div class="empty-state-icon">
+                <i class="fas fa-tags"></i>
+            </div>
+            <h3>No Categories Found</h3>
+            <p>There are no product categories available at the moment.</p>
+            {% if user.is_staff %}
+            <a href="{% url 'add_category' %}" class="neo-btn neo-btn-primary mt-3">
+                <span class="btn-content"><i class="fas fa-folder-plus"></i> Add New Category</span>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize category card hover effect
+        const categoryCards = document.querySelectorAll('.category-card');
+        
+        categoryCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('hover');
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('hover');
+            });
+        });
+    });
+</script>
+
+<style>
+    .category-page {
+        position: relative;
+    }
+    
+    .neo-page-header {
+        position: relative;
+        padding: 60px 20px;
+        text-align: center;
+        background: linear-gradient(135deg, var(--neo-primary-dark), var(--neo-accent));
+        margin-bottom: 40px;
+        border-radius: 0 0 50% 50% / 20px;
+        overflow: hidden;
+    }
+    
+    .page-title {
+        color: var(--neo-text-light);
+        font-weight: 700;
+        font-size: 2.5rem;
+        position: relative;
+        z-index: 2;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .header-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/static/images/pattern.svg');
+        opacity: 0.1;
+        z-index: 1;
+    }
+    
+    .category-card {
+        perspective: 1000px;
+        height: 300px;
+        width: 100%;
+        border-radius: 15px;
+        transition: transform 0.5s ease;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .category-card.hover .card-inner {
+        transform: rotateY(180deg);
+    }
+    
+    .card-front, .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .card-front {
+        background: var(--neo-bg-card);
+        color: var(--neo-text);
+    }
+    
+    .category-image {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+        background: var(--neo-primary-gradient);
+    }
+    
+    .category-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.5s ease;
+    }
+    
+    .category-card:hover .category-image img {
+        transform: scale(1.1);
+    }
+    
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    }
+    
+    .placeholder-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--neo-primary-dark), var(--neo-accent));
+    }
+    
+    .placeholder-image i {
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .category-content {
+        padding: 15px;
+        position: relative;
+    }
+    
+    .category-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--neo-text);
+    }
+    
+    .category-meta {
+        display: flex;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: var(--neo-text-muted);
+    }
+    
+    .product-count {
+        display: flex;
+        align-items: center;
+    }
+    
+    .product-count i {
+        margin-right: 5px;
+    }
+    
+    .card-back {
+        background: linear-gradient(135deg, var(--neo-primary), var(--neo-accent));
+        color: var(--neo-text-light);
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    .back-content {
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .category-description {
+        margin: 15px 0 25px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .action-buttons .neo-btn {
+        margin: 0 5px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .empty-state-icon {
+        font-size: 5rem;
+        color: var(--neo-text-muted);
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        color: var(--neo-text);
+    }
+    
+    .empty-state p {
+        font-size: 1.1rem;
+        color: var(--neo-text-muted);
+        margin-bottom: 25px;
+    }
+    
+    .admin-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 30px;
+    }
+    
+    @media (max-width: 767px) {
+        .category-card {
+            height: 250px;
+        }
+        
+        .category-image {
+            height: 150px;
+        }
+        
+        .card-back {
+            padding: 15px;
+        }
+        
+        .category-description {
+            margin: 10px 0 20px;
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-buttons .neo-btn {
+            margin: 0;
+        }
+    }
+</style>
+{% endblock %}
