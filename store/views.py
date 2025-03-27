@@ -10,6 +10,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
+from django.contrib import messages
 from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile
 import json
 import random
@@ -747,3 +748,399 @@ def get_fake_products(request):
 
 def fake_products_page(request):
     return render(request, "store/fake_products.html")
+
+# Additional Views for the expanded site
+
+def home(request):
+    """Home page view with featured products and promotions."""
+    featured_products = Product.objects.filter(is_featured=True)[:8]
+    categories = Category.objects.all()[:6]
+    
+    context = {
+        'featured_products': featured_products,
+        'categories': categories,
+        'page_title': 'Home'
+    }
+    
+    return render(request, 'store/home.html', context)
+
+def add_product_to_category(request, category_slug):
+    """Add a product directly to a specific category."""
+    category = get_object_or_404(Category, slug=category_slug)
+    
+    if request.method == 'POST':
+        # Process the form data
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        stock = request.POST.get('stock')
+        description = request.POST.get('description')
+        is_featured = 'is_featured' in request.POST
+        
+        product = Product(
+            name=name,
+            category=category,
+            price=price,
+            stock=stock,
+            description=description,
+            is_featured=is_featured,
+        )
+        
+        if 'image' in request.FILES:
+            product.image = request.FILES['image']
+        
+        if 'model_3d' in request.FILES:
+            product.model_3d = request.FILES['model_3d']
+        
+        product.save()
+        
+        return redirect('category_detail', category_slug=category.slug)
+    
+    return render(request, 'store/add_product_to_category.html', {'category': category})
+
+def category_products(request, category_slug):
+    """View all products in a specific category."""
+    category = get_object_or_404(Category, slug=category_slug)
+    products = Product.objects.filter(category=category)
+    
+    context = {
+        'category': category,
+        'products': products,
+        'page_title': f'{category.name} Products'
+    }
+    
+    return render(request, 'store/category_products.html', context)
+
+def user_orders(request):
+    """View all orders for the current user."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    
+    context = {
+        'orders': orders,
+        'page_title': 'My Orders'
+    }
+    
+    return render(request, 'store/user_orders.html', context)
+
+def order_detail(request, order_id):
+    """View details for a specific order."""
+    order = get_object_or_404(Order, id=order_id)
+    
+    # Check if the order belongs to the current user or if the user is staff
+    if order.user != request.user and not request.user.is_staff:
+        return redirect('index')
+    
+    order_items = order.items.all()
+    
+    context = {
+        'order': order,
+        'order_items': order_items,
+        'page_title': f'Order #{order.id}'
+    }
+    
+    return render(request, 'store/order_detail.html', context)
+
+def wishlist_view(request):
+    """View the current user's wishlist."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # For now, return a placeholder view since we don't have a WishlistItem model yet
+    context = {
+        'page_title': 'My Wishlist'
+    }
+    
+    return render(request, 'store/wishlist.html', context)
+
+def add_to_wishlist(request, product_id):
+    """Add a product to the user's wishlist."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    product = get_object_or_404(Product, id=product_id)
+    
+    # For now, just redirect to the product detail page
+    messages.info(request, 'Wishlist functionality will be implemented soon.')
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'success': True})
+    
+    return redirect('product_detail', product_slug=product.slug)
+
+def remove_from_wishlist(request, product_id):
+    """Remove a product from the user's wishlist."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    product = get_object_or_404(Product, id=product_id)
+    
+    # For now, just redirect to the product detail page
+    messages.info(request, 'Wishlist functionality will be implemented soon.')
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'success': True})
+    
+    return redirect('product_detail', product_slug=product.slug)
+
+def newsletter_signup(request):
+    """Handle newsletter signup."""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            # Process the newsletter signup (placeholder for now)
+            messages.success(request, 'Thank you for subscribing to our newsletter!')
+        
+    return redirect('index')
+
+def new_arrivals(request):
+    """View newly added products."""
+    # Get products added in the last 30 days
+    thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
+    products = Product.objects.filter(created_at__gte=thirty_days_ago).order_by('-created_at')
+    
+    context = {
+        'products': products,
+        'page_title': 'New Arrivals'
+    }
+    
+    return render(request, 'store/new_arrivals.html', context)
+
+def featured_products(request):
+    """View featured products."""
+    products = Product.objects.filter(is_featured=True)
+    
+    context = {
+        'products': products,
+        'page_title': 'Featured Products'
+    }
+    
+    return render(request, 'store/featured_products.html', context)
+
+def on_sale_products(request):
+    """View products on sale."""
+    # For now, just show featured products as a placeholder
+    products = Product.objects.filter(is_featured=True)
+    
+    context = {
+        'products': products,
+        'page_title': 'Products on Sale'
+    }
+    
+    return render(request, 'store/on_sale_products.html', context)
+
+def product_reviews(request, product_id):
+    """View reviews for a specific product."""
+    product = get_object_or_404(Product, id=product_id)
+    
+    # Since we don't have a Review model yet, use placeholder data
+    context = {
+        'product': product,
+        'page_title': f'Reviews for {product.name}'
+    }
+    
+    return render(request, 'store/product_reviews.html', context)
+
+def add_review(request, product_id):
+    """Add a review for a product."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    product = get_object_or_404(Product, id=product_id)
+    
+    # Placeholder message
+    messages.info(request, 'Review functionality will be implemented soon.')
+    
+    return redirect('product_detail', product_slug=product.slug)
+
+def edit_review(request, review_id):
+    """Edit an existing review."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder redirect
+    return redirect('index')
+
+def delete_review(request, review_id):
+    """Delete a review."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder redirect
+    return redirect('index')
+
+def orders(request):
+    """Admin view for all orders."""
+    if not request.user.is_staff:
+        return redirect('index')
+    
+    orders = Order.objects.all().order_by('-created_at')
+    
+    context = {
+        'orders': orders,
+        'page_title': 'All Orders'
+    }
+    
+    return render(request, 'store/orders.html', context)
+
+def track_order(request):
+    """Track an order by ID."""
+    order_id = request.GET.get('order_id')
+    order = None
+    
+    if order_id:
+        try:
+            order = Order.objects.get(id=order_id)
+            # Check if the order belongs to the current user or if the user is staff
+            if order.user != request.user and not request.user.is_staff:
+                order = None
+                messages.error(request, 'Order not found.')
+        except Order.DoesNotExist:
+            messages.error(request, 'Order not found.')
+    
+    context = {
+        'order': order,
+        'page_title': 'Track Order'
+    }
+    
+    return render(request, 'store/track_order.html', context)
+
+def shipping_view(request):
+    """View shipping information."""
+    return render(request, 'store/shipping.html', {'page_title': 'Shipping Information'})
+
+def returns_view(request):
+    """View returns information."""
+    return render(request, 'store/returns.html', {'page_title': 'Returns & Refunds'})
+
+def coupons_view(request):
+    """View available coupons."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder for now
+    context = {
+        'page_title': 'Available Coupons'
+    }
+    
+    return render(request, 'store/coupons.html', context)
+
+def apply_coupon(request):
+    """Apply a coupon to the current order."""
+    if request.method == 'POST':
+        coupon_code = request.POST.get('coupon_code')
+        
+        # Placeholder message
+        messages.info(request, 'Coupon functionality will be implemented soon.')
+    
+    return redirect('cart')
+
+def remove_coupon(request):
+    """Remove the coupon from the current order."""
+    # Placeholder message
+    messages.info(request, 'Coupon functionality will be implemented soon.')
+    
+    return redirect('cart')
+
+def notifications_view(request):
+    """View user notifications."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder for now
+    context = {
+        'page_title': 'Notifications'
+    }
+    
+    return render(request, 'store/notifications.html', context)
+
+def mark_notification_read(request, notification_id):
+    """Mark a notification as read."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder redirect
+    return redirect('notifications')
+
+def support_view(request):
+    """View support page and existing tickets."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder for now
+    context = {
+        'page_title': 'Support'
+    }
+    
+    return render(request, 'store/support.html', context)
+
+def submit_ticket(request):
+    """Submit a new support ticket."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        
+        if subject and message:
+            # Placeholder message
+            messages.success(request, 'Your support ticket has been submitted!')
+            return redirect('support')
+    
+    return render(request, 'store/submit_ticket.html', {'page_title': 'Submit Support Ticket'})
+
+def ticket_detail(request, ticket_id):
+    """View details for a specific support ticket."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Placeholder redirect
+    return redirect('support')
+
+# Static Pages
+def about(request):
+    """About page."""
+    return render(request, 'store/about.html', {'page_title': 'About Us'})
+
+def contact(request):
+    """Contact page."""
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        
+        if name and email and message:
+            # Placeholder message
+            messages.success(request, 'Your message has been sent!')
+            return redirect('contact')
+    
+    return render(request, 'store/contact.html', {'page_title': 'Contact Us'})
+
+def faq(request):
+    """FAQ page."""
+    # Placeholder data
+    faqs = [
+        {'question': 'How do I place an order?', 'answer': 'Browse our products, add items to your cart, and proceed to checkout.'},
+        {'question': 'What payment methods do you accept?', 'answer': 'We accept credit cards, PayPal, and bank transfers.'},
+        {'question': 'How long does shipping take?', 'answer': 'Shipping typically takes 3-5 business days, depending on your location.'},
+    ]
+    
+    return render(request, 'store/faq.html', {'faqs': faqs, 'page_title': 'FAQs'})
+
+def privacy_policy(request):
+    """Privacy policy page."""
+    return render(request, 'store/privacy_policy.html', {'page_title': 'Privacy Policy'})
+
+def terms_and_conditions(request):
+    """Terms and conditions page."""
+    return render(request, 'store/terms_and_conditions.html', {'page_title': 'Terms & Conditions'})
+
+def privacy(request):
+    """Alias for privacy policy."""
+    return redirect('privacy_policy')
+
+def terms(request):
+    """Alias for terms and conditions."""
+    return redirect('terms_and_conditions')

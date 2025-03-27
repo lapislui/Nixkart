@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Featured Products</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Featured Products</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <!-- Filters and Sorting -->
+    <div class="filters-section mb-4">
+        <div class="dashboard-card p-3">
+            <div class="row align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search featured products...">
+                    </div>
+                </div>
+                
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <select id="categoryFilter" class="form-select">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <select id="sortOrder" class="form-select">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="-name">Name (Z-A)</option>
+                        <option value="price">Price (Low to High)</option>
+                        <option value="-price">Price (High to Low)</option>
+                        <option value="-created_at">Newest First</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-2 d-flex justify-content-end">
+                    <button id="gridView" class="btn btn-outline-primary me-2 active">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button id="listView" class="btn btn-outline-primary">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Products Grid -->
+    <div class="row" id="productsGrid">
+        {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item" data-category="{{ product.category.id }}">
+            <div class="product-card dashboard-card h-100" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="badges">
+                    <span class="badge bg-primary">Featured</span>
+                    {% if product.stock <= 0 %}
+                    <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+                
+                <div class="product-img-wrapper">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                    {% else %}
+                    <div class="placeholder-img d-flex align-items-center justify-content-center">
+                        <i class="fas fa-image fa-3x"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="product-actions">
+                        <a href="{% url 'product_detail' product_slug=product.slug %}" class="btn btn-sm btn-light" title="View Details">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        {% if product.stock > 0 %}
+                        <form action="{% url 'add_to_cart' product_slug=product.slug %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-primary" title="Add to Cart">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                        <a href="{% url 'add_to_wishlist' product_id=product.id %}" class="btn btn-sm btn-light" title="Add to Wishlist">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="product-content p-3">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-category">{{ product.category.name }}</p>
+                    <div class="product-price">${{ product.price }}</div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No featured products available yet.</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Products List View (Hidden by default) -->
+    <div class="products-list" id="productsList" style="display: none;">
+        {% for product in products %}
+        <div class="dashboard-card mb-3 product-item" data-category="{{ product.category.id }}">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    <div class="product-img-wrapper h-100">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img h-100">
+                        {% else %}
+                        <div class="placeholder-img d-flex align-items-center justify-content-center h-100">
+                            <i class="fas fa-image fa-3x"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body h-100 d-flex flex-column">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="product-title">{{ product.name }}</h3>
+                            <div class="product-price">${{ product.price }}</div>
+                        </div>
+                        <p class="product-category"><span class="badge bg-light text-dark">{{ product.category.name }}</span></p>
+                        <p class="product-description flex-grow-1">{{ product.description|truncatechars:150 }}</p>
+                        <div class="product-actions mt-auto d-flex">
+                            <a href="{% url 'product_detail' product_slug=product.slug %}" class="btn btn-sm btn-outline-primary me-2">
+                                View Details
+                            </a>
+                            {% if product.stock > 0 %}
+                            <form action="{% url 'add_to_cart' product_slug=product.slug %}" method="post" class="me-2">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Add to Cart
+                                </button>
+                            </form>
+                            {% else %}
+                            <button class="btn btn-sm btn-secondary me-2" disabled>Out of Stock</button>
+                            {% endif %}
+                            <a href="{% url 'add_to_wishlist' product_id=product.id %}" class="btn btn-sm btn-outline-secondary">
+                                Add to Wishlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">No featured products available yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize grid/list view toggle
+        const gridView = document.getElementById('gridView');
+        const listView = document.getElementById('listView');
+        const productsGrid = document.getElementById('productsGrid');
+        const productsList = document.getElementById('productsList');
+        
+        gridView.addEventListener('click', () => {
+            productsGrid.style.display = 'flex';
+            productsList.style.display = 'none';
+            gridView.classList.add('active');
+            listView.classList.remove('active');
+        });
+        
+        listView.addEventListener('click', () => {
+            productsGrid.style.display = 'none';
+            productsList.style.display = 'block';
+            gridView.classList.remove('active');
+            listView.classList.add('active');
+        });
+        
+        // Initialize search functionality
+        const searchInput = document.getElementById('searchInput');
+        const productItems = document.querySelectorAll('.product-item');
+        
+        searchInput.addEventListener('input', filterProducts);
+        
+        // Initialize category filter
+        const categoryFilter = document.getElementById('categoryFilter');
+        categoryFilter.addEventListener('change', filterProducts);
+        
+        // Initialize sorting
+        const sortOrder = document.getElementById('sortOrder');
+        sortOrder.addEventListener('change', sortProducts);
+        
+        function filterProducts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const categoryId = categoryFilter.value;
+            
+            productItems.forEach(item => {
+                const title = item.querySelector('.product-title').textContent.toLowerCase();
+                const category = item.dataset.category;
+                
+                const matchesSearch = title.includes(searchTerm);
+                const matchesCategory = categoryId === '' || category === categoryId;
+                
+                item.style.display = matchesSearch && matchesCategory ? '' : 'none';
+            });
+        }
+        
+        function sortProducts() {
+            const sortBy = sortOrder.value;
+            const productsList = Array.from(productItems);
+            
+            productsList.sort((a, b) => {
+                if (sortBy === 'name') {
+                    return a.querySelector('.product-title').textContent.localeCompare(b.querySelector('.product-title').textContent);
+                } else if (sortBy === '-name') {
+                    return b.querySelector('.product-title').textContent.localeCompare(a.querySelector('.product-title').textContent);
+                } else if (sortBy === 'price') {
+                    return parseFloat(a.querySelector('.product-price').textContent.replace('$', '')) - 
+                           parseFloat(b.querySelector('.product-price').textContent.replace('$', ''));
+                } else if (sortBy === '-price') {
+                    return parseFloat(b.querySelector('.product-price').textContent.replace('$', '')) - 
+                           parseFloat(a.querySelector('.product-price').textContent.replace('$', ''));
+                }
+                
+                return 0;
+            });
+            
+            const gridParent = document.getElementById('productsGrid');
+            const listParent = document.getElementById('productsList');
+            
+            productsList.forEach(item => {
+                // Clone for both grid and list
+                const gridClone = item.cloneNode(true);
+                const listClone = listParent.querySelector(`[data-category="${item.dataset.category}"]`).cloneNode(true);
+                
+                // Remove from current parent
+                if (item.parentNode === gridParent) {
+                    gridParent.removeChild(item);
+                }
+                
+                // Append in new order
+                gridParent.appendChild(gridClone);
+                
+                // Handle the list item
+                const listItem = listParent.querySelector(`[data-category="${item.dataset.category}"]`);
+                if (listItem) {
+                    listParent.removeChild(listItem);
+                    listParent.appendChild(listClone);
+                }
+            });
+        }
+        
+        // Animate product cards
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach((card, index) => {
+            // Apply initial state
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            
+            // Animate in with delay
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = 1;
+                card.style.transform = 'translateY(0)';
+            }, 100 + (index * 50));
+        });
+    });
+</script>
+{% endblock %}
