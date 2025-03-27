@@ -1,0 +1,67 @@
+IntegrityError at /add-product/
+UNIQUE constraint failed: store_product.slug
+Request Method:	POST
+Request URL:	http://127.0.0.1:8000/add-product/
+Django Version:	5.1.7
+Exception Type:	IntegrityError
+Exception Value:	
+UNIQUE constraint failed: store_product.slug
+Exception Location:	C:\Users\Keval\anaconda3\envs\myDjangoEnv\lib\site-packages\django\db\backends\sqlite3\base.py, line 354, in execute
+Raised during:	store.views.add_product
+Python Executable:	C:\Users\Keval\anaconda3\envs\myDjangoEnv\python.exe
+Python Version:	3.10.16
+Python Path:	
+['C:\\Users\\Keval\\Documents\\Projects\\Nixkart',
+ 'C:\\Users\\Keval\\anaconda3\\envs\\myDjangoEnv\\python310.zip',
+ 'C:\\Users\\Keval\\anaconda3\\envs\\myDjangoEnv\\DLLs',
+ 'C:\\Users\\Keval\\anaconda3\\envs\\myDjangoEnv\\lib',
+ 'C:\\Users\\Keval\\anaconda3\\envs\\myDjangoEnv',
+ 'C:\\Users\\Keval\\anaconda3\\envs\\myDjangoEnv\\lib\\site-packages']
+Server time:	Thu, 27 Mar 2025 16:00:45 +0000
+Traceback Switch to copy-and-paste view
+C:\Users\Keval\anaconda3\envs\myDjangoEnv\lib\site-packages\django\db\backends\utils.py, line 105, in _execute
+                return self.cursor.execute(sql, params) …
+Local vars
+C:\Users\Keval\anaconda3\envs\myDjangoEnv\lib\site-packages\django\db\backends\sqlite3\base.py, line 354, in execute
+        return super().execute(query, params) …
+Local vars
+The above exception (UNIQUE constraint failed: store_product.slug) was the direct cause of the following exception:
+C:\Users\Keval\anaconda3\envs\myDjangoEnv\lib\site-packages\django\core\handlers\exception.py, line 55, in inner
+                response = get_response(request) …
+Local vars
+C:\Users\Keval\anaconda3\envs\myDjangoEnv\lib\site-packages\django\core\handlers\base.py, line 197, in _get_response
+                response = wrapped_callback(request, *callback_args, **callback_kwargs) …
+Local vars
+C:\Users\Keval\anaconda3\envs\myDjangoEnv\lib\site-packages\django\contrib\auth\decorators.py, line 60, in _view_wrapper
+                    return view_func(request, *args, **kwargs) …
+Local vars
+C:\Users\Keval\Documents\Projects\Nixkart\store\views.py, line 299, in add_product
+        
+        if 'image' in request.FILES:
+            product.image = request.FILES['image']
+        
+        if 'model_3d' in request.FILES:
+            product.model_3d = request.FILES['model_3d']
+        
+        product.save() …
+        
+        return redirect('product_detail', product_slug=product.slug)
+    
+    categories = Category.objects.all()
+    return render(request, 'store/add_product.html', {'categories': categories})
+Local vars
+C:\Users\Keval\Documents\Projects\Nixkart\store\models.py, line 55, in save
+    
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs) …
+    
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'product_slug': self.slug})
+    
+    def is_in_stock(self):
+        return self.stock > 0

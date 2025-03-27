@@ -21,7 +21,16 @@ class Category(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
+            # Generate the initial slug
             self.slug = slugify(self.name)
+            
+            # Check for existing slugs and make it unique if needed
+            original_slug = self.slug
+            counter = 1
+            while Category.objects.filter(slug=self.slug).exists():
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+                
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
@@ -51,7 +60,16 @@ class Product(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
+            # Generate the initial slug
             self.slug = slugify(self.name)
+            
+            # Check for existing slugs and make it unique if needed
+            original_slug = self.slug
+            counter = 1
+            while Product.objects.filter(slug=self.slug).exists():
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+                
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
