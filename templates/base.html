@@ -115,7 +115,7 @@
                         
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-avatar" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle user-avatar" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleUserDropdown(event)">
                                 <div class="avatar-container">
                                     <div class="avatar-inner">
                                         <i class="fas fa-user"></i>
@@ -123,7 +123,7 @@
                                 </div>
                                 <span class="username">{{ user.username }}</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end neo-dropdown">
+                            <ul class="dropdown-menu dropdown-menu-end neo-dropdown" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-id-card"></i> My Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fas fa-key"></i> Change Password</a></li>
                                 <li><hr class="dropdown-divider"></li>
@@ -254,6 +254,52 @@
             easing: 'ease-in-out',
             once: true
         });
+        
+        // Initialize Bootstrap dropdowns
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+            
+            // Add manual click handler for user dropdown
+            const userDropdown = document.getElementById('userDropdown');
+            if (userDropdown) {
+                userDropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = bootstrap.Dropdown.getInstance(userDropdown) || new bootstrap.Dropdown(userDropdown);
+                    dropdown.toggle();
+                });
+            }
+            
+            // Close the dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdownMenus = document.querySelectorAll('.dropdown-menu.show');
+                if (dropdownMenus.length && !e.target.closest('.dropdown')) {
+                    dropdownMenus.forEach(menu => {
+                        menu.classList.remove('show');
+                        const toggle = document.querySelector(`[aria-expanded="true"]`);
+                        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+                    });
+                }
+            });
+        });
+        
+        // Function to toggle user dropdown
+        function toggleUserDropdown(event) {
+            event.preventDefault();
+            const userDropdown = document.getElementById('userDropdown');
+            const dropdownMenu = userDropdown.nextElementSibling;
+            
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+                userDropdown.setAttribute('aria-expanded', 'false');
+            } else {
+                dropdownMenu.classList.add('show');
+                userDropdown.setAttribute('aria-expanded', 'true');
+            }
+        }
         
         // Initialize particles.js
         document.addEventListener('DOMContentLoaded', function() {
