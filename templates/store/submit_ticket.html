@@ -1,0 +1,733 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Submit Support Ticket - NeoStore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .ticket-header {
+        background: linear-gradient(135deg, var(--bg-dark-secondary), #1e1e2f);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .ticket-header h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .ticket-header p {
+        color: var(--light-color);
+        max-width: 700px;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .ticket-header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, var(--info-color), var(--primary-color));
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .ticket-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        border-radius: 50%;
+        opacity: 0.05;
+        z-index: 0;
+    }
+    
+    .ticket-form {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        box-shadow: var(--box-shadow);
+    }
+    
+    .ticket-form h3 {
+        margin-bottom: 1.5rem;
+        color: var(--light-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+    
+    .ticket-form h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(45deg, var(--info-color), var(--primary-color));
+        border-radius: 3px;
+    }
+    
+    .form-label {
+        color: var(--light-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        color: var(--light-color);
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .form-control:focus {
+        background-color: var(--bg-dark-tertiary);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        color: var(--light-color);
+    }
+    
+    .form-select {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        color: var(--light-color);
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .form-select:focus {
+        background-color: var(--bg-dark-tertiary);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        color: var(--light-color);
+    }
+    
+    .form-text {
+        color: var(--medium-color);
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(45deg, var(--info-color), #17a2b8);
+        border: none;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 149, 255, 0.3);
+        width: 100%;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 149, 255, 0.4);
+    }
+    
+    .faq-panel {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        height: 100%;
+    }
+    
+    .faq-panel h3 {
+        margin-bottom: 1.5rem;
+        color: var(--light-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+    
+    .faq-panel h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(45deg, var(--info-color), var(--primary-color));
+        border-radius: 3px;
+    }
+    
+    .accordion-item {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        margin-bottom: 0.75rem;
+        border-radius: var(--border-radius-sm);
+        overflow: hidden;
+    }
+    
+    .accordion-button {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--light-color);
+        padding: 1rem 1.25rem;
+        font-weight: 500;
+        box-shadow: none;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(108, 99, 255, 0.05);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--primary-color);
+    }
+    
+    .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    
+    .accordion-body {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--medium-color);
+        padding: 1rem 1.25rem;
+        border-top: 1px solid rgba(61, 61, 90, 0.1);
+    }
+    
+    .dropzone {
+        background-color: var(--bg-dark-tertiary);
+        border: 2px dashed rgba(61, 61, 90, 0.3);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .dropzone:hover {
+        border-color: var(--primary-color);
+        background-color: rgba(108, 99, 255, 0.05);
+    }
+    
+    .dropzone-icon {
+        font-size: 2.5rem;
+        color: var(--medium-color);
+        margin-bottom: 1rem;
+    }
+    
+    .dropzone-text {
+        color: var(--medium-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .dropzone-info {
+        color: var(--medium-color);
+        font-size: 0.85rem;
+    }
+    
+    .file-list {
+        margin-top: 1rem;
+    }
+    
+    .file-item {
+        display: flex;
+        align-items: center;
+        background-color: rgba(61, 61, 90, 0.1);
+        border-radius: var(--border-radius-sm);
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .file-icon {
+        color: var(--primary-color);
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+    }
+    
+    .file-name {
+        flex: 1;
+        color: var(--light-color);
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .file-remove {
+        color: var(--danger-color);
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0.25rem;
+        transition: all 0.2s ease;
+    }
+    
+    .file-remove:hover {
+        transform: scale(1.2);
+    }
+    
+    .file-size {
+        color: var(--medium-color);
+        font-size: 0.8rem;
+        margin-right: 0.75rem;
+    }
+    
+    .contact-channels {
+        margin-top: 2rem;
+    }
+    
+    .contact-channel {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(108, 99, 255, 0.1);
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+    
+    .contact-info {
+        flex: 1;
+    }
+    
+    .contact-label {
+        color: var(--medium-color);
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .contact-value {
+        color: var(--light-color);
+        font-weight: 500;
+    }
+    
+    .priority-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-right: 0.75rem;
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .priority-badge.low {
+        background-color: rgba(0, 214, 143, 0.1);
+        color: var(--success-color);
+        border: 1px solid rgba(0, 214, 143, 0.2);
+    }
+    
+    .priority-badge.medium {
+        background-color: rgba(255, 186, 0, 0.1);
+        color: var(--warning-color);
+        border: 1px solid rgba(255, 186, 0, 0.2);
+    }
+    
+    .priority-badge.high {
+        background-color: rgba(255, 61, 113, 0.1);
+        color: var(--danger-color);
+        border: 1px solid rgba(255, 61, 113, 0.2);
+    }
+    
+    .priority-badge.selected {
+        box-shadow: 0 0 0 2px var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animated-element {
+        animation: fadeInUp 0.5s ease forwards;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="ticket-header" data-aos="fade-up">
+        <h2>Submit Support Ticket</h2>
+        <p>Need help? Submit a support ticket and our team will assist you as soon as possible. Please provide detailed information about your issue to help us resolve it faster.</p>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="ticket-form" data-aos="fade-up">
+                <h3>Ticket Information</h3>
+                <form method="post" action="{% url 'submit_ticket' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" required placeholder="Brief description of your issue">
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="" selected disabled>Select a category</option>
+                                <option value="order">Order Issues</option>
+                                <option value="payment">Payment Problems</option>
+                                <option value="account">Account Questions</option>
+                                <option value="product">Product Inquiries</option>
+                                <option value="shipping">Shipping & Delivery</option>
+                                <option value="return">Returns & Refunds</option>
+                                <option value="technical">Technical Issues</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="order_id" class="form-label">Order ID (if applicable)</label>
+                            <input type="text" class="form-control" id="order_id" name="order_id" placeholder="e.g. #10234">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Priority</label>
+                        <div>
+                            <input type="radio" name="priority" id="low" value="low" class="d-none" checked>
+                            <input type="radio" name="priority" id="medium" value="medium" class="d-none">
+                            <input type="radio" name="priority" id="high" value="high" class="d-none">
+                            
+                            <label for="low" class="priority-badge low selected">
+                                <i class="fas fa-angle-down"></i> Low
+                            </label>
+                            <label for="medium" class="priority-badge medium">
+                                <i class="fas fa-minus"></i> Medium
+                            </label>
+                            <label for="high" class="priority-badge high">
+                                <i class="fas fa-angle-up"></i> High
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Please describe your issue in detail. Include all relevant information that might help us resolve your ticket faster."></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Attachments (optional)</label>
+                        <div class="dropzone" id="ticket-dropzone">
+                            <div class="dropzone-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p class="dropzone-text">Drag & drop files here or click to browse</p>
+                            <p class="dropzone-info">Max file size: 5MB | Supported formats: jpg, png, pdf, zip</p>
+                            <input type="file" id="file-upload" name="attachments" multiple class="d-none">
+                        </div>
+                        <div class="file-list" id="file-list">
+                            <!-- Files will be added here by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane me-2"></i> Submit Ticket
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="faq-panel" data-aos="fade-up">
+                <h3>Frequently Asked Questions</h3>
+                
+                <div class="accordion" id="ticketFaqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="false" aria-controls="faqCollapseOne">
+                                What information should I include?
+                            </button>
+                        </h2>
+                        <div id="faqCollapseOne" class="accordion-collapse collapse" aria-labelledby="faqOne" data-bs-parent="#ticketFaqAccordion">
+                            <div class="accordion-body">
+                                When submitting a ticket, please include your order number (if applicable), detailed description of the issue, steps to reproduce the problem, and any error messages you received. The more information you provide, the faster we can resolve your issue.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
+                                How long does it take to get a response?
+                            </button>
+                        </h2>
+                        <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#ticketFaqAccordion">
+                            <div class="accordion-body">
+                                We aim to respond to all tickets within 24 hours during business days. High priority tickets may receive faster responses. Complex issues might take longer to resolve, but we'll keep you updated on the progress.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+                                How do I track my existing ticket?
+                            </button>
+                        </h2>
+                        <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#ticketFaqAccordion">
+                            <div class="accordion-body">
+                                After submitting a ticket, you'll receive a confirmation email with a ticket ID. You can view the status of your ticket in the "Support Tickets" section of your account dashboard. You can also reply to the ticket email to add more information.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-channels">
+                    <h4 class="mb-3">Other Ways to Contact Us</h4>
+                    
+                    <div class="contact-channel">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-label">Email Support</div>
+                            <div class="contact-value">support@neostore.com</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-channel">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-label">Phone Support</div>
+                            <div class="contact-value">+1 (555) 123-4567</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-channel">
+                        <div class="contact-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-label">Live Chat</div>
+                            <div class="contact-value">Available 9 AM - 5 PM (EST)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Priority badge selection
+        const priorityBadges = document.querySelectorAll('.priority-badge');
+        const priorityInputs = document.querySelectorAll('input[name="priority"]');
+        
+        priorityBadges.forEach(badge => {
+            badge.addEventListener('click', function() {
+                // Remove selected class from all badges
+                priorityBadges.forEach(b => b.classList.remove('selected'));
+                
+                // Add selected class to clicked badge
+                this.classList.add('selected');
+                
+                // Find corresponding input and check it
+                const forInput = this.getAttribute('for');
+                document.getElementById(forInput).checked = true;
+            });
+        });
+        
+        // File upload functionality
+        const dropzone = document.getElementById('ticket-dropzone');
+        const fileInput = document.getElementById('file-upload');
+        const fileList = document.getElementById('file-list');
+        
+        // Initialize files array
+        let files = [];
+        
+        // Trigger file input when dropzone is clicked
+        dropzone.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        // Handle file selection
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+        
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        // Highlight dropzone when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropzone.classList.add('border-primary');
+        }
+        
+        function unhighlight() {
+            dropzone.classList.remove('border-primary');
+        }
+        
+        // Handle dropped files
+        dropzone.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const droppedFiles = dt.files;
+            handleFiles(droppedFiles);
+        });
+        
+        function handleFiles(selectedFiles) {
+            const fileArray = Array.from(selectedFiles);
+            
+            // Filter files (optional: add size and type validation)
+            const validFiles = fileArray.filter(file => {
+                // Check file size (5MB limit)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                    return false;
+                }
+                
+                // Check file type
+                const validTypes = ['image/jpeg', 'image/png', 'application/pdf', 'application/zip'];
+                if (!validTypes.includes(file.type)) {
+                    alert(`File ${file.name} has invalid type. Supported formats are jpg, png, pdf, zip.`);
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Add valid files to our array
+            files = [...files, ...validFiles];
+            
+            // Update the file list UI
+            updateFileList();
+        }
+        
+        function updateFileList() {
+            fileList.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item animated-element';
+                
+                // Determine file icon based on type
+                let iconClass = 'fa-file';
+                if (file.type.includes('image')) {
+                    iconClass = 'fa-file-image';
+                } else if (file.type.includes('pdf')) {
+                    iconClass = 'fa-file-pdf';
+                } else if (file.type.includes('zip')) {
+                    iconClass = 'fa-file-archive';
+                }
+                
+                // Format file size
+                const fileSize = formatFileSize(file.size);
+                
+                fileItem.innerHTML = `
+                    <i class="fas ${iconClass} file-icon"></i>
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${fileSize}</div>
+                    <i class="fas fa-times file-remove" data-index="${index}"></i>
+                `;
+                
+                fileList.appendChild(fileItem);
+            });
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.file-remove').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    removeFile(index);
+                });
+            });
+        }
+        
+        function removeFile(index) {
+            files.splice(index, 1);
+            updateFileList();
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes < 1024) {
+                return bytes + ' bytes';
+            } else if (bytes < 1024 * 1024) {
+                return (bytes / 1024).toFixed(1) + ' KB';
+            } else {
+                return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            }
+        }
+        
+        // Form submission (append files to FormData)
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            // Remove existing file inputs to avoid duplicates
+            formData.delete('attachments');
+            
+            // Append files to FormData
+            files.forEach(file => {
+                formData.append('attachments', file);
+            });
+            
+            // Submit the form (would normally use fetch or XMLHttpRequest)
+            // For simplicity, we'll just submit the form normally for now
+            form.submit();
+        });
+    });
+</script>
+{% endblock %}

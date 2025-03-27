@@ -1,140 +1,142 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Track Order - E-Commerce Store{% endblock %}
-
-{% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title mb-0">Track Your Order</h2>
-                </div>
-                <div class="card-body">
-                    <p class="lead mb-4">Enter your order ID and email to track your order status.</p>
-                    
-                    <form method="post">
-                        {% csrf_token %}
-                        
-                        <div class="mb-3">
-                            <label for="order_id" class="form-label">Order ID</label>
-                            <input type="text" name="order_id" id="order_id" class="form-control" required>
-                            <div class="form-text">The order ID was sent to your email when you placed your order.</div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" name="email" id="email" class="form-control" required>
-                            <div class="form-text">The email address you used when placing the order.</div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Track Order</button>
-                        </div>
-                    </form>
-                    
-                    {% if order %}
-                        <hr>
-                        <div class="order-tracking-result mt-4">
-                            <h4>Order #{{ order.id }}</h4>
-                            <p><strong>Date:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
-                            <p><strong>Status:</strong> 
-                                <span class="badge 
-                                {% if order.status == 'pending' %}bg-warning
-                                {% elif order.status == 'processing' %}bg-info
-                                {% elif order.status == 'shipped' %}bg-primary
-                                {% elif order.status == 'delivered' %}bg-success
-                                {% elif order.status == 'cancelled' %}bg-danger
-                                {% endif %}">
-                                    {{ order.get_status_display }}
-                                </span>
-                            </p>
-                            
-                            <div class="order-status-timeline mt-4">
-                                <div class="status-line"></div>
-                                <div class="status-points">
-                                    <div class="status-point {% if order.status == 'pending' or order.status == 'processing' or order.status == 'shipped' or order.status == 'delivered' %}active{% endif %}">
-                                        <div class="status-icon">
-                                            <i class="fas fa-clipboard-check"></i>
-                                        </div>
-                                        <div class="status-label">Order Placed</div>
-                                    </div>
-                                    <div class="status-point {% if order.status == 'processing' or order.status == 'shipped' or order.status == 'delivered' %}active{% endif %}">
-                                        <div class="status-icon">
-                                            <i class="fas fa-box"></i>
-                                        </div>
-                                        <div class="status-label">Processing</div>
-                                    </div>
-                                    <div class="status-point {% if order.status == 'shipped' or order.status == 'delivered' %}active{% endif %}">
-                                        <div class="status-icon">
-                                            <i class="fas fa-shipping-fast"></i>
-                                        </div>
-                                        <div class="status-label">Shipped</div>
-                                    </div>
-                                    <div class="status-point {% if order.status == 'delivered' %}active{% endif %}">
-                                        <div class="status-icon">
-                                            <i class="fas fa-check-circle"></i>
-                                        </div>
-                                        <div class="status-label">Delivered</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-4">
-                                <h5>Order Items</h5>
-                                <div class="table-responsive">
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th class="text-end">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for item in order.items.all %}
-                                                <tr>
-                                                    <td>{{ item.product_name }}</td>
-                                                    <td>{{ item.quantity }}</td>
-                                                    <td class="text-end">${{ item.product_price }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="2" class="text-end">Total:</th>
-                                                <th class="text-end">${{ order.total }}</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-4">
-                                <a href="{% url 'contact' %}" class="btn btn-outline-primary">
-                                    <i class="fas fa-question-circle me-2"></i> Need Help?
-                                </a>
-                            </div>
-                        </div>
-                    {% endif %}
-                    
-                    {% if error_message %}
-                        <div class="alert alert-danger mt-4">
-                            {{ error_message }}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+{% block title %}Track Your Order - NeoStore{% endblock %}
 
 {% block extra_css %}
 <style>
+    .track-header {
+        background: linear-gradient(135deg, var(--bg-dark-secondary), #1e1e2f);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+    }
+    
+    .track-header h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .track-header p {
+        color: var(--light-color);
+        max-width: 700px;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .track-header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, var(--info-color), var(--primary-color));
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .track-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        border-radius: 50%;
+        opacity: 0.05;
+        z-index: 0;
+    }
+    
+    .track-form {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        box-shadow: var(--box-shadow);
+    }
+    
+    .track-form h3 {
+        margin-bottom: 1.5rem;
+        color: var(--light-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+    
+    .track-form h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(45deg, var(--info-color), var(--primary-color));
+        border-radius: 3px;
+    }
+    
+    .form-control {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        color: var(--light-color);
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .form-control:focus {
+        background-color: var(--bg-dark-tertiary);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        color: var(--light-color);
+    }
+    
+    .track-btn {
+        background: linear-gradient(45deg, var(--info-color), #17a2b8);
+        border: none;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 149, 255, 0.3);
+    }
+    
+    .track-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 149, 255, 0.4);
+    }
+    
+    .form-text {
+        color: var(--medium-color);
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+    
+    .order-tracking-result {
+        background-color: var(--bg-dark-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 2rem;
+        margin-top: 2rem;
+        border: 1px solid rgba(61, 61, 90, 0.2);
+        box-shadow: var(--box-shadow);
+    }
+    
     .order-status-timeline {
         position: relative;
-        padding: 20px 0;
+        padding: 2rem 0;
+        margin: 2rem 0;
     }
     
     .status-line {
@@ -143,16 +145,28 @@
         left: 0;
         width: 100%;
         height: 4px;
-        background-color: #e9ecef;
+        background-color: rgba(61, 61, 90, 0.2);
         transform: translateY(-50%);
         z-index: 1;
+    }
+    
+    .status-progress {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        transform: translateY(-50%);
+        z-index: 2;
+        transition: width 1s ease;
+        border-radius: 4px;
     }
     
     .status-points {
         display: flex;
         justify-content: space-between;
         position: relative;
-        z-index: 2;
+        z-index: 3;
     }
     
     .status-point {
@@ -163,27 +177,395 @@
     }
     
     .status-icon {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
-        background-color: #e9ecef;
+        background-color: var(--bg-dark-tertiary);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 10px;
-        color: #6c757d;
-        font-size: 20px;
+        margin-bottom: 1rem;
+        color: var(--medium-color);
+        font-size: 1.5rem;
+        border: 2px solid rgba(61, 61, 90, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 4;
     }
     
     .status-point.active .status-icon {
-        background-color: #6c63ff;
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
         color: white;
+        border-color: transparent;
+        box-shadow: 0 0 15px rgba(108, 99, 255, 0.5);
+        transform: scale(1.1);
     }
     
     .status-label {
-        font-size: 0.875rem;
+        font-size: 0.9rem;
         font-weight: 500;
         text-align: center;
+        color: var(--medium-color);
+        transition: all 0.3s ease;
+    }
+    
+    .status-point.active .status-label {
+        color: var(--light-color);
+        font-weight: 600;
+    }
+    
+    .status-date {
+        font-size: 0.8rem;
+        color: var(--medium-color);
+        margin-top: 0.25rem;
+        text-align: center;
+    }
+    
+    .order-info {
+        margin-bottom: 2rem;
+    }
+    
+    .order-info-label {
+        color: var(--medium-color);
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .order-info-value {
+        color: var(--light-color);
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .order-status-badge {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .status-pending {
+        background-color: rgba(255, 186, 0, 0.1);
+        color: var(--warning-color);
+        border: 1px solid rgba(255, 186, 0, 0.2);
+    }
+    
+    .status-processing {
+        background-color: rgba(108, 99, 255, 0.1);
+        color: var(--primary-color);
+        border: 1px solid rgba(108, 99, 255, 0.2);
+    }
+    
+    .status-shipped {
+        background-color: rgba(0, 149, 255, 0.1);
+        color: var(--info-color);
+        border: 1px solid rgba(0, 149, 255, 0.2);
+    }
+    
+    .status-delivered {
+        background-color: rgba(0, 214, 143, 0.1);
+        color: var(--success-color);
+        border: 1px solid rgba(0, 214, 143, 0.2);
+    }
+    
+    .status-cancelled {
+        background-color: rgba(255, 61, 113, 0.1);
+        color: var(--danger-color);
+        border: 1px solid rgba(255, 61, 113, 0.2);
+    }
+    
+    .order-items-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .order-items-table th {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--light-color);
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(61, 61, 90, 0.1);
+    }
+    
+    .order-items-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--medium-color);
+    }
+    
+    .order-items-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .order-items-table tr:hover td {
+        background-color: rgba(61, 61, 90, 0.05);
+    }
+    
+    .order-items-table .item-price {
+        text-align: right;
+        font-weight: 600;
+        color: var(--info-color);
+    }
+    
+    .order-items-table tfoot td {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--light-color);
+        font-weight: 600;
+    }
+    
+    .order-items-table .total-label {
+        text-align: right;
+    }
+    
+    .order-items-table .total-value {
+        text-align: right;
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    
+    .help-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.25rem;
+        border-radius: 50px;
+        background-color: transparent;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .help-btn:hover {
+        background-color: rgba(108, 99, 255, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(108, 99, 255, 0.2);
+    }
+    
+    .alert-danger {
+        background-color: rgba(255, 61, 113, 0.1);
+        color: var(--danger-color);
+        border: 1px solid rgba(255, 61, 113, 0.2);
+        border-radius: var(--border-radius-md);
+        padding: 1rem;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .status-point.active .status-icon {
+        animation: pulse 2s infinite;
     }
 </style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="track-header" data-aos="fade-up">
+        <h2>Track Your Order</h2>
+        <p>Enter your order details to track your shipment in real-time. Keep track of where your order is and when you can expect to receive it.</p>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <div class="track-form" data-aos="fade-up">
+                <h3>Order Information</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="order_id" class="form-label">Order ID</label>
+                        <input type="text" name="order_id" id="order_id" class="form-control" value="{{ request.GET.order_id|default:'' }}" required>
+                        <div class="form-text">The order ID was sent to your email when you placed your order.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" name="email" id="email" class="form-control" required>
+                        <div class="form-text">The email address you used when placing the order.</div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn track-btn">
+                            <i class="fas fa-search me-2"></i> Track Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-7">
+            {% if order %}
+                <div class="order-tracking-result" data-aos="fade-up">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="order-info">
+                                <div class="order-info-label">Order Number</div>
+                                <div class="order-info-value">#{{ order.id }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="order-info">
+                                <div class="order-info-label">Date Placed</div>
+                                <div class="order-info-value">{{ order.created_at|date:"F j, Y" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="order-info">
+                                <div class="order-info-label">Status</div>
+                                <div class="order-info-value">
+                                    <span class="order-status-badge 
+                                    {% if order.status == 'pending' %}status-pending
+                                    {% elif order.status == 'processing' %}status-processing
+                                    {% elif order.status == 'shipped' %}status-shipped
+                                    {% elif order.status == 'delivered' %}status-delivered
+                                    {% elif order.status == 'cancelled' %}status-cancelled
+                                    {% endif %}">
+                                        {% if order.status == 'pending' %}
+                                            <i class="fas fa-clock me-1"></i> Pending
+                                        {% elif order.status == 'processing' %}
+                                            <i class="fas fa-cog me-1"></i> Processing
+                                        {% elif order.status == 'shipped' %}
+                                            <i class="fas fa-shipping-fast me-1"></i> Shipped
+                                        {% elif order.status == 'delivered' %}
+                                            <i class="fas fa-check-circle me-1"></i> Delivered
+                                        {% elif order.status == 'cancelled' %}
+                                            <i class="fas fa-times-circle me-1"></i> Cancelled
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="order-info">
+                                <div class="order-info-label">Shipping To</div>
+                                <div class="order-info-value">{{ order.full_name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-status-timeline">
+                        <div class="status-line"></div>
+                        <div class="status-progress" style="width: 
+                            {% if order.status == 'pending' %}0%
+                            {% elif order.status == 'processing' %}33%
+                            {% elif order.status == 'shipped' %}66%
+                            {% elif order.status == 'delivered' %}100%
+                            {% elif order.status == 'cancelled' %}0%
+                            {% endif %}">
+                        </div>
+                        <div class="status-points">
+                            <div class="status-point {% if order.status == 'pending' or order.status == 'processing' or order.status == 'shipped' or order.status == 'delivered' %}active{% endif %}">
+                                <div class="status-icon">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </div>
+                                <div class="status-label">Order Placed</div>
+                                <div class="status-date">{{ order.created_at|date:"M d" }}</div>
+                            </div>
+                            <div class="status-point {% if order.status == 'processing' or order.status == 'shipped' or order.status == 'delivered' %}active{% endif %}">
+                                <div class="status-icon">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div class="status-label">Processing</div>
+                                <div class="status-date">{{ order.created_at|date:"M d" }}</div>
+                            </div>
+                            <div class="status-point {% if order.status == 'shipped' or order.status == 'delivered' %}active{% endif %}">
+                                <div class="status-icon">
+                                    <i class="fas fa-shipping-fast"></i>
+                                </div>
+                                <div class="status-label">Shipped</div>
+                                <div class="status-date">{{ order.created_at|date:"M d" }}</div>
+                            </div>
+                            <div class="status-point {% if order.status == 'delivered' %}active{% endif %}">
+                                <div class="status-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="status-label">Delivered</div>
+                                <div class="status-date">{{ order.created_at|date:"M d" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mb-3">Order Items</h4>
+                    <div class="table-responsive">
+                        <table class="order-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th class="item-price">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items.all %}
+                                    <tr>
+                                        <td>{{ item.product_name }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td class="item-price">${{ item.product_price }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="total-label">Total:</td>
+                                    <td class="total-value">${{ order.total }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="{% url 'support' %}" class="btn help-btn">
+                            <i class="fas fa-question-circle"></i> Need Help?
+                        </a>
+                    </div>
+                </div>
+            {% elif error_message %}
+                <div class="alert alert-danger mt-4" data-aos="fade-up">
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ error_message }}
+                </div>
+            {% else %}
+                <div class="order-tracking-result text-center" data-aos="fade-up">
+                    <img src="{% static 'img/tracking.svg' %}" alt="Order Tracking" style="max-width: 300px; margin-bottom: 2rem; opacity: 0.7;">
+                    <h4 class="mb-3">Enter Your Order Details</h4>
+                    <p class="text-muted">Use the form to find your order and check its current status. You'll be able to see where your package is and when it will arrive.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate the status progress
+        const statusProgress = document.querySelector('.status-progress');
+        if (statusProgress) {
+            setTimeout(() => {
+                statusProgress.style.transition = 'width 1.5s ease';
+                statusProgress.style.width = statusProgress.getAttribute('style').split('width:')[1].trim();
+            }, 300);
+        }
+        
+        // Focus the order ID input if empty
+        const orderIdInput = document.getElementById('order_id');
+        if (orderIdInput && !orderIdInput.value) {
+            orderIdInput.focus();
+        }
+    });
+</script>
 {% endblock %}
