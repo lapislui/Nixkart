@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Product to {{ category.name }} - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Add Product to {{ category.name }}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" name="name" id="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="description" id="description" rows="4" class="form-control" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" name="price" id="price" class="form-control" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="stock" class="form-label">Stock</label>
+                            <input type="number" name="stock" id="stock" class="form-control" min="0" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Product Image</label>
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="model_3d" class="form-label">3D Model (optional)</label>
+                            <input type="file" name="model_3d" id="model_3d" class="form-control" accept=".obj,.glb,.gltf">
+                            <div class="form-text">Upload a 3D model of the product (supported formats: OBJ, GLB, GLTF).</div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input">
+                            <label for="is_featured" class="form-check-label">Feature this product on the homepage</label>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'category_detail' category.slug %}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

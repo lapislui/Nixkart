@@ -15,6 +15,7 @@ from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserPro
 import json
 import random
 from decimal import Decimal
+from .forms import CustomUserCreationForm, ProductForm, CategoryForm, UserProfileForm
 
 # Custom login view
 class CustomLoginView(LoginView):

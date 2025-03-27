@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }} - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="category-header mb-5" data-aos="fade-up">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="section-title mb-3">{{ category.name }}</h1>
+                {% if category.description %}
+                    <p class="lead mb-4">{{ category.description }}</p>
+                {% endif %}
+                {% if request.user.is_staff %}
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'edit_category' category.slug %}" class="btn btn-outline-primary">
+                            <i class="fas fa-edit me-2"></i> Edit Category
+                        </a>
+                        <a href="{% url 'delete_category' category.slug %}" class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-2"></i> Delete Category
+                        </a>
+                        <a href="{% url 'add_product_to_category' category.slug %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i> Add Product
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {% if category.image %}
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid rounded">
+                {% else %}
+                    <div class="category-placeholder rounded d-flex align-items-center justify-content-center" style="height: 250px;">
+                        <i class="fas fa-box-open fa-4x"></i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title mb-0">Products in {{ category.name }}</h2>
+                <div>
+                    <span class="me-2">{{ products.count }} products</span>
+                    <select class="form-select form-select-sm d-inline-block w-auto" id="sortProducts">
+                        <option value="newest">Newest First</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="name_asc">Name: A to Z</option>
+                        <option value="name_desc">Name: Z to A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% if products %}
+            {% for product in products %}
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-4 product-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'s' }}00" data-price="{{ product.price }}" data-name="{{ product.name }}" data-date="{{ product.created_at|date:'U' }}">
+                    <div class="product-card">
+                        <div class="product-img-wrapper">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                            {% else %}
+                                <div class="product-placeholder">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                            {% endif %}
+                            {% if product.model_3d %}
+                                <div class="product-badge">
+                                    <span class="badge bg-primary">3D</span>
+                                </div>
+                            {% endif %}
+                            <div class="product-actions">
+                                <a href="{% url 'product_detail' product.slug %}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" title="Add to Wishlist">
+                                    <i class="far fa-heart"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-card-body">
+                            <h3 class="product-title">
+                                <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
+                            </h3>
+                            <div class="product-meta">
+                                <span class="product-category">{{ product.category.name }}</span>
+                                <span class="product-price">${{ product.price }}</span>
+                            </div>
+                            <div class="product-description">
+                                {{ product.description|truncatechars:60 }}
+                            </div>
+                        </div>
+                        <div class="product-card-footer">
+                            <button class="btn btn-primary add-to-cart-btn" data-product-slug="{{ product.slug }}">
+                                <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>No Products in this Category</h3>
+                    <p>There are currently no products in this category.</p>
+                    {% if request.user.is_staff %}
+                        <a href="{% url 'add_product_to_category' category.slug %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i> Add Product
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productSlug = this.getAttribute('data-product-slug');
+                
+                // Add loading state
+                this.classList.add('adding');
+                
+                // Send AJAX request
+                fetch(`/add-to-cart/${productSlug}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove loading state
+                    this.classList.remove('adding');
+                    
+                    // Update cart count in navbar
+                    const cartCountElement = document.querySelector('.cart-count');
+                    if (cartCountElement) {
+                        cartCountElement.textContent = data.cart_count;
+                    }
+                    
+                    // Show success message
+                    alert('Product added to cart!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    this.classList.remove('adding');
+                    alert('Failed to add product to cart. Please try again.');
+                });
+            });
+        });
+        
+        // Sorting functionality
+        const sortSelect = document.getElementById('sortProducts');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                const sortValue = this.value;
+                const productItems = document.querySelectorAll('.product-item');
+                const productContainer = document.querySelector('.row:has(.product-item)');
+                
+                // Convert NodeList to Array for sorting
+                const productsArray = Array.from(productItems);
+                
+                switch (sortValue) {
+                    case 'newest':
+                        productsArray.sort((a, b) => {
+                            return parseInt(b.dataset.date) - parseInt(a.dataset.date);
+                        });
+                        break;
+                    case 'price_low':
+                        productsArray.sort((a, b) => {
+                            return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                        });
+                        break;
+                    case 'price_high':
+                        productsArray.sort((a, b) => {
+                            return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                        });
+                        break;
+                    case 'name_asc':
+                        productsArray.sort((a, b) => {
+                            return a.dataset.name.localeCompare(b.dataset.name);
+                        });
+                        break;
+                    case 'name_desc':
+                        productsArray.sort((a, b) => {
+                            return b.dataset.name.localeCompare(a.dataset.name);
+                        });
+                        break;
+                }
+                
+                // Remove existing products
+                productItems.forEach(item => item.remove());
+                
+                // Add sorted products back to the container
+                productsArray.forEach(item => {
+                    productContainer.appendChild(item);
+                });
+            });
+        }
+        
+        // Helper function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
+{% endblock %}

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}Featured Products - E-Commerce Store{% endblock %}
+{% block title %}New Arrivals - E-Commerce Store{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="section-title mb-4">Featured Products</h1>
+    <h1 class="section-title mb-4">New Arrivals</h1>
     
     <div class="row">
-        {% if featured_products %}
-            {% for product in featured_products %}
+        {% if new_products %}
+            {% for product in new_products %}
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'s' }}00">
                     <div class="product-card">
                         <div class="product-img-wrapper">
@@ -20,7 +20,7 @@
                                 </div>
                             {% endif %}
                             <div class="product-badge">
-                                <span class="badge bg-warning">Featured</span>
+                                <span class="badge bg-success">New</span>
                                 {% if product.model_3d %}
                                     <span class="badge bg-primary">3D</span>
                                 {% endif %}
@@ -58,10 +58,10 @@
             <div class="col-12">
                 <div class="empty-state">
                     <div class="empty-icon">
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-box"></i>
                     </div>
-                    <h3>No Featured Products Available</h3>
-                    <p>We're currently updating our featured collection. Please check back soon!</p>
+                    <h3>No New Products Available</h3>
+                    <p>We're currently restocking our inventory. Please check back soon for new arrivals!</p>
                 </div>
             </div>
         {% endif %}
