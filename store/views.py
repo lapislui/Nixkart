@@ -450,7 +450,7 @@ def add_to_cart(request, product_slug):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({
             'success': True,
-            'cart_count': cart.item_count,
+            'cart_count': cart.item_count(),
         })
     
     return redirect('cart')
@@ -482,9 +482,9 @@ def update_cart(request, cart_item_id):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({
             'success': True,
-            'cart_count': cart.item_count,
-            'cart_total': float(cart.total),
-            'item_subtotal': float(cart_item.subtotal) if quantity > 0 else 0,
+            'cart_count': cart.item_count(),
+            'cart_total': float(cart.total()),
+            'item_subtotal': float(cart_item.subtotal()) if quantity > 0 else 0,
         })
     
     return redirect('cart')
@@ -498,8 +498,8 @@ def remove_from_cart(request, cart_item_id):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({
             'success': True,
-            'cart_count': cart.item_count,
-            'cart_total': float(cart.total),
+            'cart_count': cart.item_count(),
+            'cart_total': float(cart.total()),
         })
     
     return redirect('cart')
@@ -534,7 +534,7 @@ def checkout(request):
             state=state,
             zip_code=zip_code,
             country=country,
-            total=cart.total,
+            total=cart.total(),
             status='pending'
         )
         order.save()
@@ -546,7 +546,7 @@ def checkout(request):
                 product_name=cart_item.product.name,
                 product_price=cart_item.product.price,
                 quantity=cart_item.quantity,
-                subtotal=cart_item.subtotal
+                subtotal=cart_item.subtotal()
             )
         
         # Clear the cart
@@ -727,7 +727,7 @@ def reset_order_sequence(request):
 def cart_count(request):
     if request.user.is_authenticated:
         cart = get_or_create_cart(request)
-        return {'cart_count': cart.item_count}
+        return {'cart_count': cart.item_count()}
     return {'cart_count': 0}
 
 # Fake products for testing
