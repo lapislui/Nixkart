@@ -625,8 +625,11 @@ def checkout(request):
         # Clear the cart
         cart.items.all().delete()
         
-        # Redirect to success page
-        return redirect('order_success')
+        # Show success message
+        messages.success(request, 'Your order has been placed successfully!')
+        
+        # Redirect to home page
+        return redirect('index')
     
     # Get user profile for pre-filling checkout form
     try:
