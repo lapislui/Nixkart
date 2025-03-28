@@ -628,8 +628,8 @@ def checkout(request):
         # Show success message
         messages.success(request, 'Your order has been placed successfully!')
         
-        # Redirect to home page
-        return redirect('index')
+        # Redirect to order success page
+        return redirect('order_success')
     
     # Get user profile for pre-filling checkout form
     try:
