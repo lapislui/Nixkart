@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'channels',
     
     # Local apps
     'store.apps.StoreConfig',
@@ -93,6 +94,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ecommerce_project.wsgi.application'
+ASGI_APPLICATION = 'ecommerce_project.asgi.application'
+
+# Channels configurations
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
