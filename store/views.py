@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -1167,3 +1167,8 @@ def privacy(request):
 def terms(request):
     """Alias for terms and conditions."""
     return redirect('terms_and_conditions')
+
+def logout_view(request):
+    """Custom logout view that works with GET requests."""
+    logout(request)
+    return redirect('login')
