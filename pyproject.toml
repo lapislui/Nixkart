@@ -4,9 +4,6 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = [
-    "channels>=4.2.0",
-    "channels-redis>=4.2.1",
-    "daphne>=4.1.2",
     "django>=5.1.7",
     "django-allauth>=65.5.0",
     "django-crispy-forms>=2.3",

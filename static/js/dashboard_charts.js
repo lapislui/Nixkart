@@ -3,9 +3,6 @@
  * Advanced animated charts and statistics for the admin dashboard
  */
 
-// Store chart instances so they can be updated by WebSockets
-const chartInstances = {};
-
 // Chart color scheme for dark theme
 const chartColors = {
     primary: '#6c63ff',
@@ -617,27 +614,27 @@ function initDashboardAnalytics() {
     // Initialize charts with any server-provided data
     // These will initialize with default data if none is provided in the page
     if (salesTrendCanvas) {
-        chartInstances.salesTrendChart = initSalesTrendChart(salesTrendCanvas, window.salesTrendData || null);
+        initSalesTrendChart(salesTrendCanvas, window.salesTrendData || null);
     }
     
     if (categoryChartCanvas) {
-        chartInstances.categoryChart = initCategoryChart(categoryChartCanvas, window.categoryData || null);
+        initCategoryChart(categoryChartCanvas, window.categoryData || null);
     }
     
     if (orderStatusCanvas) {
-        chartInstances.orderStatusChart = initOrderStatusChart(orderStatusCanvas, window.orderStatusData || null);
+        initOrderStatusChart(orderStatusCanvas, window.orderStatusData || null);
     }
     
     if (comparisonChartCanvas) {
-        chartInstances.comparisonChart = initComparisonChart(comparisonChartCanvas, window.comparisonData || null);
+        initComparisonChart(comparisonChartCanvas, window.comparisonData || null);
     }
     
     if (topProductsCanvas) {
-        chartInstances.topProductsChart = initTopProductsChart(topProductsCanvas, window.topProductsData || null);
+        initTopProductsChart(topProductsCanvas, window.topProductsData || null);
     }
     
     if (userRegistrationCanvas) {
-        chartInstances.userRegistrationChart = initUserRegistrationChart(userRegistrationCanvas, window.userRegistrationData || null);
+        initUserRegistrationChart(userRegistrationCanvas, window.userRegistrationData || null);
     }
     
     // Initialize animated stat counters
