@@ -573,29 +573,20 @@ def checkout(request):
         # Process different payment methods
         payment_status = 'pending'  # Default payment status
         if payment_method == 'credit_card':
-            # Get payment intent information
-            payment_intent_id = request.POST.get('payment_intent_id', '')
+            # Simple card validation would go here in a real system
+            card_name = request.POST.get('card_name', '')
+            card_number = request.POST.get('card_number', '')
+            card_expiry = request.POST.get('expiry', '')
+            card_cvv = request.POST.get('cvv', '')
             
-            if not payment_intent_id:
-                messages.error(request, 'Payment processing failed. Please try again.')
+            # Basic validation
+            if not (card_name and card_number and card_expiry and card_cvv):
+                messages.error(request, 'Please fill in all payment fields.')
                 return redirect('checkout')
             
-            # Verify the payment intent status
-            from .payments import retrieve_payment_intent
-            payment_result = retrieve_payment_intent(payment_intent_id)
-            
-            if not payment_result['success']:
-                messages.error(request, f'Payment verification failed: {payment_result.get("error", "Unknown error")}')
-                return redirect('checkout')
-            
-            payment_intent = payment_result['intent']
-            
-            # Check if payment was successful
-            if payment_intent.status == 'succeeded':
-                payment_status = 'processed'
-            else:
-                messages.error(request, f'Payment not completed. Status: {payment_intent.status}')
-                return redirect('checkout')
+            # In a real system, we would process the payment with a payment gateway
+            # For demo purposes, we'll always consider the payment successful
+            payment_status = 'processed'
             
         elif payment_method == 'paypal':
             # In a real app, you would redirect to PayPal here

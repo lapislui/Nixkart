@@ -2,11 +2,6 @@
 
 {% block title %}Checkout - ShopSmart{% endblock %}
 
-{% block extra_head %}
-<!-- Load Stripe.js -->
-<script src="https://js.stripe.com/v3/"></script>
-{% endblock %}
-
 {% block extra_css %}
 <style>
     .checkout-container {
@@ -26,30 +21,6 @@
         color: var(--text-light);
         max-width: 700px;
         margin: 0 auto;
-    }
-    
-    /* Stripe Elements customization */
-    .stripe-element {
-        padding: 10px 14px;
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: var(--border-radius-sm);
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .stripe-element:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        outline: none;
-    }
-    
-    .stripe-element.StripeElement--focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-    }
-    
-    .stripe-element.StripeElement--invalid {
-        border-color: var(--error-color);
     }
     
     .checkout-steps {
@@ -472,20 +443,6 @@
         <p class="checkout-subtitle">Complete your purchase by providing your shipping and payment details.</p>
     </div>
     
-    {% if messages %}
-    <div class="message-container">
-        {% for message in messages %}
-        <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
-            <div class="message-content">
-                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
-                <span>{{ message }}</span>
-            </div>
-            <button class="message-close"><i class="fas fa-times"></i></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    
     <div class="checkout-steps slide-up">
         <div class="checkout-step active" id="step1">
             <div class="checkout-step-indicator">1</div>
@@ -622,7 +579,7 @@
                         
                         <input type="hidden" name="payment_method" id="payment_method" value="credit_card">
                         
-                        <!-- Credit Card Form with Stripe Elements -->
+                        <!-- Credit Card Form -->
                         <div id="credit-card-form">
                             <div class="form-group">
                                 <label for="card_name" class="form-label">Name on Card</label>
@@ -630,14 +587,20 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="card-element" class="form-label">Card Information</label>
-                                <div id="card-element" class="form-control stripe-element"></div>
-                                <div id="card-errors" class="form-error" role="alert"></div>
+                                <label for="card_number" class="form-label">Card Number</label>
+                                <input type="text" id="card_number" name="card_number" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
                             </div>
                             
-                            <!-- Hidden field to store payment intent ID -->
-                            <input type="hidden" id="payment_intent_id" name="payment_intent_id">
-                            <input type="hidden" id="payment_intent_client_secret" name="payment_intent_client_secret">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry" class="form-label">Expiry Date</label>
+                                    <input type="text" id="expiry" name="expiry" class="form-control" placeholder="MM/YY" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv" class="form-label">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" class="form-control" placeholder="XXX" required>
+                                </div>
+                            </div>
                             
                             <div class="card-icons">
                                 <div class="card-icon"><i class="fab fa-cc-visa"></i></div>
@@ -778,7 +741,7 @@
                     
                     <div class="checkout-buttons">
                         <button type="button" class="back-btn" id="back-to-payment-btn">Back to Payment</button>
-                        <button type="submit" class="place-order-btn" id="place-order-btn">Place Order</button>
+                        <button type="submit" class="place-order-btn">Place Order</button>
                     </div>
                 </div>
             </form>
@@ -843,131 +806,7 @@
 
 {% block extra_js %}
 <script>
-    // Initialize Stripe
-    let stripe, elements, card;
-    
-    // For calculating the cart total
-    const cartTotal = {{ cart.total|default:0 }};
-    
-    // Function to show toast messages
-    function showToast(message, type = 'info') {
-        const toastContainer = document.querySelector('.message-container');
-        if (!toastContainer) {
-            // Create a container if it doesn't exist
-            const newContainer = document.createElement('div');
-            newContainer.className = 'message-container';
-            document.querySelector('.checkout-header').insertAdjacentElement('afterend', newContainer);
-        }
-        
-        const toast = document.createElement('div');
-        toast.className = `message message-${type}`;
-        toast.innerHTML = `
-            <div class="message-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span>${message}</span>
-            </div>
-            <button class="message-close"><i class="fas fa-times"></i></button>
-        `;
-        
-        // Add event listener to close button
-        toast.querySelector('.message-close').addEventListener('click', function() {
-            toast.remove();
-        });
-        
-        // Add the toast to the container
-        document.querySelector('.message-container').appendChild(toast);
-        
-        // Auto-remove after 5 seconds for non-error messages
-        if (type !== 'error') {
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.remove();
-                }
-            }, 5000);
-        }
-    }
-    
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Stripe elements
-        stripe = Stripe('pk_test_51PYPLBAgcSYPqNkUGYQCJSJvZVMgXNOoxn75ZYqIqqbGwJoWcGvqAU6qAyjlbfU3LqyilEfF2QSw7OAm8RZ1D2Ul00tjvYHYMW');
-        elements = stripe.elements();
-        
-        // Customize the card element
-        const style = {
-            base: {
-                color: '#32325d',
-                fontFamily: '"Inter", Arial, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#aab7c4'
-                }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
-            }
-        };
-        
-        // Create and mount the card element
-        card = elements.create('card', {style: style});
-        card.mount('#card-element');
-        
-        // Handle real-time validation errors
-        card.on('change', function(event) {
-            const displayError = document.getElementById('card-errors');
-            if (event.error) {
-                displayError.textContent = event.error.message;
-            } else {
-                displayError.textContent = '';
-            }
-        });
-        
-        // Create payment intent when entering payment step
-        document.getElementById('to-payment-btn').addEventListener('click', function() {
-            if (validateShippingForm()) {
-                // Create a payment intent
-                fetch('{% url "create_payment_intent" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify({
-                        amount: cartTotal
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.clientSecret) {
-                        // Store the client secret
-                        document.getElementById('payment_intent_client_secret').value = data.clientSecret;
-                    } else {
-                        showToast('Failed to initialize payment: ' + (data.error || 'Unknown error'), 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showToast('Failed to initialize payment. Please try again.', 'error');
-                });
-            }
-        });
-        
-        // Function to get CSRF token from cookies
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
         // Step navigation
         const toPaymentBtn = document.getElementById('to-payment-btn');
         const backToShippingBtn = document.getElementById('back-to-shipping-btn');
@@ -1152,35 +991,31 @@
             const paymentMethod = document.getElementById('payment_method').value;
             
             if (paymentMethod === 'credit_card') {
-                const cardName = document.getElementById('card_name');
+                const requiredFields = ['card_name', 'card_number', 'expiry', 'cvv'];
                 let isValid = true;
                 
-                // Validate card name
-                if (!cardName.value.trim()) {
-                    isValid = false;
-                    cardName.classList.add('is-invalid');
-                    
-                    // Add error message if it doesn't exist
-                    if (!cardName.nextElementSibling || !cardName.nextElementSibling.classList.contains('form-error')) {
-                        const errorMessage = document.createElement('div');
-                        errorMessage.className = 'form-error';
-                        errorMessage.textContent = 'Name on card is required';
-                        cardName.parentNode.insertBefore(errorMessage, cardName.nextSibling);
+                requiredFields.forEach(field => {
+                    const input = document.getElementById(field);
+                    if (input && !input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('is-invalid');
+                        
+                        // Add error message if it doesn't exist
+                        if (!input.nextElementSibling || !input.nextElementSibling.classList.contains('form-error')) {
+                            const errorMessage = document.createElement('div');
+                            errorMessage.className = 'form-error';
+                            errorMessage.textContent = 'This field is required';
+                            input.parentNode.insertBefore(errorMessage, input.nextSibling);
+                        }
+                    } else if (input) {
+                        input.classList.remove('is-invalid');
+                        
+                        // Remove error message if it exists
+                        if (input.nextElementSibling && input.nextElementSibling.classList.contains('form-error')) {
+                            input.nextElementSibling.remove();
+                        }
                     }
-                } else {
-                    cardName.classList.remove('is-invalid');
-                    
-                    // Remove error message if it exists
-                    if (cardName.nextElementSibling && cardName.nextElementSibling.classList.contains('form-error')) {
-                        cardName.nextElementSibling.remove();
-                    }
-                }
-                
-                // Check if there are any card errors
-                const cardErrors = document.getElementById('card-errors');
-                if (cardErrors && cardErrors.textContent) {
-                    isValid = false;
-                }
+                });
                 
                 return isValid;
             }
@@ -1207,7 +1042,8 @@
             
             if (paymentMethod === 'credit_card') {
                 paymentMethodText = 'Credit Card';
-                document.getElementById('review-card-info').textContent = 'Card details entered with Stripe secure checkout';
+                const cardNumber = document.getElementById('card_number').value;
+                document.getElementById('review-card-last4').textContent = cardNumber.slice(-4);
                 document.getElementById('review-card-info').style.display = 'block';
             } else if (paymentMethod === 'paypal') {
                 paymentMethodText = 'PayPal';
@@ -1256,100 +1092,48 @@
         const checkoutForm = document.getElementById('checkout-form');
         if (checkoutForm) {
             checkoutForm.addEventListener('submit', function(e) {
-                e.preventDefault(); // Always prevent default form submission
+                e.preventDefault();
                 
                 // Make sure terms are agreed to
                 const termsAgreed = document.getElementById('terms_agreed');
                 if (!termsAgreed.checked) {
                     showToast('You must agree to the Terms & Conditions to proceed.', 'error');
-                    return false;
+                    return;
                 }
                 
-                // Validate the form fields if we're on the review section
-                if (document.getElementById('review-section').classList.contains('active')) {
-                    // Validate all required fields before submitting
-                    if (!validateShippingForm() || !validatePaymentForm()) {
-                        showToast('Please fix the errors in the form before submitting.', 'error');
-                        return false;
+                // Disable submit button to prevent multiple submissions
+                const submitBtn = document.querySelector('.place-order-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Submit form
+                const formData = new FormData(this);
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
-                    
-                    // Disable submit button to prevent multiple submissions
-                    const submitBtn = document.querySelector('.place-order-btn');
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                    
-                    const paymentMethod = document.getElementById('payment_method').value;
-                    
-                    if (paymentMethod === 'credit_card') {
-                        // Get the client secret from the hidden input
-                        const clientSecret = document.getElementById('payment_intent_client_secret').value;
-                        
-                        if (!clientSecret) {
-                            showToast('Error: Payment not initialized properly. Please try again.', 'error');
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = 'Place Order';
-                            return false;
-                        }
-                        
-                        // Confirm the card payment
-                        stripe.confirmCardPayment(clientSecret, {
-                            payment_method: {
-                                card: card,
-                                billing_details: {
-                                    name: document.getElementById('card_name').value,
-                                    email: document.getElementById('email').value,
-                                    address: {
-                                        line1: document.getElementById('same_as_shipping').checked ? 
-                                            document.getElementById('address').value : 
-                                            document.getElementById('billing_address').value,
-                                        city: document.getElementById('same_as_shipping').checked ? 
-                                            document.getElementById('city').value : 
-                                            document.getElementById('billing_city').value,
-                                        state: document.getElementById('same_as_shipping').checked ? 
-                                            document.getElementById('state').value : 
-                                            document.getElementById('billing_state').value,
-                                        postal_code: document.getElementById('same_as_shipping').checked ? 
-                                            document.getElementById('zip').value : 
-                                            document.getElementById('billing_zip').value,
-                                        country: document.getElementById('same_as_shipping').checked ? 
-                                            document.getElementById('country').value : 
-                                            document.getElementById('billing_country').value
-                                    }
-                                }
-                            }
-                        }).then(function(result) {
-                            if (result.error) {
-                                // Show error to your customer
-                                showToast(result.error.message, 'error');
-                                submitBtn.disabled = false;
-                                submitBtn.innerHTML = 'Place Order';
-                            } else {
-                                // The payment succeeded
-                                if (result.paymentIntent.status === 'succeeded') {
-                                    // Add payment intent ID to the form
-                                    document.getElementById('payment_intent_id').value = result.paymentIntent.id;
-                                    
-                                    // Submit the form for final processing
-                                    checkoutForm.submit();
-                                }
-                            }
-                        });
-                    } else if (paymentMethod === 'paypal') {
-                        // Handle PayPal payment here
-                        showToast('PayPal payment processing is not implemented in this demo.', 'info');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = 'Place Order';
-                    } else if (paymentMethod === 'apple_pay') {
-                        // Handle Apple Pay payment here
-                        showToast('Apple Pay payment processing is not implemented in this demo.', 'info');
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect to success page
+                        window.location.href = data.redirect_url || '{% url "order_success" %}';
+                    } else {
+                        // Show error message
+                        showToast(data.message || 'An error occurred while processing your order. Please try again.', 'error');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = 'Place Order';
                     }
-                } else {
-                    // If we're not on the review section, don't submit the form
-                    showToast('Please complete all steps before placing your order.', 'error');
-                    return false;
-                }
+                })
+                .catch(error => {
+                    console.error('Checkout error:', error);
+                    showToast('An error occurred while processing your order. Please try again.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Place Order';
+                });
             });
         }
         
