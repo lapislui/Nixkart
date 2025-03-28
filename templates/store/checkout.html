@@ -847,7 +847,7 @@
     let stripe, elements, card;
     
     // For calculating the cart total
-    const cartTotal = {{ cart.total|default:0 }};
+    const cartTotal = {{ cart_total|default:0 }};
     
     // Function to show toast messages
     function showToast(message, type = 'info') {
@@ -889,7 +889,7 @@
     
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Stripe elements
-        stripe = Stripe('pk_test_51PYPLBAgcSYPqNkUGYQCJSJvZVMgXNOoxn75ZYqIqqbGwJoWcGvqAU6qAyjlbfU3LqyilEfF2QSw7OAm8RZ1D2Ul00tjvYHYMW');
+        stripe = Stripe('{{ stripe_key }}');
         elements = stripe.elements();
         
         // Customize the card element
