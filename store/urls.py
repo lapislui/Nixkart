@@ -67,7 +67,7 @@ urlpatterns = [
     
     # Authentication
     path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('signup/', views.signup, name='signup'),
     
     # Password Management
