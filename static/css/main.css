@@ -5,63 +5,63 @@
     --primary-color: #9d5cff; /* Purple accent from Railway */
     --primary-dark: #8344e0;
     --primary-light: #b77dff;
-    
+
     /* Accent Colors */
     --accent-color: #00cfc8; /* Teal accent for contrast */
     --accent-dark: #00a8a2;
     --accent-light: #33e4de;
-    
+
     /* Dark Theme Base Colors */
     --bg-darkest: #000000; /* Darkest background color */
     --bg-dark: #0F0F17; /* Main dark background */
     --bg-dark-secondary: #1A1A27; /* Slightly lighter for panels and cards */
     --bg-dark-tertiary: #252538; /* Even lighter for elements on cards */
-    
+
     /* Neutrals */
     --dark-color: #13131f;
     --medium-color: #8E8EA0;
     --light-color: #c2c2d2;
     --ultralight-color: #eeeeff;
-    
+
     /* Status Colors */
     --success-color: #00d68f;
     --warning-color: #ffba00;
     --danger-color: #ff3d71;
     --info-color: #0095ff;
-    
+
     /* Shadow Colors */
     --shadow-dark: rgba(0, 0, 0, 0.3);
     --shadow-light: rgba(103, 71, 150, 0.06);
-    
+
     /* UI Elements */
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
     --border-radius-lg: 16px;
     --border-radius-xl: 24px;
     --border-radius-round: 50%;
-    
+
     /* Shadows & Effects */
     --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.08);
     --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
     --shadow-large: 0 8px 30px rgba(0, 0, 0, 0.16);
     --shadow-inner: inset 0 2px 6px rgba(0, 0, 0, 0.08);
-    
+
     /* Glass Morphism */
     --glass-bg: rgba(255, 255, 255, 0.6);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
     --glass-blur: 8px;
-    
+
     /* Neo Morphism */
     --neo-bg: #f0f0f7;
     --neo-shadow-dark: rgba(163, 177, 198, 0.6);
     --neo-shadow-light: rgba(255, 255, 255, 0.9);
-    
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     --gradient-accent: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
     --gradient-success: linear-gradient(135deg, var(--success-color), #00b377);
-    
+
     /* Animation */
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-medium: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,6 +84,9 @@ body {
     background-color: var(--bg-darkest);
     overflow-x: hidden;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
 }
 
 /* Dark Theme Override */
@@ -388,8 +391,14 @@ body:hover .cursor-follower {
     transition: all 0.3s;
 }
 
-.logo-side.front { transform: translateZ(20px); background: var(--primary-color); }
-.logo-side.back { transform: rotateY(180deg) translateZ(20px); background: var(--primary-dark); }
+.logo-side.front { 
+    transform: translateZ(20px); 
+    background: var(--primary-color);
+    background-image: url('/static/images/phoenix-logo.png');
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}.logo-side.back { transform: rotateY(180deg) translateZ(20px); background: var(--primary-dark); }
 .logo-side.right { transform: rotateY(90deg) translateZ(20px); background: var(--primary-light); }
 .logo-side.left { transform: rotateY(-90deg) translateZ(20px); background: var(--primary-dark); }
 .logo-side.top { transform: rotateX(90deg) translateZ(20px); background: var(--primary-light); }
@@ -1373,22 +1382,22 @@ body:hover .cursor-follower {
     .product-img-wrapper {
         height: 180px;
     }
-    
+
     .profile-header {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .profile-avatar {
         margin-right: 0;
         margin-bottom: 1rem;
     }
-    
+
     .cart-item {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .cart-item-image {
         margin-bottom: 1rem;
         margin-right: 0;
@@ -1731,41 +1740,41 @@ body:hover .cursor-follower {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .checkout-step {
         flex-direction: row;
     }
-    
+
     .step-line {
         display: none;
     }
-    
+
     .step-label {
         margin-top: 0;
         margin-left: 1rem;
     }
-    
+
     .product-3d-viewer {
         height: 300px;
     }
-    
+
     .hero-section {
         padding: 2rem !important;
     }
-    
+
     .hero-section h1 {
         font-size: 2rem;
     }
-    
+
     .home-3d-model-container {
         min-height: 200px;
         margin-top: 2rem;
     }
-    
+
     .floating-cube, .floating-sphere {
         transform: scale(0.7);
     }
-    
+
     .glowing-ring {
         width: 150px;
         height: 150px;
@@ -1830,4 +1839,31 @@ body:hover .cursor-follower {
 
 .quick-link-item:hover::after {
     transform: translateX(100%);
+}
+/* Footer positioning styles */
+.content-wrapper {
+    flex: 1 0 auto;
+    min-height: calc(100vh - 450px);
+    padding-bottom: 350px;
+    position: relative;
+    padding: 1.5rem;
+    width: 100%;
+    /* display:flexbox;
+    justify-content: center; */
+}
+
+.neo-footer {
+    flex-shrink: 0;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--bg-dark-secondary);
+    padding: 3rem 0 1rem;
+    z-index: 100;
+    margin-top: 80px;
+}
+
+.neo-container {
+    min-height: calc(100vh - 450px);
 }
