@@ -13,6 +13,8 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from .payments import create_payment_intent as create_stripe_payment_intent
 from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile
 import json
 import random
@@ -515,6 +517,34 @@ def remove_from_cart(request, cart_item_id):
     
     return redirect('cart')
 
+# Payment Intent creation
+@csrf_exempt
+def create_payment_intent(request):
+    """Create a PaymentIntent with the order amount and currency"""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        amount = data.get('amount', 0)
+        
+        if not amount:
+            return JsonResponse({'error': 'Amount is required'}, status=400)
+        
+        # Create a PaymentIntent with the order amount and currency
+        result = create_stripe_payment_intent(amount)
+        
+        if result['success']:
+            return JsonResponse({
+                'clientSecret': result['client_secret'],
+                'intentId': result['intent_id']
+            })
+        else:
+            return JsonResponse({'error': result['error']}, status=400)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
 # Checkout views
 @login_required
 def checkout(request):
@@ -525,18 +555,59 @@ def checkout(request):
     
     if request.method == 'POST':
         # Process the checkout form
-        full_name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        zip_code = request.POST.get('zip_code')
-        country = request.POST.get('country')
+        # Get shipping information
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        full_name = f"{first_name} {last_name}"
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        address = request.POST.get('address', '')
+        city = request.POST.get('city', '')
+        state = request.POST.get('state', '')
+        zip_code = request.POST.get('zip', '')  # Form field name is 'zip'
+        country = request.POST.get('country', '')
+        
+        # Get payment information
+        payment_method = request.POST.get('payment_method', 'credit_card')
+        
+        # Process different payment methods
+        payment_status = 'pending'  # Default payment status
+        if payment_method == 'credit_card':
+            # Get payment intent information
+            payment_intent_id = request.POST.get('payment_intent_id', '')
+            
+            if not payment_intent_id:
+                messages.error(request, 'Payment processing failed. Please try again.')
+                return redirect('checkout')
+            
+            # Verify the payment intent status
+            from .payments import retrieve_payment_intent
+            payment_result = retrieve_payment_intent(payment_intent_id)
+            
+            if not payment_result['success']:
+                messages.error(request, f'Payment verification failed: {payment_result.get("error", "Unknown error")}')
+                return redirect('checkout')
+            
+            payment_intent = payment_result['intent']
+            
+            # Check if payment was successful
+            if payment_intent.status == 'succeeded':
+                payment_status = 'processed'
+            else:
+                messages.error(request, f'Payment not completed. Status: {payment_intent.status}')
+                return redirect('checkout')
+            
+        elif payment_method == 'paypal':
+            # In a real app, you would redirect to PayPal here
+            payment_status = 'processed'
+            
+        elif payment_method == 'apple_pay':
+            # In a real app, you would process Apple Pay here
+            payment_status = 'processed'
         
         # Create order
         order = Order(
-            user=request.user,
+            user=request.user if request.user.is_authenticated else None,
             full_name=full_name,
             email=email,
             phone=phone,

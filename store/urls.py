@@ -54,6 +54,7 @@ urlpatterns = [
     # Checkout
     path('checkout/', views.checkout, name='checkout'),
     path('order-success/', views.order_success, name='order_success'),
+    path('create-payment-intent/', views.create_payment_intent, name='create_payment_intent'),
     
     # Orders
     path('orders/', views.orders, name='orders'),
