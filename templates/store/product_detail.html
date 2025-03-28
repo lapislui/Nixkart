@@ -378,13 +378,27 @@
             {% if product.model_3d %}
             <div id="product-viewer" class="product-3d-viewer" data-model-path="{{ product.model_3d.url }}" data-auto-rotate="true" data-bg-color="0xf5f5f5"></div>
             {% else %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-detail-image img-fluid">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-detail-image img-fluid">
+                {% else %}
+                <div class="model-placeholder">
+                    <i class="fas fa-image placeholder-icon"></i>
+                    <h4>No Image Available</h4>
+                    <p class="placeholder-subtext">Product image is not available at this time.</p>
+                </div>
+                {% endif %}
             {% endif %}
             
             <!-- Product Gallery Thumbnails -->
             <div class="row mt-3">
                 <div class="col-3">
+                    {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-thumbnail">
+                    {% else %}
+                    <div class="img-thumbnail d-flex justify-content-center align-items-center" style="height: 80px;">
+                        <i class="fas fa-image text-muted"></i>
+                    </div>
+                    {% endif %}
                 </div>
                 <!-- Additional product images would go here -->
             </div>
@@ -485,7 +499,13 @@
             <div class="col-md-3 mb-4">
                 <div class="product-card related-product-card">
                     <div class="product-img-wrapper">
+                        {% if related_product.image %}
                         <img src="{{ related_product.image.url }}" alt="{{ related_product.name }}" class="product-image">
+                        {% else %}
+                        <div class="product-image-placeholder d-flex justify-content-center align-items-center" style="height: 180px; background-color: #f8f9fa;">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
                         {% if related_product.is_featured %}
                         <div class="featured-badge">Featured</div>
                         {% endif %}

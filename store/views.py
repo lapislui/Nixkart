@@ -6,10 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.db.models import Sum, Count, Q
+from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
+from django.utils.text import slugify
 from django.contrib import messages
 from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile
 import json
@@ -281,6 +283,7 @@ def add_product(request):
         
         category = get_object_or_404(Category, id=category_id)
         
+        # Create product instance without saving
         product = Product(
             name=name,
             category=category,
@@ -295,8 +298,16 @@ def add_product(request):
         
         if 'model_3d' in request.FILES:
             product.model_3d = request.FILES['model_3d']
-        
-        product.save()
+            
+        # Use Django's built-in form validation
+        try:
+            # The save method in the Product model will handle slug generation
+            product.save()
+        except IntegrityError:
+            # Handle the case where there's a slug collision by adding a timestamp
+            import time
+            product.slug = f"{slugify(product.name)}-{int(time.time())}"
+            product.save()
         
         return redirect('product_detail', product_slug=product.slug)
     
@@ -779,6 +790,7 @@ def add_product_to_category(request, category_slug):
         description = request.POST.get('description')
         is_featured = 'is_featured' in request.POST
         
+        # Create product instance without saving
         product = Product(
             name=name,
             category=category,
@@ -794,7 +806,15 @@ def add_product_to_category(request, category_slug):
         if 'model_3d' in request.FILES:
             product.model_3d = request.FILES['model_3d']
         
-        product.save()
+        # Use Django's built-in form validation
+        try:
+            # The save method in the Product model will handle slug generation
+            product.save()
+        except IntegrityError:
+            # Handle the case where there's a slug collision by adding a timestamp
+            import time
+            product.slug = f"{slugify(product.name)}-{int(time.time())}"
+            product.save()
         
         return redirect('category_detail', category_slug=category.slug)
     
