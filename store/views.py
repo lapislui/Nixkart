@@ -628,7 +628,14 @@ def checkout(request):
         # Show success message
         messages.success(request, 'Your order has been placed successfully!')
         
-        # Redirect to order success page
+        # Check if this is an AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': True,
+                'redirect_url': reverse('order_success')
+            })
+        
+        # For non-AJAX requests, redirect directly
         return redirect('order_success')
     
     # Get user profile for pre-filling checkout form
