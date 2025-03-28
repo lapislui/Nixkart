@@ -3,7 +3,7 @@ import stripe
 from django.conf import settings
 
 # Initialize Stripe with the API key
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
 
 def create_payment_intent(amount, currency='usd', metadata=None):
     """

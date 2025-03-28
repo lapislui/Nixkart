@@ -14,12 +14,10 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
 from .payments import create_payment_intent as create_stripe_payment_intent
 from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile
 import json
 import random
-import os
 from decimal import Decimal
 from .forms import CustomUserCreationForm, ProductForm, CategoryForm, UserProfileForm
 
@@ -645,23 +643,10 @@ def checkout(request):
     except UserProfile.DoesNotExist:
         profile = UserProfile.objects.create(user=request.user)
     
-    # Calculate cart subtotal and total
-    cart_subtotal = cart.total()
-    # You can add tax calculation here if needed
-    tax_amount = Decimal('0.00')  # Placeholder for tax calculation
-    cart_total = cart_subtotal + tax_amount
-    
-    # Get Stripe publishable key from settings
-    stripe_key = settings.STRIPE_PUBLIC_KEY
-    
     context = {
         'cart': cart,
         'cart_items': cart.items.all(),
         'profile': profile,
-        'cart_subtotal': cart_subtotal,
-        'tax_amount': tax_amount,
-        'cart_total': cart_total,
-        'stripe_key': stripe_key,
     }
     
     return render(request, 'store/checkout.html', context)

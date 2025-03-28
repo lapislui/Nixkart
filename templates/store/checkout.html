@@ -847,7 +847,7 @@
     let stripe, elements, card;
     
     // For calculating the cart total
-    const cartTotal = {{ cart_total|default:0 }};
+    const cartTotal = {{ cart.total|default:0 }};
     
     // Function to show toast messages
     function showToast(message, type = 'info') {
@@ -888,20 +888,15 @@
     }
     
     document.addEventListener('DOMContentLoaded', function() {
-        try {
-            console.log("Initializing Stripe with key:", "{{ stripe_key }}");
-            // Initialize Stripe elements
-            if (!("{{ stripe_key }}")) {
-                throw new Error("No Stripe key provided. Please check your environment variables.");
-            }
-            stripe = Stripe("{{ stripe_key }}");
-            elements = stripe.elements();
-            
-            // Customize the card element
-            const style = {
-                base: {
-                    color: '#32325d',
-                    fontFamily: '"Inter", Arial, sans-serif',
+        // Initialize Stripe elements
+        stripe = Stripe('pk_test_51PYPLBAgcSYPqNkUGYQCJSJvZVMgXNOoxn75ZYqIqqbGwJoWcGvqAU6qAyjlbfU3LqyilEfF2QSw7OAm8RZ1D2Ul00tjvYHYMW');
+        elements = stripe.elements();
+        
+        // Customize the card element
+        const style = {
+            base: {
+                color: '#32325d',
+                fontFamily: '"Inter", Arial, sans-serif',
                 fontSmoothing: 'antialiased',
                 fontSize: '16px',
                 '::placeholder': {
@@ -1402,11 +1397,6 @@
                 }
                 this.value = value;
             });
-        }
-        
-        } catch (error) {
-            console.error("Error in checkout script:", error);
-            showToast("An error occurred with payment processing: " + error.message, "error");
         }
     });
 </script>
