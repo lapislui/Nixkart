@@ -888,15 +888,20 @@
     }
     
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Stripe elements
-        stripe = Stripe('{{ stripe_key }}');
-        elements = stripe.elements();
-        
-        // Customize the card element
-        const style = {
-            base: {
-                color: '#32325d',
-                fontFamily: '"Inter", Arial, sans-serif',
+        try {
+            console.log("Initializing Stripe with key:", "{{ stripe_key }}");
+            // Initialize Stripe elements
+            if (!("{{ stripe_key }}")) {
+                throw new Error("No Stripe key provided. Please check your environment variables.");
+            }
+            stripe = Stripe("{{ stripe_key }}");
+            elements = stripe.elements();
+            
+            // Customize the card element
+            const style = {
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Inter", Arial, sans-serif',
                 fontSmoothing: 'antialiased',
                 fontSize: '16px',
                 '::placeholder': {
@@ -1397,6 +1402,11 @@
                 }
                 this.value = value;
             });
+        }
+        
+        } catch (error) {
+            console.error("Error in checkout script:", error);
+            showToast("An error occurred with payment processing: " + error.message, "error");
         }
     });
 </script>
