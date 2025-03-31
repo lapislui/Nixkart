@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Change Email - E-Commerce Store{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Change Email Address</h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted mb-4">Use this form to update your email address. Your current email address is <strong>{{ request.user.email }}</strong>.</p>
+                    
+                    {% if messages %}
+                    <div class="alert alert-info">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="email" class="form-label">New Email Address</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                            <div class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Update Email</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'profile' %}" class="text-decoration-none">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add subtle animation to the form
+        const formCard = document.querySelector('.card');
+        formCard.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
+        
+        // Focus on the email field
+        document.getElementById('email').focus();
+    });
+</script>
+{% endblock %}
