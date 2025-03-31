@@ -29,6 +29,7 @@ urlpatterns = [
     path('product/delete/<slug:product_slug>/', views.delete_product, name='delete_product'),
     path('new-arrivals/', views.new_arrivals, name='new_arrivals'),
     path('featured/', views.featured_products, name='featured'),
+    path('best-sellers/', views.best_sellers, name='best_sellers'),
     path('on-sale/', views.on_sale_products, name='on_sale_products'),
     
     # Categories
@@ -84,6 +85,13 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('change-email/', views.change_email, name='change_email'),
+    
+    # Addresses
+    path('addresses/', views.address_list, name='address_list'),
+    path('address/add/', views.add_address, name='add_address'),
+    path('address/edit/<int:address_id>/', views.edit_address, name='edit_address'),
+    path('address/delete/<int:address_id>/', views.delete_address, name='delete_address'),
+    path('address/set-default/<int:address_id>/', views.set_default_address, name='set_default_address'),
     
     # Reviews
     path('reviews/<int:product_id>/', views.product_reviews, name='product_reviews'),
