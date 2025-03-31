@@ -1276,3 +1276,20 @@ def logout_view(request):
     """Custom logout view that works with GET requests."""
     logout(request)
     return redirect('login')
+
+def social_account_login(request, provider):
+    """Redirect to the django-allauth provider's OAuth login URL."""
+    # Simply redirect to the allauth URL for the provider
+    from allauth.socialaccount.providers.oauth2.views import OAuth2Adapter
+    from allauth.socialaccount.models import SocialApp
+    
+    try:
+        # Check if the provider is configured
+        SocialApp.objects.get(provider=provider)
+        # Redirect to the proper django-allauth URL
+        return redirect(f'/accounts/{provider}/login/?process=login')
+    except SocialApp.DoesNotExist:
+        # Provider not configured, show error message
+        messages.error(request, f"{provider.title()} authentication is not configured. Please try another method.")
+        # Redirect back to login page
+        return redirect('login')

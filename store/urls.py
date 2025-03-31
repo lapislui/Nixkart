@@ -70,6 +70,7 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
+    path('socialaccount/login/<str:provider>/', views.social_account_login, name='socialaccount_login'),
     
     # Password Management
     path('password-change/', PasswordChangeView.as_view(template_name='store/password_change.html'), name='password_change'),
