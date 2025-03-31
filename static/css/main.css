@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 
 a {
@@ -414,7 +414,7 @@ body:hover .cursor-follower {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
     font-weight: 700;
 }
 
