@@ -351,11 +351,21 @@ def edit_product(request, product_slug):
 
 @staff_member_required
 def delete_product(request, product_slug):
+    """Delete a product (staff only)"""
     product = get_object_or_404(Product, slug=product_slug)
     
     if request.method == 'POST':
+        # Store category for redirect after deletion
+        category = product.category
+        # Delete the product
+        product_name = product.name
         product.delete()
-        return redirect('product_list')
+        
+        # Show success message
+        messages.success(request, f"Product '{product_name}' has been deleted successfully.")
+        
+        # Redirect to the product list or category page
+        return redirect('category_detail', category_slug=category.slug)
     
     return render(request, 'store/delete_product.html', {'product': product})
 
