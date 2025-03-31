@@ -35,6 +35,24 @@
                             <span class="btn-content"><i class="fas fa-sign-in-alt"></i> Login</span>
                         </button>
                     </div>
+                    
+                    <div class="social-login mt-4">
+                        <div class="or-divider mb-3">
+                            <hr>
+                            <span style="color: var(--light-color);">OR</span>
+                            <hr>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'socialaccount_login' provider='google' %}" class="btn btn-outline-danger btn-lg">
+                                <i class="fab fa-google"></i> Continue with Google
+                            </a>
+                            <a href="{% url 'socialaccount_login' provider='github' %}" class="btn btn-outline-dark btn-lg">
+                                <i class="fab fa-github"></i> Continue with GitHub
+                            </a>
+                        </div>
+                    </div>
+                    
                     <div class="text-center mt-3">
                         <a href="{% url 'password_reset' %}" class="text-primary">Forgot Password?</a>
                         <p class="mt-2" style="color: var(--light-color);">Don't have an account? <a href="{% url 'signup' %}" class="text-primary">Sign Up</a></p>
