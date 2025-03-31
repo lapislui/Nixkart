@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.db.models import Sum, Count, Q
 from django.db import IntegrityError
+from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile, Wishlist
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -265,9 +266,15 @@ def product_detail(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
     related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
     
+    # Check if this product is in the user's wishlist
+    is_in_wishlist = False
+    if request.user.is_authenticated:
+        is_in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
+    
     context = {
         'product': product,
         'related_products': related_products,
+        'is_in_wishlist': is_in_wishlist
     }
     
     return render(request, 'store/product_detail.html', context)
@@ -942,9 +949,17 @@ def wishlist_view(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    # For now, return a placeholder view since we don't have a WishlistItem model yet
+    # Debugging information
+    print(f"USER: {request.user.username}")
+    
+    wishlist_items = Wishlist.objects.filter(user=request.user).select_related('product')
+    
+    # More debugging information
+    print(f"WISHLIST ITEMS: {wishlist_items}")
+    
     context = {
-        'page_title': 'My Wishlist'
+        'page_title': 'My Wishlist',
+        'wishlist_items': wishlist_items
     }
     
     return render(request, 'store/wishlist.html', context)
@@ -956,11 +971,25 @@ def add_to_wishlist(request, product_id):
     
     product = get_object_or_404(Product, id=product_id)
     
-    # For now, just redirect to the product detail page
-    messages.info(request, 'Wishlist functionality will be implemented soon.')
+    # Check if item exists in wishlist
+    try:
+        wishlist_item = Wishlist.objects.get(user=request.user, product=product)
+        # If it exists, remove it (toggle behavior)
+        wishlist_item.delete()
+        created = False
+        messages.info(request, 'Product removed from your wishlist.')
+    except Wishlist.DoesNotExist:
+        # If it doesn't exist, create it
+        wishlist_item = Wishlist.objects.create(user=request.user, product=product)
+        created = True
+        messages.success(request, 'Product added to your wishlist!')
     
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({'success': True})
+        return JsonResponse({
+            'success': True,
+            'created': created,
+            'message': 'Added to wishlist' if created else 'Removed from wishlist'
+        })
     
     return redirect('product_detail', product_slug=product.slug)
 
@@ -971,8 +1000,12 @@ def remove_from_wishlist(request, product_id):
     
     product = get_object_or_404(Product, id=product_id)
     
-    # For now, just redirect to the product detail page
-    messages.info(request, 'Wishlist functionality will be implemented soon.')
+    try:
+        wishlist_item = Wishlist.objects.get(user=request.user, product=product)
+        wishlist_item.delete()
+        messages.success(request, 'Product removed from your wishlist!')
+    except Wishlist.DoesNotExist:
+        messages.info(request, 'This product is not in your wishlist.')
     
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({'success': True})

@@ -8,7 +8,7 @@
         margin-top: 2rem;
         margin-bottom: 4rem;
     }
-    
+
     /* Product Detail UI Elements */
     .product-3d-viewer {
         height: 400px;
@@ -21,12 +21,12 @@
         transform-style: preserve-3d;
         transition: all var(--transition-medium);
     }
-    
+
     .product-3d-viewer:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-large);
     }
-    
+
     .product-detail-image {
         border-radius: var(--border-radius-lg);
         box-shadow: var(--shadow-medium);
@@ -34,12 +34,12 @@
         transition: all var(--transition-medium);
         transform-style: preserve-3d;
     }
-    
+
     .product-detail-image:hover {
         transform: scale(1.02) translateY(-5px);
         box-shadow: var(--shadow-large);
     }
-    
+
     /* 3D Model Placeholder */
     .model-placeholder {
         display: flex;
@@ -52,7 +52,7 @@
         background: linear-gradient(135deg, var(--neo-bg) 0%, var(--light-color) 100%);
         border-radius: var(--border-radius-lg);
     }
-    
+
     .placeholder-icon {
         font-size: 4rem;
         margin-bottom: 1rem;
@@ -60,13 +60,13 @@
         opacity: 0.5;
         animation: float 6s ease-in-out infinite;
     }
-    
+
     .placeholder-subtext {
         font-size: 0.9rem;
         color: var(--medium-color);
         max-width: 80%;
     }
-    
+
     /* Error State Display */
     .viewer-error {
         display: flex;
@@ -81,13 +81,13 @@
         text-align: center;
         box-shadow: var(--shadow-medium);
     }
-    
+
     .error-icon {
         font-size: 3rem;
         margin-bottom: 1rem;
         animation: pulse 2s infinite;
     }
-    
+
     /* Product Information */
     .product-detail-info {
         padding: 2rem;
@@ -98,7 +98,7 @@
         overflow: hidden;
         position: relative;
     }
-    
+
     .product-detail-info::before {
         content: '';
         position: absolute;
@@ -108,19 +108,19 @@
         height: 5px;
         background: var(--gradient-primary);
     }
-    
+
     .product-detail-info:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-large);
     }
-    
+
     .product-metadata {
         margin-bottom: 1.5rem;
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
     }
-    
+
     .product-metadata .badge {
         font-size: 0.9rem;
         padding: 0.5rem 0.75rem;
@@ -130,12 +130,12 @@
         box-shadow: var(--shadow-small);
         transition: all var(--transition-fast);
     }
-    
+
     .product-metadata .badge:hover {
         transform: translateY(-2px) scale(1.05);
         box-shadow: var(--shadow-medium);
     }
-    
+
     .product-description {
         white-space: pre-line;
         margin-bottom: 2rem;
@@ -146,14 +146,14 @@
         border-radius: var(--border-radius-md);
         border-left: 3px solid var(--primary-color);
     }
-    
+
     /* Add to Cart Interaction Elements */
     .add-to-cart-section {
         margin-top: 2rem;
         padding-top: 1.5rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
-    
+
     .quantity-control {
         display: flex;
         align-items: center;
@@ -164,7 +164,7 @@
         box-shadow: var(--shadow-small);
         width: fit-content;
     }
-    
+
     .quantity-btn {
         width: 40px;
         height: 40px;
@@ -180,16 +180,16 @@
         transition: all var(--transition-fast);
         box-shadow: var(--shadow-small);
     }
-    
+
     .quantity-btn:hover {
         transform: translateY(-2px) scale(1.05);
         box-shadow: var(--shadow-medium);
     }
-    
+
     .quantity-btn:active {
         transform: translateY(0) scale(0.95);
     }
-    
+
     .quantity-input {
         width: 70px;
         height: 40px;
@@ -201,17 +201,17 @@
         color: var(--dark-color);
         margin: 0 0.8rem;
     }
-    
+
     .quantity-input:focus {
         outline: none;
     }
-    
+
     /* Button Ripple Effect */
     .btn-animated {
         position: relative;
         overflow: hidden;
     }
-    
+
     .btn-ripple {
         position: absolute;
         border-radius: 50%;
@@ -220,14 +220,14 @@
         animation: ripple 0.6s linear;
         pointer-events: none;
     }
-    
+
     @keyframes ripple {
         to {
             transform: scale(4);
             opacity: 0;
         }
     }
-    
+
     .btn-add-to-cart {
         padding: 1rem 2rem;
         font-size: 1.1rem;
@@ -243,7 +243,7 @@
         overflow: hidden;
         z-index: 1;
     }
-    
+
     .btn-add-to-cart::before {
         content: '';
         position: absolute;
@@ -256,43 +256,43 @@
         transition: opacity var(--transition-medium);
         z-index: -1;
     }
-    
+
     .btn-add-to-cart:hover {
         transform: translateY(-3px) scale(1.02);
         box-shadow: 0 15px 25px rgba(108, 99, 255, 0.3);
     }
-    
+
     .btn-add-to-cart:hover::before {
         opacity: 1;
     }
-    
+
     .btn-add-to-cart:active {
         transform: translateY(0) scale(0.98);
     }
-    
+
     .btn-add-to-cart i {
         transform: translateZ(0);
         backface-visibility: hidden;
         transition: all var(--transition-medium);
     }
-    
+
     .btn-add-to-cart:hover i {
         transform: translateX(-4px);
     }
-    
+
     /* Related Products */
     .related-products-section {
         margin-top: 5rem;
         padding-top: 2rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
-    
+
     .related-products-section h2 {
         margin-bottom: 2rem;
         position: relative;
         display: inline-block;
     }
-    
+
     .related-products-section h2::after {
         content: '';
         position: absolute;
@@ -303,7 +303,7 @@
         background: var(--gradient-primary);
         border-radius: 2px;
     }
-    
+
     .related-product-card {
         border-radius: var(--border-radius-lg);
         overflow: hidden;
@@ -315,29 +315,29 @@
         perspective: 1000px;
         opacity: 0; /* Start invisible for staggered animation */
     }
-    
+
     .related-product-card:hover {
         transform: translateY(-10px) scale(1.02);
         box-shadow: var(--shadow-large);
     }
-    
+
     .related-product-card .product-image {
         height: 180px;
         object-fit: cover;
         transition: transform var(--transition-medium);
     }
-    
+
     .related-product-card:hover .product-image {
         transform: scale(1.08);
     }
-    
+
     /* Accordion styling */
     .accordion-item {
         border: none;
         background-color: transparent;
         margin-bottom: 0.5rem;
     }
-    
+
     .accordion-button {
         border-radius: var(--border-radius-md);
         background-color: var(--light-color);
@@ -347,12 +347,12 @@
         box-shadow: var(--shadow-small);
         transition: all var(--transition-fast);
     }
-    
+
     .accordion-button:not(.collapsed) {
         background: var(--gradient-primary);
         color: white;
     }
-    
+
     .accordion-body {
         padding: 1.5rem;
         background-color: rgba(255, 255, 255, 0.6);
@@ -371,7 +371,7 @@
             <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
         </ol>
     </nav>
-    
+
     <div class="row">
         <div class="col-lg-6">
             <!-- Product Image or 3D Model -->
@@ -388,7 +388,7 @@
                 </div>
                 {% endif %}
             {% endif %}
-            
+
             <!-- Product Gallery Thumbnails -->
             <div class="row mt-3">
                 <div class="col-3">
@@ -403,48 +403,48 @@
                 <!-- Additional product images would go here -->
             </div>
         </div>
-        
+
         <div class="col-lg-6">
             <!-- Product Details -->
             <div class="product-detail-info p-4">
                 <h1 class="mb-2">{{ product.name }}</h1>
-                
+
                 <div class="product-metadata mb-3">
                     {% if product.is_featured %}
                     <span class="badge bg-danger">Featured</span>
                     {% endif %}
-                    
+
                     {% if product.stock > 0 %}
                     <span class="badge bg-success">In Stock</span>
                     {% else %}
                     <span class="badge bg-secondary">Out of Stock</span>
                     {% endif %}
-                    
+
                     <span class="badge bg-info">{{ product.category.name }}</span>
                 </div>
-                
+
                 <h2 class="product-price mb-4">${{ product.price }}</h2>
-                
+
                 <div class="product-description">
                     {{ product.description }}
                 </div>
-                
+
                 <div class="add-to-cart-section">
                     <div class="quantity-control mb-3">
                         <button class="quantity-btn quantity-decrease">-</button>
                         <input type="number" class="quantity-input" value="1" min="1" max="{{ product.stock }}">
                         <button class="quantity-btn quantity-increase">+</button>
                     </div>
-                    
+
                     <button class="btn btn-primary btn-lg btn-add-to-cart btn-animated" {% if not product.is_in_stock %}disabled{% endif %} data-product-slug="{{ product.slug }}">
                         <i class="fas fa-shopping-cart me-2"></i> Add to Cart
                     </button>
-                    
-                    <button class="btn btn-outline-secondary btn-lg ms-2">
-                        <i class="far fa-heart"></i>
+
+                    <button class="btn btn-outline-secondary btn-lg ms-2 wishlist-btn" data-product-id="{{ product.id }}">
+                        <i class="{% if is_in_wishlist %}fas{% else %}far{% endif %} fa-heart"></i> {% if is_in_wishlist %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}
                     </button>
                 </div>
-                
+
                 <!-- Additional Information -->
                 <div class="additional-info mt-4">
                     <div class="accordion" id="productInfoAccordion">
@@ -474,7 +474,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Admin Actions -->
                 {% if user.is_staff %}
                 <div class="admin-actions mt-4 pt-3 border-top">
@@ -490,7 +490,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Related Products -->
     <div class="related-products-section">
         <h2 class="mb-4">Related Products</h2>
@@ -556,7 +556,7 @@
         const quantityInput = document.querySelector('.quantity-input');
         const decreaseBtn = document.querySelector('.quantity-decrease');
         const increaseBtn = document.querySelector('.quantity-increase');
-        
+
         if (quantityInput && decreaseBtn && increaseBtn) {
             decreaseBtn.addEventListener('click', () => {
                 let value = parseInt(quantityInput.value);
@@ -564,7 +564,7 @@
                     quantityInput.value = value - 1;
                 }
             });
-            
+
             increaseBtn.addEventListener('click', () => {
                 let value = parseInt(quantityInput.value);
                 let max = parseInt(quantityInput.getAttribute('max'));
@@ -573,40 +573,40 @@
                 }
             });
         }
-        
+
         // Enhanced Add to Cart functionality with advanced animations
         const addToCartBtn = document.querySelector('.btn-add-to-cart');
         if (addToCartBtn) {
             addToCartBtn.addEventListener('click', function() {
                 const productSlug = this.getAttribute('data-product-slug');
                 const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-                
+
                 if (productSlug) {
                     // Button animation effect - Apply multiple animation classes
                     this.classList.add('btn-shake');
                     this.classList.add('glow-effect'); 
-                    
+
                     // Create 3D ripple effect
                     const ripple = document.createElement('span');
                     ripple.classList.add('btn-ripple');
                     this.appendChild(ripple);
-                    
+
                     setTimeout(() => {
                         this.classList.remove('btn-shake');
                         this.classList.remove('glow-effect');
                         ripple.remove();
                     }, 800);
-                    
+
                     // Enhanced fly-to-cart animation
                     const productImage = document.querySelector('.product-detail-image') || 
                                         document.querySelector('.product-3d-viewer');
                     const cartIcon = document.querySelector('.cart-icon-wrapper');
-                    
+
                     if (productImage && cartIcon && window.NeoAnimations) {
                         // Use our new advanced animation system
                         window.NeoAnimations.flyToCart(productImage, cartIcon);
                     }
-                    
+
                     // Send AJAX request with modern handling and proper CSRF handling
                     fetch(`/add-to-cart/${productSlug}/`, {
                         method: 'POST',
@@ -634,7 +634,7 @@
                                     cartIconElement.classList.remove('rotate-3d-y');
                                 }, 1000);
                             }
-                            
+
                             // Update cart count with animated counting effect
                             const cartCountBadge = document.querySelector('.cart-count-badge');
                             if (cartCountBadge && window.NeoAnimations) {
@@ -645,16 +645,16 @@
                                     data.cart_count, 
                                     600
                                 );
-                                
+
                                 cartCountBadge.classList.add('updated');
                                 setTimeout(() => {
                                     cartCountBadge.classList.remove('updated');
                                 }, 600);
                             }
-                            
+
                             // Show enhanced success toast with animation
                             showToast(`${quantity} item${quantity > 1 ? 's' : ''} added to cart!`, 'success');
-                            
+
                             // Add shimmer effect to price display
                             const priceElement = document.querySelector('.product-price');
                             if (priceElement) {
@@ -672,18 +672,66 @@
                 }
             });
         }
-        
+
+        // Wishlist button functionality
+        const wishlistBtn = document.querySelector('.wishlist-btn');
+        if (wishlistBtn) {
+            wishlistBtn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                if (productId) {
+                    fetch(`/add-to-wishlist/${productId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': getCsrfToken(),
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const heartIcon = this.querySelector('i');
+                            const btnText = this.innerText.trim().replace(/^\s+|\s+$/g, '').replace(/^.*\s/, '');
+                            
+                            if (data.created) {
+                                // Added to wishlist
+                                showToast('Product added to wishlist!', 'success');
+                                if (heartIcon.classList.contains('far')) {
+                                    heartIcon.classList.replace('far', 'fas');
+                                }
+                                this.innerHTML = `<i class="fas fa-heart"></i> Remove from Wishlist`;
+                            } else {
+                                // Removed from wishlist
+                                showToast('Product removed from wishlist!', 'info');
+                                if (heartIcon.classList.contains('fas')) {
+                                    heartIcon.classList.replace('fas', 'far');
+                                }
+                                this.innerHTML = `<i class="far fa-heart"></i> Add to Wishlist`;
+                            }
+                        } else {
+                            showToast('Error updating wishlist.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating wishlist:', error);
+                        showToast('Error updating wishlist.', 'error');
+                    });
+                }
+            });
+        }
+
         // Initialize related product animations
         const relatedProducts = document.querySelectorAll('.related-product-card');
         relatedProducts.forEach((card, index) => {
             card.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
         });
     });
-    
+
     function showToast(message, type = 'info') {
         const toastContainer = document.getElementById('toastContainer');
         if (!toastContainer) return;
-        
+
         const toast = document.createElement('div');
         toast.classList.add('toast', 'show', `toast-${type}`);
         toast.innerHTML = `
@@ -695,9 +743,9 @@
                 ${message}
             </div>
         `;
-        
+
         toastContainer.appendChild(toast);
-        
+
         // Remove toast after 3 seconds
         setTimeout(() => {
             toast.classList.add('hiding');
@@ -706,11 +754,11 @@
             }, 300);
         }, 3000);
     }
-    
+
     function getCsrfToken() {
         const name = 'csrftoken';
         let cookieValue = null;
-        
+
         if (document.cookie && document.cookie !== '') {
             const cookies = document.cookie.split(';');
             for (let i = 0; i < cookies.length; i++) {
@@ -721,7 +769,7 @@
                 }
             }
         }
-        
+
         return cookieValue;
     }
 </script>
