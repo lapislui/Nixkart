@@ -665,7 +665,7 @@ def order_success(request):
 # User views
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
@@ -673,12 +673,11 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             
-            # Create user profile
-            UserProfile.objects.create(user=user)
+            # UserProfile is automatically created by the post_save signal
             
             return redirect('index')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     
     return render(request, 'store/signup.html', {'form': form})
 
@@ -801,7 +800,7 @@ def report_page(request):
         'categories': categories,
     }
     
-    return render(request, 'store/report_page.html', context)
+    return render(request, 'store/report.html', context)
 
 @staff_member_required
 def clear_report(request):
