@@ -754,7 +754,14 @@ def change_email(request):
 # Search
 def search_results(request):
     query = request.GET.get('q', '')
+    selected_category = request.GET.get('category', '')
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+    in_stock = request.GET.get('in_stock', '')
+    featured = request.GET.get('featured', '')
+    sort_by = request.GET.get('sort', 'relevance')
     
+    # Start with base queryset
     if query:
         products = Product.objects.filter(
             Q(name__icontains=query) | 
@@ -762,11 +769,55 @@ def search_results(request):
             Q(category__name__icontains=query)
         )
     else:
-        products = Product.objects.none()
+        products = Product.objects.all()
+    
+    # Apply filters
+    if selected_category:
+        products = products.filter(category__slug=selected_category)
+    
+    if min_price:
+        try:
+            products = products.filter(price__gte=float(min_price))
+        except ValueError:
+            pass
+    
+    if max_price:
+        try:
+            products = products.filter(price__lte=float(max_price))
+        except ValueError:
+            pass
+    
+    if in_stock == 'true':
+        products = products.filter(stock__gt=0)
+    
+    if featured == 'true':
+        products = products.filter(is_featured=True)
+    
+    # Apply sorting
+    if sort_by == 'price_asc':
+        products = products.order_by('price')
+    elif sort_by == 'price_desc':
+        products = products.order_by('-price')
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')
+    elif sort_by == 'popularity':
+        # This is a placeholder for popularity - in a real app you might use
+        # order count or views as a measure of popularity
+        products = products.order_by('-is_featured', '-created_at')
+    
+    # Get all categories for filter sidebar
+    categories = Category.objects.all()
     
     context = {
         'query': query,
         'products': products,
+        'categories': categories,
+        'selected_category': selected_category,
+        'min_price': min_price,
+        'max_price': max_price,
+        'in_stock': in_stock,
+        'featured': featured,
+        'sort_by': sort_by,
     }
     
     return render(request, 'store/search_results.html', context)
