@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.db.models import Sum, Count, Q
 from django.db import IntegrityError
-from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile, Wishlist
+from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile, Wishlist, Address
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -16,7 +16,6 @@ from django.utils.text import slugify
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from .payments import create_payment_intent as create_stripe_payment_intent
-from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile
 import json
 import random
 from decimal import Decimal
@@ -288,7 +287,19 @@ def add_product(request):
         price = request.POST.get('price')
         stock = request.POST.get('stock')
         description = request.POST.get('description')
+        
+        # Get product attributes from checkboxes
         is_featured = 'is_featured' in request.POST
+        is_new_arrival = 'is_new_arrival' in request.POST
+        is_best_seller = 'is_best_seller' in request.POST
+        is_on_sale = 'is_on_sale' in request.POST
+        
+        # Get discount percentage if product is on sale
+        discount_percentage = 0
+        if is_on_sale:
+            discount_percentage_str = request.POST.get('discount_percentage')
+            if discount_percentage_str and discount_percentage_str.isdigit():
+                discount_percentage = int(discount_percentage_str)
         
         category = get_object_or_404(Category, id=category_id)
         
@@ -300,6 +311,10 @@ def add_product(request):
             stock=stock,
             description=description,
             is_featured=is_featured,
+            is_new_arrival=is_new_arrival,
+            is_best_seller=is_best_seller,
+            is_on_sale=is_on_sale,
+            discount_percentage=discount_percentage,
         )
         
         if 'image' in request.FILES:
@@ -334,7 +349,23 @@ def edit_product(request, product_slug):
         product.price = request.POST.get('price')
         product.stock = request.POST.get('stock')
         product.description = request.POST.get('description')
+        
+        # Set product attributes based on checkboxes
         product.is_featured = 'is_featured' in request.POST
+        product.is_new_arrival = 'is_new_arrival' in request.POST
+        product.is_best_seller = 'is_best_seller' in request.POST
+        product.is_on_sale = 'is_on_sale' in request.POST
+        
+        # Handle discount percentage if product is on sale
+        if product.is_on_sale:
+            discount_percentage = request.POST.get('discount_percentage')
+            if discount_percentage and discount_percentage.isdigit():
+                product.discount_percentage = int(discount_percentage)
+            else:
+                product.discount_percentage = 0
+        else:
+            product.discount_percentage = 0
+            product.sale_price = None
         
         if 'image' in request.FILES:
             product.image = request.FILES['image']
@@ -701,9 +732,17 @@ def profile_view(request):
     # Get user's orders
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     
+    # Get user's wishlist items
+    wishlist_items = Wishlist.objects.filter(user=request.user).select_related('product')
+    
+    # Get user's addresses
+    addresses = Address.objects.filter(user=request.user)
+    
     context = {
         'profile': profile,
         'orders': orders,
+        'wishlist_items': wishlist_items,
+        'addresses': addresses,
     }
     
     return render(request, 'store/profile.html', context)
@@ -750,6 +789,101 @@ def change_email(request):
             return redirect('profile')
     
     return render(request, 'store/change_email.html')
+
+# Address Management
+@login_required
+def address_list(request):
+    addresses = Address.objects.filter(user=request.user)
+    return render(request, 'store/address_list.html', {'addresses': addresses})
+
+@login_required
+def add_address(request):
+    if request.method == 'POST':
+        # Get form data
+        title = request.POST.get('title')
+        name = request.POST.get('name')
+        address_line1 = request.POST.get('address_line1')
+        address_line2 = request.POST.get('address_line2', '')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+        country = request.POST.get('country')
+        phone = request.POST.get('phone')
+        is_default = request.POST.get('is_default') == 'on'
+        
+        # Create address
+        address = Address(
+            user=request.user,
+            title=title,
+            name=name,
+            address_line1=address_line1,
+            address_line2=address_line2,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            country=country,
+            phone=phone,
+            is_default=is_default
+        )
+        address.save()
+        
+        messages.success(request, 'Address added successfully.')
+        return redirect('profile')
+    
+    return render(request, 'store/add_address.html')
+
+@login_required
+def edit_address(request, address_id):
+    address = get_object_or_404(Address, id=address_id, user=request.user)
+    
+    if request.method == 'POST':
+        # Update address
+        address.title = request.POST.get('title')
+        address.name = request.POST.get('name')
+        address.address_line1 = request.POST.get('address_line1')
+        address.address_line2 = request.POST.get('address_line2', '')
+        address.city = request.POST.get('city')
+        address.state = request.POST.get('state')
+        address.zip_code = request.POST.get('zip_code')
+        address.country = request.POST.get('country')
+        address.phone = request.POST.get('phone')
+        address.is_default = request.POST.get('is_default') == 'on'
+        
+        address.save()
+        
+        messages.success(request, 'Address updated successfully.')
+        return redirect('profile')
+    
+    return render(request, 'store/edit_address.html', {'address': address})
+
+@login_required
+def delete_address(request, address_id):
+    address = get_object_or_404(Address, id=address_id, user=request.user)
+    
+    # Check if this is the only address
+    if Address.objects.filter(user=request.user).count() == 1:
+        messages.error(request, 'You cannot delete your only address.')
+        return redirect('profile')
+    
+    address.delete()
+    messages.success(request, 'Address deleted successfully.')
+    
+    return redirect('profile')
+
+@login_required
+def set_default_address(request, address_id):
+    address = get_object_or_404(Address, id=address_id, user=request.user)
+    
+    # Set all addresses to non-default
+    Address.objects.filter(user=request.user).update(is_default=False)
+    
+    # Set this one as default
+    address.is_default = True
+    address.save()
+    
+    messages.success(request, f'"{address.title}" is now your default address.')
+    
+    return redirect('profile')
 
 # Search
 def search_results(request):
@@ -905,12 +1039,16 @@ def fake_products_page(request):
 def home(request):
     """Home page view with featured products and promotions."""
     featured_products = Product.objects.filter(is_featured=True)[:8]
-    new_products = Product.objects.order_by('-created_at')[:8]
+    new_products = Product.objects.filter(is_new_arrival=True)[:8]
+    best_sellers = Product.objects.filter(is_best_seller=True)[:8]
+    on_sale = Product.objects.filter(is_on_sale=True)[:8]
     categories = Category.objects.all()[:6]
     
     context = {
         'featured_products': featured_products,
         'new_products': new_products,
+        'best_sellers': best_sellers,
+        'on_sale_products': on_sale,
         'categories': categories,
         'page_title': 'Home'
     }
@@ -1083,10 +1221,8 @@ def newsletter_signup(request):
     return redirect('index')
 
 def new_arrivals(request):
-    """View newly added products."""
-    # Get products added in the last 30 days
-    thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
-    products = Product.objects.filter(created_at__gte=thirty_days_ago).order_by('-created_at')
+    """View new arrival products."""
+    products = Product.objects.filter(is_new_arrival=True).order_by('-created_at')
     
     context = {
         'products': products,
@@ -1106,10 +1242,20 @@ def featured_products(request):
     
     return render(request, 'store/featured_products.html', context)
 
+def best_sellers(request):
+    """View best-selling products."""
+    products = Product.objects.filter(is_best_seller=True)
+    
+    context = {
+        'products': products,
+        'page_title': 'Best Sellers'
+    }
+    
+    return render(request, 'store/best_sellers.html', context)
+
 def on_sale_products(request):
     """View products on sale."""
-    # For now, just show featured products as a placeholder
-    products = Product.objects.filter(is_featured=True)
+    products = Product.objects.filter(is_on_sale=True).order_by('-discount_percentage')
     
     context = {
         'products': products,
