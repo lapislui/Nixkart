@@ -801,7 +801,7 @@ def report_page(request):
         'categories': categories,
     }
     
-    return render(request, 'store/report.html', context)
+    return render(request, 'store/report_page.html', context)
 
 @staff_member_required
 def clear_report(request):
