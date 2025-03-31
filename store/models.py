@@ -49,6 +49,11 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     model_3d = models.FileField(upload_to='products/3d_models/', blank=True, null=True)
     is_featured = models.BooleanField(default=False)
+    is_new_arrival = models.BooleanField(default=False)
+    is_best_seller = models.BooleanField(default=False)
+    is_on_sale = models.BooleanField(default=False)
+    discount_percentage = models.PositiveIntegerField(default=0)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -69,6 +74,13 @@ class Product(models.Model):
             while Product.objects.filter(slug=self.slug).exists():
                 self.slug = f"{original_slug}-{counter}"
                 counter += 1
+        
+        # Calculate sale price if product is on sale and has a discount percentage
+        if self.is_on_sale and self.discount_percentage > 0:
+            self.sale_price = self.price - (self.price * Decimal(self.discount_percentage) / Decimal(100))
+        elif not self.is_on_sale:
+            self.sale_price = None
+            self.discount_percentage = 0
                 
         super().save(*args, **kwargs)
     
@@ -77,6 +89,18 @@ class Product(models.Model):
     
     def is_in_stock(self):
         return self.stock > 0
+        
+    def get_display_price(self):
+        """Returns the sale price if the product is on sale, otherwise returns the regular price"""
+        if self.is_on_sale and self.sale_price is not None:
+            return self.sale_price
+        return self.price
+        
+    def is_new(self):
+        """Check if product was added within the last 30 days"""
+        from django.utils import timezone
+        import datetime
+        return (timezone.now() - datetime.timedelta(days=30)) <= self.created_at
 
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -162,6 +186,38 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s wishlist item: {self.product.name}"
+
+class Address(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')
+    title = models.CharField(max_length=100)  # e.g., "Home", "Work", etc.
+    name = models.CharField(max_length=100)
+    address_line1 = models.CharField(max_length=255)
+    address_line2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Address'
+        verbose_name_plural = 'Addresses'
+        ordering = ['-is_default', '-created_at']
+
+    def __str__(self):
+        return f"{self.user.username}'s {self.title} address"
+    
+    def save(self, *args, **kwargs):
+        # If this is set as default, unset any other default address for this user
+        if self.is_default:
+            Address.objects.filter(user=self.user, is_default=True).update(is_default=False)
+        # If this is the first address for the user, make it default
+        elif not Address.objects.filter(user=self.user).exists():
+            self.is_default = True
+        super().save(*args, **kwargs)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
