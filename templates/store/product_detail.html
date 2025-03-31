@@ -423,7 +423,17 @@
                     <span class="badge bg-info">{{ product.category.name }}</span>
                 </div>
 
+                {% if product.is_on_sale %}
+                <div class="price-container mb-4">
+                    <h3 class="product-price-original mb-1">${{ product.price }}</h3>
+                    <h2 class="product-price-sale">
+                        <span>${{ product.sale_price }}</span>
+                        <span class="badge bg-danger ms-2">{{ product.discount_percentage }}% OFF</span>
+                    </h2>
+                </div>
+                {% else %}
                 <h2 class="product-price mb-4">${{ product.price }}</h2>
+                {% endif %}
 
                 <div class="product-description">
                     {{ product.description }}
@@ -515,7 +525,14 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ related_product.name }}</h5>
+                        {% if related_product.is_on_sale %}
+                        <div class="price-container">
+                            <p class="product-price-original mb-0">${{ related_product.price }}</p>
+                            <p class="product-price-sale">${{ related_product.sale_price }}</p>
+                        </div>
+                        {% else %}
                         <p class="product-price">${{ related_product.price }}</p>
+                        {% endif %}
                         <div class="product-actions">
                             <a href="{% url 'product_detail' product_slug=related_product.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>
                             <button class="btn btn-primary btn-sm btn-add-to-cart" {% if not related_product.is_in_stock %}disabled{% endif %} data-product-slug="{{ related_product.slug }}">

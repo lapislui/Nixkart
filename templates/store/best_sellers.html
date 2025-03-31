@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Products on Sale | NextKart{% endblock %}
+{% block title %}Best Sellers | NextKart{% endblock %}
 
 {% block content %}
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-6 mb-0">Products on Sale</h1>
+        <h1 class="display-6 mb-0">Best Selling Products</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Sale Items</li>
+                <li class="breadcrumb-item active" aria-current="page">Best Sellers</li>
             </ol>
         </nav>
     </div>
@@ -18,7 +18,7 @@
     <div class="row mb-5">
         <div class="col-12">
             <div class="glass-card p-4 mb-4">
-                <p class="mb-0">Check out our special discounts on selected products. Limited-time offers with big savings!</p>
+                <p class="mb-0">Explore our most popular products that customers love. These items consistently receive high ratings and positive reviews.</p>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
         {% if products %}
             {% for product in products %}
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'s' }}00">
-                    <div class="product-card sale-card">
+                    <div class="product-card">
                         <div class="product-img-wrapper">
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
@@ -37,7 +37,7 @@
                                 </div>
                             {% endif %}
                             <div class="product-badge">
-                                <span class="badge bg-danger">{{ product.discount_percentage }}% Off</span>
+                                <span class="badge bg-warning">Best Seller</span>
                                 {% if product.model_3d %}
                                     <span class="badge bg-primary">3D</span>
                                 {% endif %}
@@ -57,10 +57,7 @@
                             </h3>
                             <div class="product-meta">
                                 <span class="product-category">{{ product.category.name }}</span>
-                                <div class="price-container">
-                                    <span class="product-price-original">${{ product.price }}</span>
-                                    <span class="product-price-sale">${{ product.sale_price }}</span>
-                                </div>
+                                <span class="product-price">${{ product.price }}</span>
                             </div>
                             <div class="product-description">
                                 {{ product.description|truncatechars:60 }}
@@ -78,10 +75,10 @@
             <div class="col-12">
                 <div class="empty-state">
                     <div class="empty-icon">
-                        <i class="fas fa-tags"></i>
+                        <i class="fas fa-award"></i>
                     </div>
-                    <h3>No Sale Items</h3>
-                    <p>There are currently no products on sale. Check back soon for amazing deals!</p>
+                    <h3>No Best Selling Products</h3>
+                    <p>We're currently compiling our list of best selling products. Check back soon!</p>
                 </div>
             </div>
         {% endif %}
