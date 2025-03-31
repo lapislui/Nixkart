@@ -516,13 +516,32 @@
                 </div>
                 
                 <div class="form-check">
-                    <input type="checkbox" id="featured" name="featured" class="form-check-input" {% if product.featured %}checked{% endif %}>
-                    <label for="featured" class="form-check-label">Feature this product on the homepage</label>
+                    <input type="checkbox" id="is_featured" name="is_featured" class="form-check-input" {% if product.is_featured %}checked{% endif %}>
+                    <label for="is_featured" class="form-check-label">Feature this product on the homepage</label>
                 </div>
                 
                 <div class="form-check">
-                    <input type="checkbox" id="is_new" name="is_new" class="form-check-input" {% if product.is_new %}checked{% endif %}>
-                    <label for="is_new" class="form-check-label">Mark as new product</label>
+                    <input type="checkbox" id="is_new_arrival" name="is_new_arrival" class="form-check-input" {% if product.is_new_arrival %}checked{% endif %}>
+                    <label for="is_new_arrival" class="form-check-label">Mark as new arrival</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="is_best_seller" name="is_best_seller" class="form-check-input" {% if product.is_best_seller %}checked{% endif %}>
+                    <label for="is_best_seller" class="form-check-label">Mark as best seller</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="is_on_sale" name="is_on_sale" class="form-check-input" {% if product.is_on_sale %}checked{% endif %}>
+                    <label for="is_on_sale" class="form-check-label">Mark as on sale</label>
+                </div>
+
+                <div class="form-group" id="discount_container" style="{% if not product.is_on_sale %}display: none;{% endif %}">
+                    <label for="discount_percentage" class="form-label">Discount Percentage</label>
+                    <div class="input-group">
+                        <input type="number" id="discount_percentage" name="discount_percentage" class="form-control" min="0" max="99" value="{{ product.discount_percentage|default:0 }}" {% if not product.is_on_sale %}disabled{% endif %}>
+                        <div class="input-group-text">%</div>
+                    </div>
+                    <small class="form-text">Enter a percentage discount for this product (e.g., 20 for 20% off)</small>
                 </div>
             </div>
             
@@ -768,6 +787,26 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle the on_sale checkbox toggling the discount percentage field
+    const onSaleCheckbox = document.getElementById('is_on_sale');
+    const discountContainer = document.getElementById('discount_container');
+    const discountInput = document.getElementById('discount_percentage');
+
+    if (onSaleCheckbox && discountContainer && discountInput) {
+        onSaleCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                discountContainer.style.display = 'block';
+                discountInput.disabled = false;
+            } else {
+                discountContainer.style.display = 'none';
+                discountInput.disabled = true;
+            }
+        });
+    }
+});</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Image preview
