@@ -517,6 +517,7 @@ def add_to_cart(request, product_slug):
     return redirect('cart')
 
 def cart_view(request):
+    
     cart = get_or_create_cart(request)
     cart_items = cart.items.all()
     
