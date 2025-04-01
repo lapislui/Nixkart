@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
 from decimal import Decimal
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -102,35 +103,68 @@ class Product(models.Model):
         import datetime
         return (timezone.now() - datetime.timedelta(days=30)) <= self.created_at
 
-class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
-    session_id = models.CharField(max_length=255, null=True, blank=True)
+# Add this new Coupon model after the Address model
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount_percent = models.PositiveIntegerField()
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
-        if self.user:
-            return f"Cart #{self.id} - {self.user.username}"
-        return f"Cart #{self.id} - Anonymous"
-    
+        return f"{self.code} ({self.discount_percent}% off)"
+
+# Update the Cart model to include a total method
+class Cart(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    session_id = models.CharField(max_length=100, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
+
     def total(self):
-        return sum(item.subtotal() for item in self.items.all())
-    
+        return self.get_total()
+
     def item_count(self):
         return sum(item.quantity for item in self.items.all())
 
+    def get_subtotal(self):
+        return sum(item.get_subtotal() for item in self.items.all())
+
+    def get_total(self):
+        subtotal = self.get_subtotal()
+        # Add shipping cost if subtotal is less than 50
+        shipping = 5.99 if subtotal < 50 else 0
+        # Calculate tax (8%)
+        tax = subtotal * 0.08
+        # Apply discount if coupon exists
+        discount = 0
+        if self.coupon:
+            discount = (subtotal * self.coupon.discount_percent) / 100
+        return subtotal + shipping + tax - discount
+
+    def __str__(self):
+        return f"Cart {self.id}"
+    
+    
+# Update the CartItem model to include a subtotal method
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
+
+    def subtotal(self):
+        return self.get_subtotal()
+
+    def get_subtotal(self):
+        if self.product.is_on_sale:
+            return self.product.get_sale_price() * self.quantity
+        return self.product.price * self.quantity
+
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
-    
-    def subtotal(self):
-        return self.product.price * self.quantity
 
 class Order(models.Model):
     STATUS_CHOICES = (

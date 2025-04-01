@@ -520,9 +520,32 @@ def cart_view(request):
     cart = get_or_create_cart(request)
     cart_items = cart.items.all()
     
+    # Calculate cart summary
+    cart_subtotal = sum(item.get_subtotal() for item in cart_items)
+    shipping_cost = 5.99 if cart_subtotal < 50 else 0  # Free shipping over $50
+    
+    # Calculate tax (assuming 8% tax rate)
+    tax_rate = 8
+    tax_amount = (cart_subtotal * tax_rate) / 100
+    
+    # Get applied coupon if any
+    applied_coupon = getattr(cart, 'coupon', None)
+    discount_amount = 0
+    if applied_coupon:
+        discount_amount = (cart_subtotal * applied_coupon.discount_percent) / 100
+    
+    # Calculate final total
+    cart_total = cart_subtotal + shipping_cost + tax_amount - discount_amount
+    
     context = {
         'cart': cart,
         'cart_items': cart_items,
+        'cart_subtotal': cart_subtotal,
+        'shipping_cost': shipping_cost,
+        'tax_amount': tax_amount,
+        'discount_amount': discount_amount,
+        'cart_total': cart_total,
+        'applied_coupon': applied_coupon,
     }
     
     return render(request, 'store/cart.html', context)

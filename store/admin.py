@@ -1,5 +1,16 @@
 from django.contrib import admin
-from .models import Category, Product, Cart, CartItem, Order, OrderItem, UserProfile, Wishlist
+from .models import (
+    Category, 
+    Product, 
+    Cart, 
+    CartItem, 
+    Order, 
+    OrderItem, 
+    Wishlist, 
+    Address, 
+    UserProfile,
+    Coupon  # Add this import
+)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -16,15 +27,21 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'session_id', 'total', 'item_count', 'created_at')
-
-class CartItemInline(admin.TabularInline):
-    model = CartItem
-    extra = 0
+    list_display = ['id', 'user', 'created_at', 'total']
+    list_filter = ['created_at']
+    search_fields = ['user__username']
 
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('product', 'cart', 'quantity', 'subtotal')
+    list_display = ['id', 'cart', 'product', 'subtotal']
+    list_filter = ['cart']
+    search_fields = ['product__name']
+
+@admin.register(Coupon)
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ['code', 'discount_percent', 'valid_from', 'valid_to', 'active']
+    list_filter = ['active', 'valid_from', 'valid_to']
+    search_fields = ['code']
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
