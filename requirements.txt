@@ -4,3 +4,4 @@ django-allauth
 django-crispy-forms
 stripe
 gunicorn
+pillow
