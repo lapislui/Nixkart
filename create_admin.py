@@ -13,9 +13,9 @@ from django.utils import timezone
 # Create superuser
 try:
     admin_user = User.objects.create_superuser(
-        username='admin',
-        email='admin@example.com',
-        password='123',
+        username='luphonix_prime_admin',
+        email='Luphoni.prime@gmail.com',
+        password='keval_dhyey#2025',
         last_login=timezone.now(),
     )
     print("Superuser 'admin' created successfully.")
