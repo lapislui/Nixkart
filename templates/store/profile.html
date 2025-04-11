@@ -190,7 +190,7 @@
     }
     
     .address-card {
-        background-color: #f9f9f9;
+        background-color: transparent;
         border-radius: var(--border-radius-sm);
         padding: var(--spacing-md);
         position: relative;
@@ -378,6 +378,10 @@
         margin-bottom: var(--spacing-md);
     }
     
+    .btn {
+        color: white !important; /* Ensure button text is white */
+    }
+    
     @media (max-width: 992px) {
         .profile-content {
             grid-template-columns: 1fr;
@@ -486,10 +490,10 @@
             <div class="profile-section">
                 <h2 class="section-title">
                     Personal Information
-                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-primary" style="background-color: white; color: black;">Edit</a>
                 </h2>
                 
-                <div class="profile-info">
+                <div class="profile-info">  
                     <div>
                         <div class="info-group">
                             <div class="info-label">Full Name</div>
@@ -520,7 +524,7 @@
                 <h2 class="section-title">
                     Shipping Addresses
                     <a href="{% url 'add_address' %}" class="btn btn-sm btn-accent">
-                        <i class="fas fa-plus"></i> Add Address
+                        <i class="fas fa-plus">Add Address</i> 
                     </a>
                 </h2>
                 
@@ -533,7 +537,7 @@
                                         <h5 class="address-title">{{ address.title }}</h5>
                                         {% if address.is_default %}
                                             <span class="address-badge">
-                                                <i class="fas fa-check-circle"></i> Default
+                                                <i class="fas fa-check-circle"></i>Default
                                             </span>
                                         {% endif %}
                                     </div>
@@ -555,7 +559,7 @@
                                         </div>
                                     </div>
                                     <div class="address-actions">
-                                        <a href="{% url 'edit_address' address.id %}" class="btn-action edit-btn" title="Edit address">
+                                        <a href="{% url 'edit_address' address.id %}" class="btn-action edit-btn" title="Edit address">Edit
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                         {% if not address.is_default %}

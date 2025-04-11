@@ -1,0 +1,382 @@
+Folder PATH listing for volume OS
+Volume serial number is 44E7-F1E6
+C:.
+|   .env
+|   .gitignore
+|   add_sample_data.py
+|   cookies.txt
+|   create_admin.py
+|   create_users.py
+|   db.sqlite3
+|   fix_sites.py
+|   generated-icon.png
+|   manage.py
+|   package-lock.json
+|   package.json
+|   project_structure.txt
+|   requirements.txt
+|   startup.py
+|   
++---attached_assets
+|       admin.py
+|       apps.py
+|       asgi.py
+|       checkout.html
+|       context_processors.py
+|       dashboard.html
+|       forms.py
+|       image_1743170948293.png
+|       image_1743171146914.png
+|       image_1743171168937.png
+|       models.py
+|       payments.py
+|       product_detail.html
+|       settings.py
+|       signals.py
+|       something_hop.zip
+|       urls.py
+|       views.py
+|       wsgi.py
+|       __init__.py
+|       
++---ecommerce_project
+|   |   asgi.py
+|   |   settings.py
+|   |   urls.py
+|   |   wsgi.py
+|   |   __init__.py
+|   |   
+|   \---__pycache__
+|           settings.cpython-310.pyc
+|           settings.cpython-312.pyc
+|           settings.cpython-39.pyc
+|           urls.cpython-310.pyc
+|           urls.cpython-312.pyc
+|           urls.cpython-39.pyc
+|           wsgi.cpython-310.pyc
+|           wsgi.cpython-312.pyc
+|           __init__.cpython-310.pyc
+|           __init__.cpython-312.pyc
+|           __init__.cpython-39.pyc
+|           
++---media
+|   +---categories
+|   |       books-stack-realistic_1284-4735-removebg-preview.png
+|   |       books-stack-realistic_1284-4735-removebg-preview_6zXNp0Y.png
+|   |       image_1.png
+|   |       image_2.png
+|   |       image_3.png
+|   |       sport-equipment-concept_1284-13034.png
+|   |       
+|   \---products
+|           hp_omen.png
+|           hp_omen_htDLuoa.png
+|           logo.png
+|           white_replacement.png
+|           
++---static
+|   +---css
+|   |       animations.css
+|   |       main.css
+|   |       
+|   +---images
+|   |       phoenix-logo.png
+|   |       
+|   \---js
+|           animations.js
+|           cart_animations.js
+|           dashboard_charts.js
+|           main.js
+|           search-filters.js
+|           three_viewer.js
+|           wishlist.js
+|           
++---staticfiles
+|   +---account
+|   |   \---js
+|   |           account.js
+|   |           onload.js
+|   |           
+|   +---admin
+|   |   +---css
+|   |   |   |   autocomplete.css
+|   |   |   |   base.css
+|   |   |   |   changelists.css
+|   |   |   |   dark_mode.css
+|   |   |   |   dashboard.css
+|   |   |   |   forms.css
+|   |   |   |   login.css
+|   |   |   |   nav_sidebar.css
+|   |   |   |   responsive.css
+|   |   |   |   responsive_rtl.css
+|   |   |   |   rtl.css
+|   |   |   |   unusable_password_field.css
+|   |   |   |   widgets.css
+|   |   |   |   
+|   |   |   \---vendor
+|   |   |       \---select2
+|   |   |               LICENSE-SELECT2.md
+|   |   |               select2.css
+|   |   |               select2.min.css
+|   |   |               
+|   |   +---img
+|   |   |   |   calendar-icons.svg
+|   |   |   |   icon-addlink.svg
+|   |   |   |   icon-alert.svg
+|   |   |   |   icon-calendar.svg
+|   |   |   |   icon-changelink.svg
+|   |   |   |   icon-clock.svg
+|   |   |   |   icon-deletelink.svg
+|   |   |   |   icon-hidelink.svg
+|   |   |   |   icon-no.svg
+|   |   |   |   icon-unknown-alt.svg
+|   |   |   |   icon-unknown.svg
+|   |   |   |   icon-viewlink.svg
+|   |   |   |   icon-yes.svg
+|   |   |   |   inline-delete.svg
+|   |   |   |   LICENSE
+|   |   |   |   README.txt
+|   |   |   |   search.svg
+|   |   |   |   selector-icons.svg
+|   |   |   |   sorting-icons.svg
+|   |   |   |   tooltag-add.svg
+|   |   |   |   tooltag-arrowright.svg
+|   |   |   |   
+|   |   |   \---gis
+|   |   |           move_vertex_off.svg
+|   |   |           move_vertex_on.svg
+|   |   |           
+|   |   \---js
+|   |       |   actions.js
+|   |       |   autocomplete.js
+|   |       |   calendar.js
+|   |       |   cancel.js
+|   |       |   change_form.js
+|   |       |   core.js
+|   |       |   filters.js
+|   |       |   inlines.js
+|   |       |   jquery.init.js
+|   |       |   nav_sidebar.js
+|   |       |   popup_response.js
+|   |       |   prepopulate.js
+|   |       |   prepopulate_init.js
+|   |       |   SelectBox.js
+|   |       |   SelectFilter2.js
+|   |       |   theme.js
+|   |       |   unusable_password_field.js
+|   |       |   urlify.js
+|   |       |   
+|   |       +---admin
+|   |       |       DateTimeShortcuts.js
+|   |       |       RelatedObjectLookups.js
+|   |       |       
+|   |       \---vendor
+|   |           +---jquery
+|   |           |       jquery.js
+|   |           |       jquery.min.js
+|   |           |       LICENSE.txt
+|   |           |       
+|   |           +---select2
+|   |           |   |   LICENSE.md
+|   |           |   |   select2.full.js
+|   |           |   |   select2.full.min.js
+|   |           |   |   
+|   |           |   \---i18n
+|   |           |           af.js
+|   |           |           ar.js
+|   |           |           az.js
+|   |           |           bg.js
+|   |           |           bn.js
+|   |           |           bs.js
+|   |           |           ca.js
+|   |           |           cs.js
+|   |           |           da.js
+|   |           |           de.js
+|   |           |           dsb.js
+|   |           |           el.js
+|   |           |           en.js
+|   |           |           es.js
+|   |           |           et.js
+|   |           |           eu.js
+|   |           |           fa.js
+|   |           |           fi.js
+|   |           |           fr.js
+|   |           |           gl.js
+|   |           |           he.js
+|   |           |           hi.js
+|   |           |           hr.js
+|   |           |           hsb.js
+|   |           |           hu.js
+|   |           |           hy.js
+|   |           |           id.js
+|   |           |           is.js
+|   |           |           it.js
+|   |           |           ja.js
+|   |           |           ka.js
+|   |           |           km.js
+|   |           |           ko.js
+|   |           |           lt.js
+|   |           |           lv.js
+|   |           |           mk.js
+|   |           |           ms.js
+|   |           |           nb.js
+|   |           |           ne.js
+|   |           |           nl.js
+|   |           |           pl.js
+|   |           |           ps.js
+|   |           |           pt-BR.js
+|   |           |           pt.js
+|   |           |           ro.js
+|   |           |           ru.js
+|   |           |           sk.js
+|   |           |           sl.js
+|   |           |           sq.js
+|   |           |           sr-Cyrl.js
+|   |           |           sr.js
+|   |           |           sv.js
+|   |           |           th.js
+|   |           |           tk.js
+|   |           |           tr.js
+|   |           |           uk.js
+|   |           |           vi.js
+|   |           |           zh-CN.js
+|   |           |           zh-TW.js
+|   |           |           
+|   |           \---xregexp
+|   |                   LICENSE.txt
+|   |                   xregexp.js
+|   |                   xregexp.min.js
+|   |                   
+|   +---css
+|   |       animations.css
+|   |       main.css
+|   |       
+|   \---js
+|           animations.js
+|           cart_animations.js
+|           dashboard_charts.js
+|           main.js
+|           three_viewer.js
+|           
++---store
+|   |   admin.py
+|   |   apps.py
+|   |   context_processors.py
+|   |   forms.py
+|   |   models.py
+|   |   payments.py
+|   |   settings.py
+|   |   signals.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_alter_wishlist_options.py
+|   |   |   0003_product_discount_percentage_product_is_best_seller_and_more.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-310.pyc
+|   |           0001_initial.cpython-312.pyc
+|   |           0002_alter_wishlist_options.cpython-310.pyc
+|   |           0002_alter_wishlist_options.cpython-312.pyc
+|   |           0003_product_discount_percentage_product_is_best_seller_and_more.cpython-310.pyc
+|   |           0003_product_discount_percentage_product_is_best_seller_and_more.cpython-312.pyc
+|   |           __init__.cpython-310.pyc
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-310.pyc
+|           admin.cpython-312.pyc
+|           admin.cpython-39.pyc
+|           apps.cpython-310.pyc
+|           apps.cpython-312.pyc
+|           apps.cpython-39.pyc
+|           context_processors.cpython-310.pyc
+|           context_processors.cpython-312.pyc
+|           forms.cpython-310.pyc
+|           forms.cpython-312.pyc
+|           forms.cpython-39.pyc
+|           models.cpython-310.pyc
+|           models.cpython-312.pyc
+|           models.cpython-39.pyc
+|           payments.cpython-310.pyc
+|           payments.cpython-312.pyc
+|           payments.cpython-39.pyc
+|           signals.cpython-310.pyc
+|           signals.cpython-312.pyc
+|           signals.cpython-39.pyc
+|           urls.cpython-310.pyc
+|           urls.cpython-312.pyc
+|           urls.cpython-39.pyc
+|           views.cpython-310.pyc
+|           views.cpython-312.pyc
+|           views.cpython-39.pyc
+|           __init__.cpython-310.pyc
+|           __init__.cpython-312.pyc
+|           __init__.cpython-39.pyc
+|           
++---templates
+|   |   base.html
+|   |   
+|   \---store
+|           about.html
+|           address_list.html
+|           add_address.html
+|           add_category.html
+|           add_product.html
+|           add_product_to_category.html
+|           best_sellers.html
+|           cart.html
+|           categories.html
+|           category_detail.html
+|           category_list.html
+|           change_email.html
+|           checkout.html
+|           contact.html
+|           coupons.html
+|           dashboard.html
+|           delete_category.html
+|           delete_product.html
+|           edit_address.html
+|           edit_category.html
+|           edit_product.html
+|           edit_profile.html
+|           fake_products_page.html
+|           faq.html
+|           featured_products.html
+|           home.html
+|           login.html
+|           newsletter_signup.html
+|           new_arrivals.html
+|           notifications.html
+|           on_sale_products.html
+|           orders.html
+|           order_detail.html
+|           order_success.html
+|           password_change.html
+|           password_change_done.html
+|           password_reset.html
+|           password_reset_complete.html
+|           password_reset_confirm.html
+|           password_reset_done.html
+|           privacy_policy.html
+|           product_detail.html
+|           product_list.html
+|           product_reviews.html
+|           profile.html
+|           report_page.html
+|           returns.html
+|           search_results.html
+|           shipping.html
+|           signup.html
+|           submit_ticket.html
+|           support.html
+|           terms_and_conditions.html
+|           track_order.html
+|           user_orders.html
+|           wishlist.html
+|           
+\---temp_extracted
